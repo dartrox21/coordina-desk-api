@@ -8,8 +8,12 @@ const ROLE = require('../role/Role.enum');
 const cleanMiddleware = cleanModel(User.schema.paths);
 const FILTERS = ['id', 'email', 'name', 'isActive', 'isDeleted'];
 
-router.post('/user',
-    [preAuthorize(ROLE.COORDINATOR), cleanMiddleware],
+// router.post('/user',
+//     [preAuthorize(ROLE.COORDINATOR), cleanMiddleware],
+//     asyncWrapper(UserService.create));
+
+    router.post('/user',
+    [cleanMiddleware],
     asyncWrapper(UserService.create));
 
 router.put('/user/activate/:id',
