@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
-const { encrypt } = require('../utils/util.functions');
 const ROLES = require('../role/Role.enum');
 
 let Schema = mongoose.Schema;
