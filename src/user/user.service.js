@@ -7,6 +7,7 @@ const User = require('./User.model');
 const userProjection = require('./projections/user.projection');
 const userLoginProjection = require('./projections/userLogin.projection');
 const ActivationMailService = require('../mail/activation.mail.service');
+const { encrypt } = require('../utils/util.functions');
 
 class UserSevice extends GenericService {
     constructor() {
@@ -129,7 +130,7 @@ class UserSevice extends GenericService {
      */
     async resendActivationEmail(req, res) {
         console.log('resendActivationEmail UserService');
-        const user = await UserRepository.findByEmail(req.body.email);
+        const user = await UserRepository.getByIdNoValidation(req.body._id);
         if(user.isActive) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.USER_IS_ACTIVE).build();
         } else if(user.isDeleted) {
@@ -146,7 +147,21 @@ class UserSevice extends GenericService {
      * @returns 
      */
     async activate(req, res) {
-        // update and activate the user
+        let user = req.body;
+        const userDb = await UserRepository.getByIdNoValidation(user._id);
+        if(!userDb) {
+            throw CustomValidateException.notFound().setField('id').setValue(user._id).build();
+        }
+        if(userDb.isActive) {
+            return res.status(HttpStatus.OK).json(userDb);
+        }
+        delete user.email;
+        delete user.isDeleted;
+        user.isActive = true;
+        const hash = await encrypt(user.password);
+        user.password = hash;
+        user = await UserRepository.update(user._id, user);
+        res.status(HttpStatus.OK).json(user);
     }
 }
 

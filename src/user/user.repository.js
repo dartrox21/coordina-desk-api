@@ -23,7 +23,7 @@ class UserRepository extends GenericRepository {
      */
     async countDocuments() {
         return User.countDocuments()
-        .where('active').equals('true');
+        .where('isActive').equals('true');
     }
 
     /**
@@ -33,7 +33,7 @@ class UserRepository extends GenericRepository {
      */
     async getById(id, projection) {
         return User.findById(id, projection)
-        .where('active').equals('true');
+        .where('isActive').equals('true');
     }
 
     /**
@@ -41,7 +41,7 @@ class UserRepository extends GenericRepository {
      * @param id 
      */
     async delete(id) {
-        return User.findByIdAndUpdate(id, {active: false}, {new: true});
+        return User.findByIdAndUpdate(id, {isActive: false}, {new: true});
     }
 
     /**
@@ -51,9 +51,17 @@ class UserRepository extends GenericRepository {
      * @param projection object. Can be null
      */
     async update(id, user, projection) {
-        delete user.active;
         delete user._id;
         return User.findByIdAndUpdate(id, user, {new: true, projection});
+    }
+
+    /**
+     * Gets an user by id 
+     * @param id 
+     * @param projection object. Can be null
+     */
+    async getByIdNoValidation(id, projection) {
+        return User.findById(id, projection);
     }
 }
 

@@ -17,12 +17,10 @@ let User = new Schema({
         unique: true
     },
     password: {
-        type: String,
-        required: [false, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        type: String
     },
     name: {
-        type: String,
-        required: [false, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        type: String
     },
     isActive: {
         type: Boolean,
@@ -47,14 +45,5 @@ let User = new Schema({
 User.plugin(uniqueValidator, {
     message: CustomErrorMessages.MUST_BE_UNIQUE
 });
-
-/**
- * Previous a user creation the password will be encripted
- */
-// User.pre('save', async function () {
-//     const user = this;
-//     const hash = await encrypt(user.password);
-//     user.password = hash;
-// });
 
 module.exports = mongoose.model('user', User);
