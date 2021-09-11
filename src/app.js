@@ -15,7 +15,7 @@ app.use(bodyparser.json());
 
 app.use(cors())
 
-// app.use(validateToken);
+app.use(validateToken);
 
 app.use(routes);
 

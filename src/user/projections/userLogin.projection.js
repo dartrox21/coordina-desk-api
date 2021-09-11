@@ -3,7 +3,11 @@ userLoginProjection = [
     'email',
     'name',
     'isActive',
-    'password'
+    'password',
+    'isDeleted',
+    'role',
+    'created_at',
+    'updated_at'
 ];
 
 

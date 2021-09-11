@@ -8,6 +8,6 @@ router.post('/auth/login', validateAuthUser, asyncWrapper(AuthService.login));
 
 router.post('/auth/logout', asyncWrapper(AuthService.logout));
 
-router.post('/auth/validate-token', (req, res) => res.status(HttpStatus.OK).send())
+router.post('/auth/validate-token', (req, res) => res.status(HttpStatus.OK).send());
 
 module.exports = router;

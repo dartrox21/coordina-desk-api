@@ -116,7 +116,7 @@ class UserSevice extends GenericService {
     async findByEmail(email) {
         console.log('findByEmail UserSevice');
         const user = await UserRepository.findByEmail(email, userLoginProjection);
-        if(!user || !user.active) {
+        if(!user || !user.isActive) {
             throw CustomValidateException.notFound().errorMessage(CustomErrorMessages.USER_NOT_FOUND).build();
         }
         return user;
