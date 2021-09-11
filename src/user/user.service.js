@@ -122,6 +122,18 @@ class UserSevice extends GenericService {
     }
 
     /**
+     * Resends the activation email to the user
+     * @param  req 
+     * @param  res 
+     */
+    async resendActivationEmail(req, res) {
+        console.log('resendActivationEmail UserService');
+        const user = await UserRepository.findByEmail(req.body.email);
+        await ActivationMailService.sendMail(user.email, user._id);
+        res.status(HttpStatus.OK).send();
+    }
+
+    /**
      * Activates the user account and sets its information
      * @param req Request object
      * @param res Response object
