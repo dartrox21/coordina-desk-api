@@ -6,6 +6,7 @@ const UserRepository = require('./user.repository');
 const User = require('./User.model');
 const userProjection = require('./projections/user.projection');
 const userLoginProjection = require('./projections/userLogin.projection');
+const ActivationMailService = require('../mail/activation.mail.service');
 
 class UserSevice extends GenericService {
     constructor() {
@@ -44,7 +45,7 @@ class UserSevice extends GenericService {
         const user = req.body;
         await this.uniqueValidateException(user);
         const userCreated = await UserRepository.save(user);
-        // TODO send email to the user so he can activate his account
+        await ActivationMailService.sendMail(userCreated.email, userCreated._id);
         res.status(HttpStatus.CREATED).json(userCreated);
     }
 

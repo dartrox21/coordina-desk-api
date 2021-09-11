@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken');
 const HttpStatus = require('http-status-codes');
 const CustomValidateException = require('../exceptionHandler/CustomValidateException');
 const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
-const UserService = require('../user/user.service');
 const bcrypt = require('bcrypt');
-const TokenService = require('./token/token.service')
+const TokenService = require('./token/token.service');
 
 class AuthService {
     constructor() { 
@@ -36,6 +35,15 @@ class AuthService {
       console.log('logout AuthSevice');
       await TokenService.save(req, res, next);
     }
+
+    async createToken(data) {
+        console.log('creating a token');
+        return jwt.sign({data}, process.env.SECRET, {expiresIn: process.env.EXP_DATE});
+    }
 }
 
 module.exports = new AuthService();
+
+
+// requiring elements at the very botton to avoid circular dependency
+const UserService = require('../user/user.service');
