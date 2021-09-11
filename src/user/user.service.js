@@ -43,7 +43,9 @@ class UserSevice extends GenericService {
     */
     async create(req, res) {
         console.log('create UserSevice');
-        const user = req.body;
+        const user = new User();
+        user.email = req.body.email;
+        user.role = req.body.role;
         await this.uniqueValidateException(user);
         const userCreated = await UserRepository.save(user);
         await ActivationMailService.sendMail(userCreated.email, userCreated._id);
