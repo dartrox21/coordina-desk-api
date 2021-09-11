@@ -122,13 +122,19 @@ class UserSevice extends GenericService {
     }
 
     /**
-     * Resends the activation email to the user
+     * Resends the activation email to the user.
+     * Validates if the user is not active and if it is not deleted
      * @param  req 
      * @param  res 
      */
     async resendActivationEmail(req, res) {
         console.log('resendActivationEmail UserService');
         const user = await UserRepository.findByEmail(req.body.email);
+        if(user.isActive) {
+            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.USER_IS_ACTIVE).build();
+        } else if(user.isDeleted) {
+            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.USER_IS_DELETED).build();
+        }
         await ActivationMailService.sendMail(user.email, user._id);
         res.status(HttpStatus.OK).send();
     }

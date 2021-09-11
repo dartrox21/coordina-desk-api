@@ -27,6 +27,8 @@ module.exports = class CustomErrorMessages {
     // User
     static EMAIL_ALREADY_USE = 'ERROR.USER.EMAIL_ALREADY_IN_USE';
     static USER_NOT_FOUND = 'ERROR.USER.NOT_FOUND';
+    static USER_IS_ACTIVE = 'ERROR.USER.USER_IS_ACTIVE';
+    static USER_IS_DELETED = 'ERROR.USER.USER_IS_DELETED';
 
     // MONGOOSE
     static MONGOOSE_ERROR = 'ERROR.MONGOOSE';

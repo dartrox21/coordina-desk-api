@@ -24,7 +24,6 @@ class ActivationMailService {
      * @param string recipent 
      */
     async sendMail(recipent, id) {
-        console.log('inside');
         const token = await AuthService.createToken(id);
         console.log('token has been created');
         const body = this.BODY.replaceAll('ACTIVATION_URL', `${this.URL}/id/${id}/token/${token}`);
