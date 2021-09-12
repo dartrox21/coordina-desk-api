@@ -33,6 +33,9 @@ module.exports = class CustomErrorMessages {
     // MONGOOSE
     static MONGOOSE_ERROR = 'ERROR.MONGOOSE';
 
+    // TICKET
+    static INVALID_STATUS = 'ERROR.TICKET.INVALID_STATUS';
+
 
     CustomErrorMessages() {
         throw new Error('Utility class');
