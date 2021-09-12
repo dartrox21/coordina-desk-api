@@ -1,0 +1,468 @@
+{
+  "settings": {
+    "languages": [
+      "es"
+    ],
+    "nlu": {
+      "log": false
+    },
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager",
+      "log": false
+    },
+    "locales": [
+      "es"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "es": {
+        "settings": {
+          "locale": "es",
+          "trainByDomain": false,
+          "tag": "domain-manager-es",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "adi": {
+            "intent": "greetings.bye",
+            "domain": "default"
+          },
+          "bye": {
+            "intent": "greeetings.bye",
+            "domain": "default"
+          },
+          "cam": {
+            "intent": "greetings.bye",
+            "domain": "default"
+          },
+          "hol": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "el,inform,mas,modul,proyect,quer,sobr": {
+            "intent": "coordination.modular.general",
+            "domain": "default"
+          },
+          "de,del,entreg,fech,modul,proyect": {
+            "intent": "coordination.modular.timming",
+            "domain": "default"
+          },
+          "cuand,el,entreg,modul,proyect,se": {
+            "intent": "coordination.modular.timming",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "greetings.bye": "default",
+          "greeetings.bye": "default",
+          "greetings.hello": "default",
+          "coordination.modular.general": "default",
+          "coordination.modular.timming": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "adios",
+            "intent": "greetings.bye"
+          },
+          {
+            "domain": "default",
+            "utterance": "bye",
+            "intent": "greeetings.bye"
+          },
+          {
+            "domain": "default",
+            "utterance": "camara",
+            "intent": "greetings.bye"
+          },
+          {
+            "domain": "default",
+            "utterance": "hola",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "quero mas informacion sobre el proyecto modular",
+            "intent": "coordination.modular.general"
+          },
+          {
+            "domain": "default",
+            "utterance": "fecha de entrega del proyecto modular",
+            "intent": "coordination.modular.timming"
+          },
+          {
+            "domain": "default",
+            "utterance": "cuando se entrega el proyecto modular",
+            "intent": "coordination.modular.timming"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "es",
+              "tag": "nlu-es",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "adi": 1,
+              "bye": 1,
+              "cam": 1,
+              "hol": 1,
+              "quer": 1,
+              "mas": 1,
+              "inform": 1,
+              "sobr": 1,
+              "el": 1,
+              "proyect": 1,
+              "modul": 1,
+              "fech": 1,
+              "de": 1,
+              "entreg": 1,
+              "del": 1,
+              "cuand": 1,
+              "se": 1
+            },
+            "intents": {
+              "greetings.bye": 1,
+              "greeetings.bye": 1,
+              "greetings.hello": 1,
+              "coordination.modular.general": 1,
+              "coordination.modular.timming": 1
+            },
+            "intentFeatures": {
+              "greetings.bye": {
+                "adi": 1,
+                "cam": 1
+              },
+              "greeetings.bye": {
+                "bye": 1
+              },
+              "greetings.hello": {
+                "hol": 1
+              },
+              "coordination.modular.general": {
+                "quer": 1,
+                "mas": 1,
+                "inform": 1,
+                "sobr": 1,
+                "el": 1,
+                "proyect": 1,
+                "modul": 1
+              },
+              "coordination.modular.timming": {
+                "fech": 1,
+                "de": 1,
+                "entreg": 1,
+                "del": 1,
+                "proyect": 1,
+                "modul": 1,
+                "cuand": 1,
+                "se": 1,
+                "el": 1
+              }
+            },
+            "featuresToIntent": {
+              "adi": [
+                "greetings.bye"
+              ],
+              "cam": [
+                "greetings.bye"
+              ],
+              "bye": [
+                "greeetings.bye"
+              ],
+              "hol": [
+                "greetings.hello"
+              ],
+              "quer": [
+                "coordination.modular.general"
+              ],
+              "mas": [
+                "coordination.modular.general"
+              ],
+              "inform": [
+                "coordination.modular.general"
+              ],
+              "sobr": [
+                "coordination.modular.general"
+              ],
+              "el": [
+                "coordination.modular.general",
+                "coordination.modular.timming"
+              ],
+              "proyect": [
+                "coordination.modular.general",
+                "coordination.modular.timming"
+              ],
+              "modul": [
+                "coordination.modular.general",
+                "coordination.modular.timming"
+              ],
+              "fech": [
+                "coordination.modular.timming"
+              ],
+              "de": [
+                "coordination.modular.timming"
+              ],
+              "entreg": [
+                "coordination.modular.timming"
+              ],
+              "del": [
+                "coordination.modular.timming"
+              ],
+              "cuand": [
+                "coordination.modular.timming"
+              ],
+              "se": [
+                "coordination.modular.timming"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "es",
+                "tag": "nlu-es",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true
+              },
+              "features": [
+                "adi",
+                "bye",
+                "cam",
+                "hol",
+                "quer",
+                "mas",
+                "inform",
+                "sobr",
+                "el",
+                "proyect",
+                "modul",
+                "fech",
+                "de",
+                "entreg",
+                "del",
+                "cuand",
+                "se"
+              ],
+              "intents": [
+                "greetings.bye",
+                "greeetings.bye",
+                "greetings.hello",
+                "coordination.modular.general",
+                "coordination.modular.timming"
+              ],
+              "perceptrons": [
+                [
+                  9.55900764465332,
+                  -4.414212703704834,
+                  9.578914642333984,
+                  -4.421754360198975,
+                  -0.37241390347480774,
+                  -0.37241390347480774,
+                  -0.37241390347480774,
+                  -0.37241390347480774,
+                  -0.7137391567230225,
+                  -1.1792469024658203,
+                  -1.1792469024658203,
+                  -0.46547067165374756,
+                  -0.46547067165374756,
+                  -0.8068041205406189,
+                  -0.46547067165374756,
+                  -0.3412938117980957,
+                  -0.3412938117980957,
+                  4.561791982142323
+                ],
+                [
+                  -2.185605525970459,
+                  11.765681266784668,
+                  -2.2202742099761963,
+                  -2.208118200302124,
+                  -0.18622994422912598,
+                  -0.18622994422912598,
+                  -0.18622994422912598,
+                  -0.18622994422912598,
+                  -0.35691574215888977,
+                  -0.5896987915039062,
+                  -0.5896987915039062,
+                  -0.2327665239572525,
+                  -0.2327665239572525,
+                  -0.40345609188079834,
+                  -0.2327665239572525,
+                  -0.17067156732082367,
+                  -0.17067156732082367,
+                  2.281188024699673
+                ],
+                [
+                  -2.2108190059661865,
+                  -2.197695016860962,
+                  -2.1841626167297363,
+                  11.767095565795898,
+                  -0.18969161808490753,
+                  -0.18969161808490753,
+                  -0.18969161808490753,
+                  -0.18969161808490753,
+                  -0.3628445565700531,
+                  -0.6013115048408508,
+                  -0.6013115048408508,
+                  -0.23723280429840088,
+                  -0.23723280429840088,
+                  -0.4094383418560028,
+                  -0.23723280429840088,
+                  -0.17095258831977844,
+                  -0.17095258831977844,
+                  2.285706531781269
+                ],
+                [
+                  -0.158421590924263,
+                  -0.1567547470331192,
+                  -0.15495269000530243,
+                  -0.15451808273792267,
+                  2.683685302734375,
+                  2.683685302734375,
+                  2.683685302734375,
+                  2.683685302734375,
+                  1.5224878787994385,
+                  0.9369156360626221,
+                  0.9369156360626221,
+                  -0.4861196279525757,
+                  -0.4861196279525757,
+                  -1.6978360414505005,
+                  -0.4861196279525757,
+                  -1.1060229539871216,
+                  -1.1060229539871216,
+                  0.15465159422741293
+                ],
+                [
+                  -0.39951038360595703,
+                  -0.3942733407020569,
+                  -0.39096421003341675,
+                  -0.39007213711738586,
+                  -1.5075150728225708,
+                  -1.5075150728225708,
+                  -1.5075150728225708,
+                  -1.5075150728225708,
+                  0.6305566430091858,
+                  2.357147693634033,
+                  2.357147693634033,
+                  1.7265897989273071,
+                  1.7265897989273071,
+                  4.00119161605835,
+                  1.7265897989273071,
+                  2.2746012210845947,
+                  2.2746012210845947,
+                  0.3904581314208587
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "es",
+        "adios"
+      ],
+      [
+        "es",
+        "bye"
+      ],
+      [
+        "es",
+        "camara"
+      ],
+      [
+        "es",
+        "hola"
+      ],
+      [
+        "es",
+        "quero mas informacion sobre el proyecto modular"
+      ],
+      [
+        "es",
+        "fecha de entrega del proyecto modular"
+      ],
+      [
+        "es",
+        "cuando se entrega el proyecto modular"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {
+      "es": {
+        "greetings.bye": [
+          {
+            "answer": "hasta la proxima"
+          },
+          {
+            "answer": "adios"
+          }
+        ],
+        "greeetings.bye": [
+          {
+            "answer": "te veo pronto!"
+          }
+        ],
+        "greetings.hello": [
+          {
+            "answer": "hola"
+          }
+        ],
+        "coordination.modular.general": [
+          {
+            "answer": "Aqui esta toda la inforamcion sobre proyectos modulares URL"
+          }
+        ],
+        "coordination.modular.timming": [
+          {
+            "answer": "El proyecto modular se entrega el dia 15 de diciembre"
+          }
+        ]
+      }
+    }
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}

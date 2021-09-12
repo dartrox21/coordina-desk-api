@@ -1,0 +1,7 @@
+"INPUT","ID","RESPONSE"
+"adios","greetings.bye","hasta la proxima"
+"bye","greeetings.bye","te veo pronto!"
+"camara","greetings.bye","adios"
+"hola","greetings.hello","hola"
+"quero mas informacion general sobre el proyecto modular","coordination.modular.general","Aqui esta toda la informacion sobre proyectos modulares URL"
+"cuando fecha de entrega del proyecto modular","coordination.modular.timming","El proyecto modular se entrega el dia 15 de diciembre"
