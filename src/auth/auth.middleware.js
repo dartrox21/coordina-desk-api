@@ -10,7 +10,7 @@ const WHITE_LIST = ['/auth/login', '/user', '/nlp/evaluate'];
  * Middleware to validate that the body contains a user and a password
  */
 let validateAuthUser = (req, res, next) => {
-    const user = req.body;
+    const user = req.body; 
     console.log('Middleware: Validate auth user');
     if(!user.email || !user.password) {
         next(CustomValidateException.errorMessage(CustomErrorMessages.BAD_REQUEST).build());
