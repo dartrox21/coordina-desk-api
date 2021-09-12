@@ -3,6 +3,9 @@ const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
 const jwt = require('jsonwebtoken');
 const TokenService = require('./token/token.service');
 
+
+const WHITE_LIST = ['/auth/login', '/user', '/nlp/evaluate'];
+
 /**
  * Middleware to validate that the body contains a user and a password
  */
@@ -25,8 +28,8 @@ let validateAuthUser = (req, res, next) => {
  */
 let validateToken = (req, res, next) => {
     console.log('Middleware: validate token');
-    if(req._parsedUrl.pathname === '/auth/login' || req._parsedUrl.pathname === '/user') {
-        console.log('Auth/login not executing middleware');
+    if(isWhiteList(req._parsedUrl.pathname)) {
+        console.log(`${req._parsedUrl.pathname} not executing validate token middleware`);
         return next();
     }
     if (req.headers && req.headers.authorization) {
@@ -49,6 +52,8 @@ let validateToken = (req, res, next) => {
         next(CustomValidateException.unauthorized().build());
     }
 }
+
+let isWhiteList = (path) => WHITE_LIST.includes(path);
 
 module.exports = {
     validateAuthUser,

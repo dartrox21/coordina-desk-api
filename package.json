@@ -11,9 +11,13 @@
   "author": "Ruiz Acevedo Saul Francisco",
   "license": "ISC",
   "dependencies": {
+    "@nlpjs/core": "^4.22.0",
+    "@nlpjs/lang-es": "^4.22.0",
+    "@nlpjs/nlp": "^4.22.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "^0.0.1-security",
@@ -21,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.1",
     "mongoose-unique-validator": "^2.0.3",
+    "node-nlp": "^4.22.1",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.4",
     "underscore": "^1.10.2"

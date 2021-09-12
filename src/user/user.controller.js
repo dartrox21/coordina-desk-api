@@ -13,7 +13,7 @@ router.post('/user',
     asyncWrapper(UserService.create));
 
 router.put('/user/resend-email',
-    [preAuthorize(ROLE.COORDINATOR), cleanMiddleware],
+    [ cleanMiddleware],
     asyncWrapper(UserService.resendActivationEmail));
 
 router.put('/user/activate',
