@@ -39,7 +39,8 @@ let User = new Schema({
     }
 }, 
 { 
-    collection: 'user' 
+    collection: 'user',
+    timestamps: true
 });
 
 User.plugin(uniqueValidator, {

@@ -1,7 +1,12 @@
 const MailConfiguration = require('../configuration/mail.configuration');
 require('dotenv').config({path: __dirname + '/configuration/.env'});
+const fs = require('fs').promises;
 
 class MailService {
+
+    async getHtmlFile(filename) {
+        return await fs.readFile(`./resources/${filename}.html`, 'utf8'); 
+    }
     
     async sendMail(subject, body, ...recipents) {
         const mailOptions = {

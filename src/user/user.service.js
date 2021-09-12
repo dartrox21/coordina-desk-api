@@ -27,7 +27,7 @@ class UserSevice extends GenericService {
     */ 
     async uniqueValidateException(user) {
         console.log('uniqueValidateException UserSevice');
-        let found = await UserRepository.findByEmail(user.email);
+        const found = await UserRepository.findByEmail(user.email);
         if(found !== null) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.EMAIL_ALREADY_USE).build();
         }

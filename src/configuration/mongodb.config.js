@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
+const AutoIncrementFactory = require('mongoose-sequence');
 
 mongoose.set('useNewUrlParser',true);
 mongoose.set('useCreateIndex',true);
 mongoose.set('useUnifiedTopology', true);
 mongoose.set('debug', true);
+
+
 /**
  * DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()` without the
  * `useFindAndModify` option set to false are deprecated. 
@@ -12,8 +15,9 @@ mongoose.set('debug', true);
 mongoose.set('useFindAndModify', false);
 
 (async function connect() {
-    await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.BD_URI}?retryWrites=true&w=majority`)
-    .catch(err => console.log(`DB connection ERROR: ${err}`));
+    const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.BD_URI}?retryWrites=true&w=majority`)
+        .catch(err => console.log(`DB connection ERROR: ${err}`));
+    const AutoIncrement = AutoIncrementFactory(connection);
 })();
 
 /**

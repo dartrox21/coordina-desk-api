@@ -6,8 +6,8 @@ const AuthService = require('../auth/auth.service');
 class ActivationMailService {
 
     BODY = '';
-    SUBJECT = 'Email de activacion'
-    URL = `${process.env.PORTAL_URL}/activate` 
+    SUBJECT = 'Email de activacion';
+    URL = `${process.env.PORTAL_URL}/activate`;
 
     constructor() {
         this.sendMail = this.sendMail.bind(this);
@@ -16,7 +16,7 @@ class ActivationMailService {
     }
 
     async getHtmlFile() {
-        this.BODY = await fs.readFile('./resources/activationEmail.html', 'utf8'); 
+        this.BODY = await MailService.getHtmlFile('activationEmail');
     }
 
     /**
@@ -24,8 +24,8 @@ class ActivationMailService {
      * @param string recipent 
      */
     async sendMail(recipent, id) {
+        console.log(`Sending mail to ${recipent}`);
         const token = await AuthService.createToken(id);
-        console.log('token has been created');
         const body = this.BODY.replaceAll('ACTIVATION_URL', `${this.URL}/id/${id}/token/${token}`);
         await MailService.sendMail(this.SUBJECT, body, recipent);
     }
