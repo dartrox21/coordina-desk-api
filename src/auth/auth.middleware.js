@@ -57,6 +57,15 @@ let validateToken = (req, res, next) => {
     }
 }
 
+/**
+ * If the path has a path variable it should be marked in the whitelist as *
+ * EX:
+ *   path in endpoint:  /user/:id
+ *   path received:     /user/243
+ *   path in whitelist:  /user/*
+ * @param string path 
+ * @returns boolean if the path is in the whitelist
+ */
 let isWhiteList = (path) => {
     const NORMAL_PATHS = WHITE_LIST.filter(e => !e.includes('*'));
     if(NORMAL_PATHS.includes(path)) {
