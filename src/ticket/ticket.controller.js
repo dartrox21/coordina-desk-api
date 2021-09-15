@@ -9,7 +9,10 @@ const cleanMiddleware = cleanModel(Ticket.schema.paths);
 
 router.post('/ticket', [cleanMiddleware], asyncWrapper(TicketService.create));
 
+router.get('/ticket/dashboard', asyncWrapper(TicketService.dashboard));
+
 router.get('/ticket/:id', asyncWrapper(TicketService.getById));
+
 
 
 module.exports = router;

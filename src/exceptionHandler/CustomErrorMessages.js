@@ -35,6 +35,7 @@ module.exports = class CustomErrorMessages {
 
     // TICKET
     static INVALID_STATUS = 'ERROR.TICKET.INVALID_STATUS';
+    static INVALID_PRIORITY = 'ERROR.TICKET.INVALID_PRIORITY';
 
 
     CustomErrorMessages() {

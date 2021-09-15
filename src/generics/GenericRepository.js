@@ -23,7 +23,7 @@ class GenericRepository {
      * @param Projection projection object. Can be null
      * @returns List list of objects found
      */
-    async getAll(filters, projection = null) {
+    async getAll(filters = Object, projection = null) {
         return this.Schema.find(filters).select(projection);
     }
 
@@ -51,12 +51,34 @@ class GenericRepository {
     }
 
     /**
-     * Gets a onject by id 
+     * Gets a object by id 
      * @param id 
      * @param projection object. Can be null
      */
     async getById(id, projection = null) {
         return this.Schema.findById(id, projection);
+    }
+
+    /**
+     * Update an object
+     * @param id id
+     * @param Object object
+     * @param projection object. Can be null
+     * @returns updated object
+     */
+    async update(id, object = Object, projection) {
+        delete object._id;
+        return this.Schema.findByIdAndUpdate(id, object, {new: true, projection});
+    }
+
+    /**
+     * Finds by any property of the schema
+     * @param Object property {property: value, ...}
+     * @param projection object can be null
+     * @returns 
+     */
+    async findBy(property = Object, projection = null) {
+        return this.Schema.find(property).select(projection);
     }
 }
 

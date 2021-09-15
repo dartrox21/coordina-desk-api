@@ -1,12 +1,19 @@
 const mongoose = require('mongoose');
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 const STATUS = require('./Status.enum');
+const PRIORITY = require('./Priority.enum');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-let validStatus = {
+
+const validStatus = {
     values: [STATUS.WAITING_ASIGNATION, STATUS.ASIGNED, STATUS.IN_PROGRESS, STATUS.WAITING_RESPONSE, STATUS.RESOLVE, STATUS.FINAL_RESOLVE],
     message: CustomErrorMessages.INVALID_STATUS
-}
+};
+
+const validPriority = {
+    values: [PRIORITY.LOW, PRIORITY.MODERATE, PRIORITY.HIGH],
+    message: CustomErrorMessages.INVALID_PRIORITY
+};
 
 let Schema = mongoose.Schema;
 
@@ -46,7 +53,15 @@ let Ticket = new Schema({
     ticketContent: [{
         type: Schema.Types.ObjectId,
         ref: 'ticket_content'
-    }]
+    }],
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    priority: {
+        type: String,
+        enum: validPriority
+    }
 },
 {
     timestamps: true,
@@ -59,10 +74,18 @@ const autoPopulateTicketContent = function(next) {
     next();
 };
 
+const autoPopulateUser = function(next) {
+    this.populate('user');
+    next();
+}
+
 Ticket.pre('findById', autoPopulateTicketContent)
     .pre('findOne', autoPopulateTicketContent)
     .pre('find', autoPopulateTicketContent);
 
+Ticket.pre('find', autoPopulateUser);
+
+//  This id is the one that will be used by the user && students
 Ticket.plugin(AutoIncrement);
 
 module.exports = mongoose.model('ticket', Ticket);
