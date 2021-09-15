@@ -45,17 +45,6 @@ class UserRepository extends GenericRepository {
     }
 
     /**
-     * Update a user
-     * @param id 
-     * @param User user object
-     * @param projection object. Can be null
-     */
-    async update(id, user, projection) {
-        delete user._id;
-        return User.findByIdAndUpdate(id, user, {new: true, projection});
-    }
-
-    /**
      * Gets an user by id 
      * @param id 
      * @param projection object. Can be null
