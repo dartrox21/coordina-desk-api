@@ -18,8 +18,7 @@ let TicketContent = new Schema({
     }
 },
 {
-    collection: 'ticket_content',
-    timestamps: true,
+    collection: 'ticket_content'
 });
 
 module.exports = mongoose.model('ticket_content', TicketContent);

@@ -80,10 +80,10 @@ const autoPopulateUser = function(next) {
 }
 
 Ticket.pre('findById', autoPopulateTicketContent)
-    .pre('findOne', autoPopulateTicketContent)
-    .pre('find', autoPopulateTicketContent);
+    .pre('findOne', autoPopulateTicketContent);
 
-Ticket.pre('find', autoPopulateUser);
+Ticket.pre('find', autoPopulateUser)
+    .pre('findById', autoPopulateUser);
 
 //  This id is the one that will be used by the user && students
 Ticket.plugin(AutoIncrement);

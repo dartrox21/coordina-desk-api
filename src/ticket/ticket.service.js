@@ -6,6 +6,9 @@ const ticketCreation = require("../mail/ticketCreation.mail.service");
 const STATUS = require('./Status.enum');
 require('./ticketContent/TicketContet.model');
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
+const ticketContentService = require('./ticketContent/ticketContent.service.js ');
+const userService = require("../user/user.service");
+
 
 // Helper class
 class DashBoard {
@@ -22,6 +25,9 @@ class TicketService extends GenericService {
         this.create = this.create.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.assignTicket = this.assignTicket.bind(this);
+        this.postStudentAnswer = this.postStudentAnswer.bind(this);
+        this.postUserAnswer = this.postUserAnswer.bind(this);
+        this.reasign = this.reasign.bind(this);
     }
 
     async uniqueValidateException() {
@@ -29,7 +35,7 @@ class TicketService extends GenericService {
     }
 
     async create(req, res) {
-        console.log('Creating a ticket');
+        console.log('Creating a ticket TicketService');
         const ticket = await ticketRepository.save(req.body);
         await ticketCreation.sendMail(ticket);
         res.status(HttpStatus.CREATED).json(ticket);
@@ -84,6 +90,70 @@ class TicketService extends GenericService {
             }
         });
         res.status(HttpStatus.OK).json(response);
+    }
+
+    /**
+     * see doc method postAnswer
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns Ticket with the data
+     */
+    async postStudentAnswer(req, res) {
+        console.log('postStudentAnswer TicketService');
+        await this.postAnswer(req, res);
+
+    }
+
+    /**
+     * see doc method postAnswer
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns Ticket with the data
+     */
+    async postUserAnswer(req, res) {
+        console.log('postUserAnswer TicketService');
+        const user = await userService.findByIdAndValidate(req.params.userId);
+        req.body.username = user.name;
+        await this.postAnswer(req, res);
+    }
+
+    /**
+     * Validates that the ticket exists.
+     * Sets the status to in progress if it is different to resolve
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns Ticket with the data
+     */
+    async postAnswer(req, res) {
+        let ticket = await ticketRepository.findByIdAndValidate(req.params.id);
+        if (ticket.status !== STATUS.RESOLVE) {
+            ticket.status = STATUS.IN_PROGRESS;
+        }
+        req.body.name = req.body.name == undefined ? ticket.name : req.body.name;
+        const ticketContent = await ticketContentService.save(req.body);
+        ticket.ticketContent.push(ticketContent);
+        ticket = await ticketRepository.save(ticket);
+        return res.status(HttpStatus.CREATED).json(ticket);
+    }
+
+    /**
+     * 
+     * @param Request obj req 
+     * @param Res obj res 
+     * @returns Ticket reasignated
+     * @throws 404 NOT FOUND if the userId or ticket id is not found
+     */
+    async reasign(req, res) {
+        console.log('reasign TicketService');
+        let ticket = await this.findByIdAndValidate(req.params.id);
+        const user = await userService.findByIdAndValidate(req.params.userId);
+        if (ticket.user != null && ticket.user._id != user._id) {
+            ticket.user = user;
+            return res.status(HttpStatus.OK).json(ticket);
+        }
+        ticket.user = user;
+        ticket = await ticketRepository.save(ticket);
+        return res.status(HttpStatus.OK).json(ticket);
     }
 
 }

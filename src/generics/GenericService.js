@@ -1,6 +1,8 @@
 const GenericRepository = require('./GenericRepository');
 const HttpStatus = require('http-status-codes');
 const { buildPageableResponse } = require('../utils/util.functions');
+const CustomValidateException = require('../exceptionHandler/CustomValidateException');
+
 
 /**
  * Generic class 
@@ -128,6 +130,22 @@ class GenericService {
             res.status(HttpStatus.OK).json(object);
         }
     }
+
+    /**
+     * Service used to find an object by id
+     * @param req Request object
+     * @param id 
+     * @returns Object found
+     * @throws CustomValidateException 404 NOT FOUND if the object is not found
+     */
+         async findByIdAndValidate(id, projection = null) {
+            console.log('findByIdAndValidate GenericService');
+            const obj = await this.genericRepository.getById(id, projection);
+            if(!obj) {
+                throw CustomValidateException.notFound().build();
+            }
+            return obj;
+        }
 }
 
 module.exports = GenericService;
