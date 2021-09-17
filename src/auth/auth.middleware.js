@@ -6,7 +6,8 @@ const _ = require('underscore');
 
 
 
-const WHITE_LIST = ['/auth/login', '/nlp/evaluate', '/ticket', '/ticket/*'];
+const WHITE_LIST = ['/auth/login', '/nlp/evaluate', '/ticket', '/ticket/*',
+                    '/category/all'];
 
 /**
  * Middleware to validate that the body contains a user and a password
