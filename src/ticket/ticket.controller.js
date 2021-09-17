@@ -12,8 +12,7 @@ router.post('/ticket', [cleanMiddleware], asyncWrapper(TicketService.create));
 
 router.get('/ticket/dashboard', [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],asyncWrapper(TicketService.dashboard));
 
-router.get('/ticket/:id', asyncWrapper(TicketService.getById));
-
+router.get('/ticket/id/:id', asyncWrapper(TicketService.getById));
 
 
 module.exports = router;
