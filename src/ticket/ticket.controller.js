@@ -32,5 +32,8 @@ router.patch('/ticket/id/:id/reasign-user/:userId',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(TicketService.reasign));
 
+router.patch('/ticket/id/:id/change-status',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(TicketService.changeStatus));
 
 module.exports = router;
