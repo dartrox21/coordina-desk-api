@@ -28,6 +28,7 @@ class TicketService extends GenericService {
         this.postStudentAnswer = this.postStudentAnswer.bind(this);
         this.postUserAnswer = this.postUserAnswer.bind(this);
         this.reasign = this.reasign.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
     }
 
     async uniqueValidateException() {
@@ -152,6 +153,21 @@ class TicketService extends GenericService {
             return res.status(HttpStatus.OK).json(ticket);
         }
         ticket.user = user;
+        ticket = await ticketRepository.save(ticket);
+        return res.status(HttpStatus.OK).json(ticket);
+    }
+
+    /**
+     * 
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns ticket reasigned
+     * @throws  404 NOT FOUND if the ticket id is not found
+     */
+    async changeStatus(req, res) {
+        console.log('changeStatus TicketService');
+        let ticket = await this.findByIdAndValidate(req.params.id);
+        ticket.status = req.body.status;
         ticket = await ticketRepository.save(ticket);
         return res.status(HttpStatus.OK).json(ticket);
     }
