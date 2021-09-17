@@ -5,6 +5,7 @@ const ticketRepository = require('./ticket.repository');
 const ticketCreation = require("../mail/ticketCreation.mail.service");
 const STATUS = require('./Status.enum');
 require('./ticketContent/TicketContet.model');
+const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
 
 // Helper class
 class DashBoard {
@@ -66,7 +67,7 @@ class TicketService extends GenericService {
     async dashboard(req, res) {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
-        const tickets = await ticketRepository.getAll();
+        const tickets = await ticketRepository.getAll({}, ticketDashboardProjection);
         tickets.forEach(ticket => {
             switch(ticket.status) {
                 case STATUS.WAITING_ASIGNATION:
