@@ -40,6 +40,7 @@ Presentarse con el coordinador de su carrera antes de que termine el semestre pa
 "No me permite registrar, me aparece el siguiente mensaje: ""El CRN no está ofertado para tu carrera y centro por movilidad""","coordinatino.error.registro","El registro parece estar cerrado. Porfavor intentalo de nuevo mas tarde"
 "Cuando se puede hacer el registro por movilidad? Me dice que mi agenda no permite registro","coordination.timming.movilidad.registro","El registro de materias por movilidad estara disponible apartir de la segunda semana de clases. Puede tardar 1 o 2 dias en activarse movilidad"
 "Si estara abierta la especializacion selectiva de fisica?","coordination.fisica.especializante","La materia de fisica se registra automaticamente para los de primer ingreso en caso de tener que repetirla o no haberla tomado en primer semestre la podras agendar por movilidad"
+"Como agendar la materia especializante de fisica?","coordination.fisica.especializante","La materia de fisica se registra automaticamente para los de primer ingreso en caso de tener que repetirla o no haberla tomado en primer semestre la podras agendar por movilidad"
 "Hola ¿Cómo puedo saber quién es mi tutor?","coordination.tutor","Tu tutor se comunicara contigo via email usando el correo institucional"
 "Etapas de la Tutoría. Tipos de tutoria","coordination.etapas.tutoria","Hay tres tipos de tutoria:
 
@@ -63,3 +64,6 @@ Presentarse con el coordinador de su carrera antes de que termine el semestre pa
 "El profesor maestro no va da asiste a clases falta mucho","coordination.teacher.assistance","Si tu profesor no asiste a clases porfavor levanta un ticket con los datos de tu profesor, materia y horario para que podamos revisar esta falta. El proceso se realizara totalmente confidencial"
 "Me reprobo un profesor sin motivo alguno","coordination.teacher.subject.fail","Si tu profesor te reprobo sin motivo alguno pofavor levanta un ticket. Asegurate de tener evidencia de los criterios de evaluacion asi como de todos los trabajos, proyectos y examenes entregados durante el semestre"
 "Necesito dar de baja una materia","coordination.subject.baja","Para dar de baja una materia asegurate que aun estas en el tiempo indicado. El formulario para dar de baja una materia esta en la pagina de facebook https://www.facebook.com/ing.cucei/"
+"mapa cucei","cucei.map","Entra a esta liga para poder ver un mapa de cucei: http://www.cucei.udg.mx/sites/default/files/mapa-cucei-3d-2018.pdf"
+"Donde esta mi salon? Donde esta el salon","cucei.map","Entra a esta liga para poder ver un mapa de cucei: http://www.cucei.udg.mx/sites/default/files/mapa-cucei-3d-2018.pdf"
+"","cucei.map","Entra a esta liga para poder ver un mapa de cucei: http://www.cucei.udg.mx/sites/default/files/mapa-cucei-3d-2018.pdf"
