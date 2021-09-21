@@ -77,7 +77,14 @@ class GenericRepository {
      * @param projection object can be null
      * @returns 
      */
-    async findBy(property = Object, projection = null) {
+    async findFirstBy(property = Object, projection = null) {
+        this.Schema.aggregate([
+            {$match: property}, 
+            {$unwind: '$ticket'},
+            {$sort: {'ticket.number': -1}}, //sort operation number desc
+            {$limit: 1}, //get only first item
+            {$project: projection} //project the object and attributes you want
+        ])
         return this.Schema.find(property).select(projection);
     }
 }

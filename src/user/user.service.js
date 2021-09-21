@@ -16,7 +16,6 @@ class UserSevice extends GenericService {
         this.uniqueValidateException = this.uniqueValidateException.bind(this);
         this.getById = this.getById.bind(this);
         this.delete = this.delete.bind(this);
-        this.findByIdAndValidate = this.findByIdAndValidate.bind(this);
         this.update = this.update.bind(this);
     }
 
@@ -96,22 +95,6 @@ class UserSevice extends GenericService {
     }
 
     /**
-     * Service used to find an user by id
-     * @param req Request object
-     * @param id 
-     * @returns User found
-     * @throws CustomValidateException 404 NOT FOUND if the user is not found
-     */
-    async findByIdAndValidate(id, projection = null) {
-        console.log('findByIdAndValidate UserSevice');
-        const user = await UserRepository.getById(id, userProjection);
-        if(!user) {
-            throw CustomValidateException.notFound().build();
-        }
-        return user;
-    }
-
-    /**
      * Finds and validates a user by its email
      * @param email 
      */
@@ -164,6 +147,17 @@ class UserSevice extends GenericService {
         user.password = hash;
         user = await UserRepository.update(user._id, user);
         res.status(HttpStatus.OK).json(user);
+    }
+
+
+    /**
+     * Find all the active and not deleted users that match with the given role
+     * and that has the less tickets asigned
+     * @param Projection projection 
+     * @returns List of Users
+     */
+    async findUserByRoleWithLessTickets(role, projection = null) {
+        return await UserRepository.findFirstBy({role: role, isActive: true, isDeleted: false}, projection);
     }
 }
 
