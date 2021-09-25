@@ -15,6 +15,10 @@ let TicketContent = new Schema({
     created_at: {
         type: Date, 
         default: Date.now
+    },
+    isUser: {
+        type: Boolean,
+        required: true
     }
 },
 {
