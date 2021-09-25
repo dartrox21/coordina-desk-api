@@ -20,6 +20,8 @@ class GenericService {
         this.getAllPageable = this.getAllPageable.bind(this);
         this.getPageableResponse = this.getPageableResponse.bind(this);
         this.getById = this.getById.bind(this);
+        this.findByIdAndValidate = this.findByIdAndValidate.bind(this);
+        this.getAllObjects = this.getAllObjects.bind(this);
      }
 
     /**
@@ -138,14 +140,25 @@ class GenericService {
      * @returns Object found
      * @throws CustomValidateException 404 NOT FOUND if the object is not found
      */
-         async findByIdAndValidate(id, projection = null) {
-            console.log('findByIdAndValidate GenericService');
-            const obj = await this.genericRepository.getById(id, projection);
-            if(!obj) {
-                throw CustomValidateException.notFound().build();
-            }
-            return obj;
+    async findByIdAndValidate(id, projection = null) {
+        console.log('findByIdAndValidate GenericService');
+        const obj = await this.genericRepository.getById(id, projection);
+        if(!obj) {
+            throw CustomValidateException.notFound().build();
         }
+        return obj;
+    }
+
+    /**
+     * Get the list of all objects
+     * @param filters object of filters
+     * @param projection projection object. Can be null
+     * @returns List of objects found
+     */
+    async getAllObjects(filters = Object, projection = null) {
+        console.log('getAllObjects generic');
+        return await this.genericRepository.getAll(filters, projection);
+    }
 }
 
 module.exports = GenericService;
