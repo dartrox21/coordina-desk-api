@@ -18,12 +18,12 @@ class TicketCreationService {
 
      async sendMail(ticket) {
         console.log(`Sending mail to ${ticket.email}`);
-        let body = this.BODY.replaceAll('USERNAME', ticket.name);
-        body = body.replaceAll('TICKET_ID', ticket._id);
-        body = body.replaceAll('TITLE', ticket.title);
-        body = body.replaceAll('DESCRIPTION', ticket.description);
-        body = body.replaceAll('STATUS', ticket.status);
-        body = body.replaceAll('PORTAL_URL', this.URL);
+        let body = this.BODY.replace('/USERNAME/g', ticket.name);
+        body = body.replace(/TICKET_ID/g, ticket._id);
+        body = body.replace(/TITLE/g, ticket.title);
+        body = body.replace(/DESCRIPTION/g, ticket.description);
+        body = body.replace(/STATUS/g, ticket.status);
+        body = body.replace(/PORTAL_URL/g, this.URL);
         await MailService.sendMail(this.SUBJECT, body, ticket.email);
     }
 }
