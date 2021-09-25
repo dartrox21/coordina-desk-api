@@ -101,6 +101,7 @@ class TicketService extends GenericService {
      */
     async postStudentAnswer(req, res) {
         console.log('postStudentAnswer TicketService');
+        req.body.isUser = false;
         await this.postAnswer(req, res);
 
     }
@@ -115,6 +116,7 @@ class TicketService extends GenericService {
         console.log('postUserAnswer TicketService');
         const user = await userService.findByIdAndValidate(req.params.userId);
         req.body.username = user.name;
+        req.body.isUser = true;
         await this.postAnswer(req, res);
     }
 
