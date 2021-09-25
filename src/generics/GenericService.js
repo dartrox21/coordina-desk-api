@@ -22,6 +22,7 @@ class GenericService {
         this.getById = this.getById.bind(this);
         this.findByIdAndValidate = this.findByIdAndValidate.bind(this);
         this.getAllObjects = this.getAllObjects.bind(this);
+        this.getAllObjectsPageable = this.getAllObjectsPageable.bind(this);
      }
 
     /**
@@ -158,6 +159,20 @@ class GenericService {
     async getAllObjects(filters = Object, projection = null) {
         console.log('getAllObjects generic');
         return await this.genericRepository.getAll(filters, projection);
+    }
+
+    /**
+     * Get the pageable list of all objects.
+     * limit, page and filters are applied
+     * @param limit limit of elements to return default to 10
+     * @param page page to return dedault to 1
+     * @param filters filters Object
+     * @param projection projection object. Can be null
+     * @returns List of objects
+     */
+    async getAllObjectsPageable(limit = 10, page = 1, filters = Object, projection = null) {
+        console.log('getAllObjectsPageable generic');
+        return await this.genericRepository.getAllPageable(limit, page, filters, projection);
     }
 }
 

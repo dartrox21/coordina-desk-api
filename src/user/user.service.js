@@ -167,13 +167,29 @@ class UserSevice extends GenericService {
      * @param Response object res 
      */
     async getAll(req, res) {
-        console.log('GetAll User Service');
+        console.log('GetAll UserService');
         console.log(req.query.filters);
         let filters = req.query.filters || {};
         filters.isActive = true;
         filters.isDeleted = false;
         const userList = await super.getAllObjects(filters, userProjection);
         super.getListResponse(res, userList);
+    }
+
+    /**
+     * Get pageable all the active and non deleted users
+     * @param Request object req 
+     * @param Response object res 
+     */
+    async getAllPageable(req, res) {
+        console.log('getAllPageable UserService');
+        const limit = req.query.limit;
+        const page = req.query.page;
+        let filters = req.query.filters || {};
+        const users =  await super.getAllObjectsPageable(limit, page, filters, userProjection);
+        const totalDocuments = await UserRepository.countDocuments();
+        this.getPageableResponse(res, users, page, limit, totalDocuments);
+
     }
 }
 

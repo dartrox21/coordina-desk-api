@@ -23,6 +23,10 @@ router.put('/user/activate',
 router.get('/user/all', 
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
     asyncWrapper(UserService.getAll));
+    
+router.get('/user/all/pageable', 
+    [preAuthorize(ROLE.COORDINATOR), setFilters(FILTERS)],
+    asyncWrapper(UserService.getAllPageable));
 
 router.get('/user/:id',
     asyncWrapper(UserService.getById));
