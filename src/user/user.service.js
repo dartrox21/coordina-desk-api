@@ -17,6 +17,7 @@ class UserSevice extends GenericService {
         this.getById = this.getById.bind(this);
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
+        this.getAll = this.getAll.bind(this);
     }
 
     /**
@@ -158,6 +159,21 @@ class UserSevice extends GenericService {
      */
     async findUserByRoleWithLessTickets(role, projection = null) {
         return await UserRepository.findFirstBy({role: role, isActive: true, isDeleted: false}, projection);
+    }
+
+    /**
+     * Get all the active and non deleted users
+     * @param Request object req 
+     * @param Response object res 
+     */
+    async getAll(req, res) {
+        console.log('GetAll User Service');
+        console.log(req.query.filters);
+        let filters = req.query.filters || {};
+        filters.isActive = true;
+        filters.isDeleted = false;
+        const userList = await super.getAllObjects(filters, userProjection);
+        super.getListResponse(res, userList);
     }
 }
 

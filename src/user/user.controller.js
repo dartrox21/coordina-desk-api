@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const UserService = require('./user.service');
 const User = require('./User.model');
-const { cleanModel } = require('../middlewares/util.middlewares');
+const { cleanModel, setFilters } = require('../middlewares/util.middlewares');
 const { asyncWrapper, preAuthorize } = require('../utils/util.functions');
 const ROLE = require('../role/Role.enum');
 
@@ -17,8 +17,12 @@ router.put('/user/resend-email',
     asyncWrapper(UserService.resendActivationEmail));
 
 router.put('/user/activate',
-        [cleanMiddleware],
-        asyncWrapper(UserService.activate));
+    [cleanMiddleware],
+    asyncWrapper(UserService.activate));
+
+router.get('/user/all', 
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
+    asyncWrapper(UserService.getAll));
 
 router.get('/user/:id',
     asyncWrapper(UserService.getById));
