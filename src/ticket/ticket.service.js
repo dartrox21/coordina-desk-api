@@ -38,6 +38,7 @@ class TicketService extends GenericService {
         this.postUserAnswer = this.postUserAnswer.bind(this);
         this.reasign = this.reasign.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
+        this.deactivateTicket = this.deactivateTicket.bind(this);
     }
 
     async uniqueValidateException() {
@@ -61,8 +62,8 @@ class TicketService extends GenericService {
         console.log(`Evaluating ticket: ${ticket._id}`);
         const titleEvaluation = await nlpService.evaluateData(ticket.title);
         let score = titleEvaluation.sentiment.score + 
-            HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.1 : 0.02
-            HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.1 : 0.05;
+            HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.3 : 0.02
+            HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.3 : 0.05;
         
         let priority = PRIORITY.LOW;
         if(score < -0.1) {
@@ -211,6 +212,20 @@ class TicketService extends GenericService {
         ticket = await ticketRepository.save(ticket);
         res.status(HttpStatus.OK).json(ticket);
         await updateTicketMailService.sendMail(ticket);
+    }
+
+    /**
+     * 
+     * @param Req object req 
+     * @param Res object res 
+     * @returns 200 OK if the ticket has been deactivated
+     * @returns 4040  NOT FOUND it the ticket id does no exist
+     */
+    async deactivateTicket(req, res) {
+        console.log('deactivateTicket TicketService');
+        let ticket = this.findByIdAndValidate(req.params.id);
+        await this.updateMany({_id: ticket._id}, {isActive: false});
+        res.status(HttpStatus.OK).send();
     }
 
 }

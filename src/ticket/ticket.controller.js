@@ -36,4 +36,8 @@ router.patch('/ticket/id/:id/change-status',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(TicketService.changeStatus));
 
+router.patch('/ticket/deactivate/id/:id',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(TicketService.deactivateTicket));
+
 module.exports = router;
