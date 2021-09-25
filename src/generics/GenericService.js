@@ -23,6 +23,7 @@ class GenericService {
         this.findByIdAndValidate = this.findByIdAndValidate.bind(this);
         this.getAllObjects = this.getAllObjects.bind(this);
         this.getAllObjectsPageable = this.getAllObjectsPageable.bind(this);
+        this.updateMany = this.updateMany.bind(this);
      }
 
     /**
@@ -173,6 +174,16 @@ class GenericService {
     async getAllObjectsPageable(limit = 10, page = 1, filters = Object, projection = null) {
         console.log('getAllObjectsPageable generic');
         return await this.genericRepository.getAllPageable(limit, page, filters, projection);
+    }
+
+    /**
+     * Update many records
+     * @param query param to validate wht to filter filter 
+     * @param property that must be filtered toUpdate 
+     * @returns 
+     */
+    async updateMany(filter = Object, toUpdate = Object) {
+        return await this.genericRepository.updateMany(filter, toUpdate);
     }
 }
 

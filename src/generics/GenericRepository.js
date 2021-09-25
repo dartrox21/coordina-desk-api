@@ -66,9 +66,14 @@ class GenericRepository {
      * @param projection object. Can be null
      * @returns updated object
      */
-    async update(id, object = Object, projection) {
+    async update(id, object = Object, projection = null) {
         delete object._id;
         return this.Schema.findByIdAndUpdate(id, object, {new: true, projection});
+    }
+
+    async updateMany(filter = Object, toUpdate = Object) {
+        delete filter._id;
+        return this.Schema.updateMany(filter, toUpdate);
     }
 }
 
