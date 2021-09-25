@@ -18,7 +18,7 @@ class TicketCreationService {
 
      async sendMail(ticket) {
         console.log(`Sending mail to ${ticket.email}`);
-        let body = this.BODY.replace('/USERNAME/g', ticket.name);
+        let body = this.BODY.replace(/USERNAME/g, ticket.name);
         body = body.replace(/TICKET_ID/g, ticket._id);
         body = body.replace(/TITLE/g, ticket.title);
         body = body.replace(/DESCRIPTION/g, ticket.description);
