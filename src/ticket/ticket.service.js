@@ -126,11 +126,12 @@ class TicketService extends GenericService {
      * @returns Ticket with the data
      */
     async postAnswer(req, res) {
-        let ticket = await ticketRepository.findByIdAndValidate(req.params.id);
+        let ticket = await super.findByIdAndValidate(req.params.id);
         if (ticket.status !== STATUS.RESOLVE) {
             ticket.status = STATUS.IN_PROGRESS;
         }
-        req.body.name = req.body.name == undefined ? ticket.name : req.body.name;
+        req.body.username = req.body.username == undefined ? ticket.name : req.body.username;
+        console.log(req.body);
         const ticketContent = await ticketContentService.save(req.body);
         ticket.ticketContent.push(ticketContent);
         ticket = await ticketRepository.save(ticket);
