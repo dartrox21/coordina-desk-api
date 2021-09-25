@@ -70,23 +70,6 @@ class GenericRepository {
         delete object._id;
         return this.Schema.findByIdAndUpdate(id, object, {new: true, projection});
     }
-
-    /**
-     * Finds by any property of the schema
-     * @param Object property {property: value, ...}
-     * @param projection object can be null
-     * @returns 
-     */
-    async findFirstBy(property = Object, projection = null) {
-        this.Schema.aggregate([
-            {$match: property}, 
-            {$unwind: '$ticket'},
-            {$sort: {'ticket.number': -1}}, //sort operation number desc
-            {$limit: 1}, //get only first item
-            {$project: projection} //project the object and attributes you want
-        ])
-        return this.Schema.find(property).select(projection);
-    }
 }
 
 

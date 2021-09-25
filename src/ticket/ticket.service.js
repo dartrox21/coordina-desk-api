@@ -8,6 +8,13 @@ require('./ticketContent/TicketContet.model');
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
 const ticketContentService = require('./ticketContent/ticketContent.service.js ');
 const userService = require("../user/user.service");
+const ROLE = require("../role/Role.enum");
+const userProjection = require("../user/projections/user.projection");
+const nlpService = require("../nlp/nlp.service");
+const PRIORITY = require("./Priority.enum");
+const updateTicketMailService = require("../mail/updateTicket.mail.service");
+
+
 
 
 // Helper class
@@ -16,6 +23,8 @@ class DashBoard {
     inProgress = new Array();
     done = new Array();
 }
+
+const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'agendar', 'permuta', 'acoso', 'indevido'];
 
 class TicketService extends GenericService {
 
@@ -44,18 +53,44 @@ class TicketService extends GenericService {
     }
 
     /**
-     * 
+     * Evaluates the ticket according its sentiment score and if anny of the high classifications 
+     * is in the ticket title or description 
      * @param Ticket ticket 
      */
     async evaluate(ticket) {
         console.log(`Evaluating ticket: ${ticket._id}`);
-        // classificate get priority and user to be asigned
-        await this.assignTicket(ticket, "", STATUS.ASIGNED);
-        // send email status update
+        const titleEvaluation = await nlpService.evaluateData(ticket.title);
+        let score = titleEvaluation.sentiment.score + 
+            HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.1 : 0.02
+            HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.1 : 0.05;
+        
+        let priority = PRIORITY.LOW;
+        if(score < -0.1) {
+            priority = PRIORITY.HIGH;
+        } else if(score < 0.3) {
+            priority = PRIORITY.MODERATE;
+        }
+        let role = ROLE.ASSISTANT;
+        if(priority == PRIORITY.HIGH) {
+            role = ROLE.COORDINATOR;
+        }
+        ticket.priority = priority;
+        const user = await userService.findUserByRoleWithLessTickets(role, userProjection);
+        await this.assignTicket(ticket, user, STATUS.ASIGNED);
+        await updateTicketMailService.sendMail(ticket);
     }
 
+    /**
+     * the ticket schema ans user schema is updated with its corresponding
+     * _ids references
+     * @param ticket 
+     * @param user 
+     * @param status 
+     */
     async assignTicket(ticket, user, status) {
         console.log(`Asigning ticket: ${ticket._id} to user ${user._id}`);
+        user.tickets.push(ticket._id);
+        userService.updateUser(user, user._id);
         ticket.status = status;
         ticket.user = user._id;
         await ticketRepository.update(ticket._id, ticket);
@@ -74,7 +109,7 @@ class TicketService extends GenericService {
     async dashboard(req, res) {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
-        const tickets = await ticketRepository.getAll({}, ticketDashboardProjection);
+        const tickets = await ticketRepository.getAll({isActive: true}, ticketDashboardProjection);
         tickets.forEach(ticket => {
             switch(ticket.status) {
                 case STATUS.WAITING_ASIGNATION:
@@ -82,6 +117,7 @@ class TicketService extends GenericService {
                     response.todo.push(ticket);
                     break;
                 case STATUS.IN_PROGRESS:
+                case STATUS.WAITING_RESPONSE:
                     response.inProgress.push(ticket);
                     break;
                 case STATUS.RESOLVE:
@@ -102,7 +138,7 @@ class TicketService extends GenericService {
     async postStudentAnswer(req, res) {
         console.log('postStudentAnswer TicketService');
         req.body.isUser = false;
-        await this.postAnswer(req, res);
+        await this.postAnswer(req, res, STATUS.IN_PROGRESS);
 
     }
 
@@ -117,7 +153,9 @@ class TicketService extends GenericService {
         const user = await userService.findByIdAndValidate(req.params.userId);
         req.body.username = user.name;
         req.body.isUser = true;
-        await this.postAnswer(req, res);
+        await this.postAnswer(req, res, STATUS.WAITING_RESPONSE);
+        let ticket = await super.findByIdAndValidate(req.params.id);
+        await updateTicketMailService.sendMail(ticket);
     }
 
     /**
@@ -127,13 +165,12 @@ class TicketService extends GenericService {
      * @param Response obj res 
      * @returns Ticket with the data
      */
-    async postAnswer(req, res) {
+    async postAnswer(req, res, status) {
         let ticket = await super.findByIdAndValidate(req.params.id);
-        if (ticket.status !== STATUS.RESOLVE) {
-            ticket.status = STATUS.IN_PROGRESS;
+        if(ticket.status !== STATUS.ASIGNED && ticket.status !== STATUS.WAITING_ASIGNATION) {
+            ticket.status = status;
         }
         req.body.username = req.body.username == undefined ? ticket.name : req.body.username;
-        console.log(req.body);
         const ticketContent = await ticketContentService.save(req.body);
         ticket.ticketContent.push(ticketContent);
         ticket = await ticketRepository.save(ticket);
@@ -172,7 +209,8 @@ class TicketService extends GenericService {
         let ticket = await this.findByIdAndValidate(req.params.id);
         ticket.status = req.body.status;
         ticket = await ticketRepository.save(ticket);
-        return res.status(HttpStatus.OK).json(ticket);
+        res.status(HttpStatus.OK).json(ticket);
+        await updateTicketMailService.sendMail(ticket);
     }
 
 }
