@@ -18,6 +18,7 @@ class UserSevice extends GenericService {
         this.delete = this.delete.bind(this);
         this.update = this.update.bind(this);
         this.getAll = this.getAll.bind(this);
+        this.updateUser = this.updateUser.bind(this);
     }
 
     /**
@@ -90,9 +91,13 @@ class UserSevice extends GenericService {
     async update(req, res) {
         console.log('update UserSevice');
         const id = req.params.id;
-        await this.findByIdAndValidate(id);
-        const user = await UserRepository.update(id, req.body, userProjection);
+        const user = this.updateUser(req.body, id);
         res.status(HttpStatus.OK).json(user);
+    }
+
+    async updateUser(user, id) {
+        await this.findByIdAndValidate(id);
+        return await UserRepository.update(id, user, userProjection);
     }
 
     /**
@@ -139,6 +144,7 @@ class UserSevice extends GenericService {
             throw CustomValidateException.notFound().setField('id').setValue(user._id).build();
         }
         if(userDb.isActive) {
+            delete userDb.password;
             return res.status(HttpStatus.OK).json(userDb);
         }
         delete user.email;
@@ -146,7 +152,7 @@ class UserSevice extends GenericService {
         user.isActive = true;
         const hash = await encrypt(user.password);
         user.password = hash;
-        user = await UserRepository.update(user._id, user);
+        user = await UserRepository.update(user._id, user, userProjection);
         res.status(HttpStatus.OK).json(user);
     }
 
@@ -157,8 +163,10 @@ class UserSevice extends GenericService {
      * @param Projection projection 
      * @returns List of Users
      */
-    async findUserByRoleWithLessTickets(role, projection = null) {
-        return await UserRepository.findFirstBy({role: role, isActive: true, isDeleted: false}, projection);
+    async findUserByRoleWithLessTickets(role) {
+        let users =  await UserRepository.getAll({isActive: true, isDeleted: false, role: role}, ['tickets']);
+        users = users.sort((a, b) => (a.ticketsCount > b.ticketsCount) ? 1 : -1);
+        return users[0];
     }
 
     /**

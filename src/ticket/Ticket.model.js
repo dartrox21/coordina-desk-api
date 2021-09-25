@@ -61,6 +61,11 @@ let Ticket = new Schema({
     priority: {
         type: String,
         enum: validPriority
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 },
 {

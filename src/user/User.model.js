@@ -36,6 +36,14 @@ let User = new Schema({
         type: String,
         required: false,
         enum: validRoles
+    },
+    tickets: {
+        type: [{
+            type: Number,
+            ref: 'ticket'
+        }],
+        default: [],
+        required: true
     }
 }, 
 { 
@@ -43,8 +51,17 @@ let User = new Schema({
     timestamps: true
 });
 
+User.set('toObject', { virtuals: true })
+User.set('toJSON', { virtuals: true })
+
+User.virtual('ticketsCount').get(function () {
+    return this.tickets.length;
+});
+
 User.plugin(uniqueValidator, {
     message: CustomErrorMessages.MUST_BE_UNIQUE
 });
+
+
 
 module.exports = mongoose.model('user', User);

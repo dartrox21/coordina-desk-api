@@ -12,6 +12,7 @@ class NlpService {
         this.train = this.train.bind(this);
         this.readInputData = this.readInputData.bind(this);
         this.evaluateQuestion = this.evaluateQuestion.bind(this);   
+        this.evaluateData = this.evaluateData.bind(this);
         this.configure();
     }
 
@@ -59,7 +60,7 @@ class NlpService {
      *          204 NO CONTENT if a response has not been found
      */
     async evaluateQuestion(req, res) {
-        const response = await this.nlp.process('es', req.body.question);
+        const response = this.evaluateData(req.body.question);
         // console.table(response.classifications);
         // console.log(`ANSWER: ${response.answer}`);
         // console.table(response.sentiment);
@@ -68,6 +69,11 @@ class NlpService {
         } else {
             res.status(HttpStatus.NO_CONTENT).send();
         }
+    }
+
+
+    async evaluateData(data) {
+        return await this.nlp.process('es', data);
     }
 
 }
