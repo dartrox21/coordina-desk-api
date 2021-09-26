@@ -9,6 +9,10 @@ let Token = new Schema({
         type: String,
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
     }
+},
+{
+    timestamps: true,
+    collection: 'token',
 });
 
 Token.plugin(uniqueValidator, {

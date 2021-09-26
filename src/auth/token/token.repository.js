@@ -19,6 +19,10 @@ class TokenRepository {
     async findOne(token) {
       return Token.findOne({token: token});
     }
+
+    async deleteMany(filters = Object) {
+      return Token.deleteMany(filters);
+    }
 }
 
 module.exports = new TokenRepository();
