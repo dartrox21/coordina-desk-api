@@ -2,8 +2,9 @@ ticketDashboardProjection = [
     '_id',
     'title',
     'status',
-    'user',
-    'priority'
+    'priority',
+    'isActive',
+    'user'
 ];
 
 
