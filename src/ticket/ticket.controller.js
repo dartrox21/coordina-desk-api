@@ -1,13 +1,14 @@
 const router = require('express').Router();
 const { asyncWrapper, preAuthorize } = require('../utils/util.functions');
 const TicketService = require('./ticket.service');
-const { cleanModel } = require('../middlewares/util.middlewares');
+const { cleanModel, setFilters } = require('../middlewares/util.middlewares');
 const Ticket = require('./Ticket.model');
 const TicketContent = require('./ticketContent/TicketContet.model');
 const ROLE = require('../role/Role.enum');
 
 const cleanMiddleware = cleanModel(Ticket.schema.paths);
 const cleanTicketContentMiddleware = cleanModel(TicketContent.schema.paths);
+const FILTERS = ['_id', 'status', 'priority', 'user', 'createdAt', 'updatedAt'];
 
 
 router.post('/ticket', 
@@ -39,5 +40,10 @@ router.patch('/ticket/id/:id/change-status',
 router.patch('/ticket/deactivate/id/:id',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(TicketService.deactivateTicket));
+
+router.get('/ticket/inactive/all', 
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
+    TicketService.getAllInactiveTicketsPageable
+    );
 
 module.exports = router;

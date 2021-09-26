@@ -8,6 +8,7 @@ const userProjection = require('./projections/user.projection');
 const userLoginProjection = require('./projections/userLogin.projection');
 const ActivationMailService = require('../mail/activation.mail.service');
 const { encrypt } = require('../utils/util.functions');
+const { pick } = require('underscore');
 
 class UserSevice extends GenericService {
     constructor() {
@@ -19,6 +20,7 @@ class UserSevice extends GenericService {
         this.update = this.update.bind(this);
         this.getAll = this.getAll.bind(this);
         this.updateUser = this.updateUser.bind(this);
+        this.cleanUserObject = this.cleanUserObject.bind(this);
     }
 
     /**
@@ -197,7 +199,16 @@ class UserSevice extends GenericService {
         const users =  await super.getAllObjectsPageable(limit, page, filters, userProjection);
         const totalDocuments = await UserRepository.countDocuments();
         this.getPageableResponse(res, users, page, limit, totalDocuments);
+    }
 
+    /**
+     * Return a clean User object with the desired properties 
+     * @param user 
+     * @param properties 
+     * @returns 
+     */
+    cleanUserObject(user, properties = []) {
+        return pick(user, properties);
     }
 }
 

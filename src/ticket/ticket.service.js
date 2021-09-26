@@ -16,7 +16,6 @@ const updateTicketMailService = require("../mail/updateTicket.mail.service");
 
 
 
-
 // Helper class
 class DashBoard {
     todo = new Array();
@@ -39,6 +38,7 @@ class TicketService extends GenericService {
         this.reasign = this.reasign.bind(this);
         this.changeStatus = this.changeStatus.bind(this);
         this.deactivateTicket = this.deactivateTicket.bind(this);
+        this.getAllInactiveTicketsPageable = this.getAllInactiveTicketsPageable.bind(this);
     }
 
     async uniqueValidateException() {
@@ -111,7 +111,8 @@ class TicketService extends GenericService {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
         const tickets = await ticketRepository.getAll({isActive: true}, ticketDashboardProjection);
-        tickets.forEach(ticket => {
+         tickets.forEach(ticket  => {
+            ticket.user = userService.cleanUserObject(ticket.user, userProjection);
             switch(ticket.status) {
                 case STATUS.WAITING_ASIGNATION:
                 case STATUS.ASIGNED:
@@ -226,6 +227,23 @@ class TicketService extends GenericService {
         let ticket = this.findByIdAndValidate(req.params.id);
         await this.updateMany({_id: ticket._id}, {isActive: false});
         res.status(HttpStatus.OK).send();
+    }
+
+    /**
+     * Get all the unactive tickets
+     * @returns 200 OK if the list is not empty.
+     * @returns 204 NO CONTENT if the list is empty.
+     */
+    async getAllInactiveTicketsPageable(req, res) {
+        console.log('getAllInactiveTicketsPageable TicketService');
+        const limit = req.query.limit;
+        const page = req.query.page;
+        const filters = req.query.filters;
+        filters.isActive = false;
+        const tickets =  await super.getAllObjectsPageable(limit, page, filters, ticketDashboardProjection);
+        tickets.forEach(ticket =>  {ticket.user = userService.cleanUserObject(ticket.user, userProjection);});
+        const totalDocuments = await ticketRepository.countDocuments();
+        super.getPageableResponse(res, tickets, page, limit, totalDocuments);
     }
 
 }

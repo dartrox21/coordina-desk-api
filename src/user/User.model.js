@@ -55,13 +55,14 @@ User.set('toObject', { virtuals: true })
 User.set('toJSON', { virtuals: true })
 
 User.virtual('ticketsCount').get(function () {
-    return this.tickets.length;
+    if(this.tickets) {
+        return this.tickets.length;
+    }
+    return 0;
 });
 
 User.plugin(uniqueValidator, {
     message: CustomErrorMessages.MUST_BE_UNIQUE
 });
-
-
 
 module.exports = mongoose.model('user', User);
