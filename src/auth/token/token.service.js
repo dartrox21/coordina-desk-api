@@ -27,6 +27,16 @@ class TokenService {
       return await TokenRepository.findOne(token);
     }
 
+    /**
+     * Removes all the expired tokens from the DB that have been expired for more than 5 days
+     *
+     */
+    async removeAllExpired() {
+      const nDaysAgo = new Date();
+      nDaysAgo.setDate(nDaysAgo.getDate() - 5);
+      return await TokenRepository.deleteMany({createdAt: {$lte: nDaysAgo}});
+    }
+
 
 }
 

@@ -6,8 +6,7 @@ const routes = require('./routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 const { validateToken } = require('./auth/auth.middleware');
 const cors = require('cors');
-const user = require('./user/user.service');
-const ticket = require('./ticket/ticket.cron.service');
+require('./crons');
 
 
 
