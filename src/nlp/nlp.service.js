@@ -60,7 +60,7 @@ class NlpService {
      *          204 NO CONTENT if a response has not been found
      */
     async evaluateQuestion(req, res) {
-        const response = this.evaluateData(req.body.question);
+        const response = await this.evaluateData(req.body.question);
         // console.table(response.classifications);
         // console.log(`ANSWER: ${response.answer}`);
         // console.table(response.sentiment);

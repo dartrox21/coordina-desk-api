@@ -4,7 +4,7 @@
       "es"
     ],
     "nlu": {
-      "log": false
+      "log": true
     },
     "tag": "nlp",
     "threshold": 0.5,
@@ -16,7 +16,7 @@
   "nluManager": {
     "settings": {
       "tag": "nlu-manager",
-      "log": false
+      "log": true
     },
     "locales": [
       "es"
@@ -1703,6 +1703,7 @@
             },
             "neuralNetwork": {
               "settings": {
+                "log": true,
                 "locale": "es",
                 "tag": "nlu-es",
                 "keepStopwords": true,
