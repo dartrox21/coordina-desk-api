@@ -17,7 +17,7 @@ class NlpService {
     }
 
     async configure() {
-        this.nlp = new NlpManager({ languages: ['es'], nlu: { log: false } });
+        this.nlp = new NlpManager({ languages: ['es'], nlu: { log: true } });
         this.nlp.settings.autoSave = false;
         this.nlp.addLanguage('es');
         await this.train();
