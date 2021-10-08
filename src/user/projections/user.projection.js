@@ -3,7 +3,8 @@ userProjection = [
     'email',
     'name',
     'isActive',
-    'role'
+    'role',
+    'tickets'
 ];
 
 
