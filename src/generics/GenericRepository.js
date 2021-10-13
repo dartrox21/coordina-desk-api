@@ -40,7 +40,6 @@ class GenericRepository {
      * @returns List list of objects found
      */
     async getAllPageable(limit, page, filters, projection = null) {
-        console.log('===================');
         for (const property in filters) {
             filters[property] = {$regex: filters[property], $options: 'i'};
         }
