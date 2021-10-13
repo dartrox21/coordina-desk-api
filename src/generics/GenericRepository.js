@@ -30,6 +30,9 @@ class GenericRepository {
     /**
      * Method used to get the list of object but with params
      * such as limimt & page
+     * 
+     * In the for method we modify the filters query to be search using a regex
+     * similar to a like operator in sql
      * @param limit Limit number of resultes
      * @param page skip n number of results
      * @param filters filters object
@@ -37,6 +40,10 @@ class GenericRepository {
      * @returns List list of objects found
      */
     async getAllPageable(limit, page, filters, projection = null) {
+        console.log('===================');
+        for (const property in filters) {
+            filters[property] = {$regex: filters[property], $options: 'i'};
+        }
         return this.Schema.find(filters)
         .select(projection)
         .limit(limit)
