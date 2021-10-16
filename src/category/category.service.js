@@ -2,7 +2,7 @@ const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
 const GenericService = require("../generics/GenericService");
 const Category = require('./Category.model');
-
+const categoryRepository = require("./category.repository");
 
 
 class CategoryService extends GenericService {
@@ -37,8 +37,22 @@ class CategoryService extends GenericService {
                 .setField('Has faqs. Faqs count').setValue(faqs.length)
                 .errorMessage(CustomErrorMessages.DELETE_HAS_DEPENDENCIES).build();
         }
-        await this.genericRepository.delete(id);
+        await categoryRepository.delete(id);
         return res.status(HttpStatus.OK).send();
+    }
+
+    /**
+     * Get the list of all categories sort by category name
+     * @param req Request object
+     * @param res Response object
+     * @returns 200 OK if the list is not empty.
+     * @returns 204 NO CONTENT if the list is empty.
+     */
+    getAll = async (req, res) => {
+       console.log('getAll CategoryService');
+       const categories = await categoryRepository.getAll(req.query.filters);
+       categories.sort((a, b) => (a.category > b.category) ? 1 : -1);
+       this.getListResponse(res, categories);
     }
 }
 
