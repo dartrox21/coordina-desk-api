@@ -13,7 +13,8 @@ class AuthService {
     async login(req, res, next) {
         console.log('login AuthSevice');
         const userLogin = req.body;
-        let user = await UserService.findByEmail(req.body.email);
+        const email = req.body.email.trim().toLowerCase();
+        let user = await UserService.findByEmail(email);
         const hasValidCredentials = await bcrypt.compare(userLogin.password, user.password);
         if(!hasValidCredentials) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.BAD_CREDENTIALS).build();
