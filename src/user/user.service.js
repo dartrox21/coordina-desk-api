@@ -154,9 +154,8 @@ class UserSevice extends GenericService {
      * @param Projection projection 
      * @returns List of Users
      */
-    findUserByRoleWithLessTickets = async (role) => {
-        let users =  await UserRepository.getAll({isActive: true, role: role}, ['tickets']);
-        console.log(users);
+    findUserByRoleWithLessTickets = async (role, projection) => {
+        let users =  await UserRepository.getAll({isActive: true, role: role}, projection);
         users = users.sort((a, b) => (a.ticketsCount > b.ticketsCount) ? 1 : -1);
         return users[0];
     }
@@ -168,7 +167,6 @@ class UserSevice extends GenericService {
      */
     getAll = async (req, res) => {
         console.log('GetAll UserService');
-        console.log(req.query.filters);
         let filters = req.query.filters || {};
         filters.isActive = true;
         const userList = await this.getAllObjects(filters, userProjection);
@@ -181,6 +179,7 @@ class UserSevice extends GenericService {
      * @param Response object res 
      */
     getAllPageable = async (req, res) => {
+        await this.findUserByRoleWithLessTickets('ASSISTANT');
         console.log('getAllPageable UserService');
         const limit = req.query.limit;
         const page = req.query.page;

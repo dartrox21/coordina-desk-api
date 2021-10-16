@@ -81,8 +81,6 @@ class GenericRepository {
 
     async updateMany(filter = Object, toUpdate = Object) {
         delete filter._id;
-        console.log(filter);
-        console.log(toUpdate);
         return this.Schema.updateMany(filter, toUpdate);
     }
 

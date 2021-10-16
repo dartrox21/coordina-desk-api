@@ -8,15 +8,10 @@ class NlpService {
     nlp;
 
     constructor() {
-        this.configure = this.configure.bind(this);
-        this.train = this.train.bind(this);
-        this.readInputData = this.readInputData.bind(this);
-        this.evaluateQuestion = this.evaluateQuestion.bind(this);   
-        this.evaluateData = this.evaluateData.bind(this);
         this.configure();
     }
 
-    async configure() {
+    configure = async () => {
         this.nlp = new NlpManager({ languages: ['es'], nlu: { log: true } });
         this.nlp.settings.autoSave = false;
         this.nlp.addLanguage('es');
@@ -24,7 +19,7 @@ class NlpService {
         
     }
 
-    async readInputData() {
+    readInputData = async () => {
         return new Promise((resolve)=>{
             return fs.createReadStream('./resources/inputData.csv')
             .pipe(csv())
@@ -39,7 +34,7 @@ class NlpService {
         });
     }
 
-    async train() {
+    train = async () => { 
         console.log('Training NLP');
         await this.readInputData();
         await this.nlp.train();
@@ -59,7 +54,7 @@ class NlpService {
      * @returns 200 OK if a response has been found
      *          204 NO CONTENT if a response has not been found
      */
-    async evaluateQuestion(req, res) {
+    evaluateQuestion = async (req, res) => {
         const response = await this.evaluateData(req.body.question);
         // console.table(response.classifications);
         // console.log(`ANSWER: ${response.answer}`);
@@ -72,7 +67,7 @@ class NlpService {
     }
 
 
-    async evaluateData(data) {
+    evaluateData = async (data) => {
         return await this.nlp.process('es', data);
     }
 
