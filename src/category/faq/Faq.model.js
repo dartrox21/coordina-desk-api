@@ -22,6 +22,10 @@ const Faq = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'category',
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+    },
+    order: {
+        type: Number,
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
     }
 },
 {
