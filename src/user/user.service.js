@@ -13,14 +13,6 @@ const { pick } = require('underscore');
 class UserSevice extends GenericService {
     constructor() {
         super(User);
-        this.create = this.create.bind(this);
-        this.uniqueValidateException = this.uniqueValidateException.bind(this);
-        this.getById = this.getById.bind(this);
-        this.delete = this.delete.bind(this);
-        this.update = this.update.bind(this);
-        this.getAll = this.getAll.bind(this);
-        this.updateUser = this.updateUser.bind(this);
-        this.cleanUserObject = this.cleanUserObject.bind(this);
     }
 
     /**
@@ -28,7 +20,7 @@ class UserSevice extends GenericService {
      * @param User user object
      * @throws CustomValidateException if the user with the email exists
     */ 
-    async uniqueValidateException(user) {
+    uniqueValidateException = async (user) => {
         console.log('uniqueValidateException UserSevice');
         const found = await UserRepository.findByEmail(user.email);
         if(found !== null) {
@@ -44,7 +36,7 @@ class UserSevice extends GenericService {
      * @throws CustomValidateException BAD REQUEST if Mongoose throws an error
      * @returns Response 201 CREATED with the user created
     */
-    async create(req, res) {
+    create = async (req, res) => {
         console.log('create UserSevice');
         const user = new User();
         user.email = req.body.email.trim().toLowerCase();;
@@ -62,7 +54,7 @@ class UserSevice extends GenericService {
      * @returns 404 NOT FOUND if the user is not found
      * @returns 200 OK If the user is found
      */
-    async getById(req, res) {
+    getById = async (req, res) => {
         console.log('getById UserSevice');
         const user = await this.findByIdAndValidate(req.params.id);
         res.status(HttpStatus.OK).json(user);
@@ -75,7 +67,7 @@ class UserSevice extends GenericService {
      * @returns 404 NOT FOUND if the user is not found
      * @returns 200 OK If the user is deleted successfully
      */
-    async delete(req, res) {
+    delete = async (req, res) => {
         console.log('delete UserSevice');
         await this.findByIdAndValidate(req.params.id);
         await UserRepository.delete(req.params.id);
@@ -90,14 +82,14 @@ class UserSevice extends GenericService {
      * @returns 404 NOT FOUND if the user is not found
      * @returns 200 OK If the user is updated successfully
      */
-    async update(req, res) {
+    update = async (req, res) => {
         console.log('update UserSevice');
         const id = req.params.id;
         const user = this.updateUser(req.body, id);
         res.status(HttpStatus.OK).json(user);
     }
 
-    async updateUser(user, id) {
+    updateUser = async (user, id) => {
         await this.findByIdAndValidate(id);
         return await UserRepository.update(id, user, userProjection);
     }
@@ -106,7 +98,7 @@ class UserSevice extends GenericService {
      * Finds and validates a user by its email
      * @param email 
      */
-    async findByEmail(email) {
+    findByEmail = async (email) => {
         console.log('findByEmail UserSevice');
         const user = await UserRepository.findByEmail(email, userLoginProjection);
         if(!user || !user.isActive) {
@@ -121,7 +113,7 @@ class UserSevice extends GenericService {
      * @param  req 
      * @param  res 
      */
-    async resendActivationEmail(req, res) {
+    resendActivationEmail = async (req, res) => {
         console.log('resendActivationEmail UserService');
         const user = await UserRepository.getByIdNoValidation(req.body._id);
         if(user.isActive) {
@@ -137,7 +129,7 @@ class UserSevice extends GenericService {
      * @param res Response object
      * @returns 
      */
-    async activate(req, res) {
+    activate = async (req, res) => {
         let user = req.body;
         const userDb = await UserRepository.getByIdNoValidation(user._id);
         if(!userDb) {
@@ -162,7 +154,7 @@ class UserSevice extends GenericService {
      * @param Projection projection 
      * @returns List of Users
      */
-    async findUserByRoleWithLessTickets(role) {
+    findUserByRoleWithLessTickets = async (role) => {
         let users =  await UserRepository.getAll({isActive: true, role: role}, ['tickets']);
         console.log(users);
         users = users.sort((a, b) => (a.ticketsCount > b.ticketsCount) ? 1 : -1);
@@ -174,7 +166,7 @@ class UserSevice extends GenericService {
      * @param Request object req 
      * @param Response object res 
      */
-    async getAll(req, res) {
+    getAll = async (req, res) => {
         console.log('GetAll UserService');
         console.log(req.query.filters);
         let filters = req.query.filters || {};
@@ -188,7 +180,7 @@ class UserSevice extends GenericService {
      * @param Request object req 
      * @param Response object res 
      */
-    async getAllPageable(req, res) {
+    getAllPageable = async (req, res) => {
         console.log('getAllPageable UserService');
         const limit = req.query.limit;
         const page = req.query.page;
