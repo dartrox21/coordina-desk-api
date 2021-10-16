@@ -20,6 +20,7 @@ module.exports = class CustomErrorMessages {
     static UNDEFINED_ERROR = 'ERROR.COMMON.UNDEFINED';
     static BAD_REQUEST = 'ERROR.COMMON.BAD_REQUEST';
     static MUST_BE_UNIQUE = 'ERROR.COMMON.MUST_BE_UNIQUE';
+    static ID_NOT_MATCH = 'ERROR.COMMON.ID_DOES_NOT_MATCH';
     
     // Auth
     static BAD_CREDENTIALS = 'ERROR.AUTH.BAD_CREDENTIALS';

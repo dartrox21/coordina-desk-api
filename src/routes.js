@@ -8,5 +8,6 @@ app.use(require('./user/user.controller'));
 app.use(require('./nlp/nlp.controller'));
 app.use(require('./ticket/ticket.controller'));
 app.use(require('./category/category.controller'));
+app.use(require('./category/faq/faq.controller'));
 
 module.exports = app;

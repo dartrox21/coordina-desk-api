@@ -2,6 +2,7 @@ const GenericRepository = require('./GenericRepository');
 const HttpStatus = require('http-status-codes');
 const { buildPageableResponse } = require('../utils/util.functions');
 const CustomValidateException = require('../exceptionHandler/CustomValidateException');
+const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
 
 
 /**
@@ -14,23 +15,13 @@ class GenericService {
     constructor(Schema) {
         this.genericRepository = new GenericRepository(Schema);
         this.Schema = Schema;
-        this.create = this.create.bind(this);
-        this.getAll = this.getAll.bind(this);
-        this.getListResponse = this.getListResponse.bind(this);
-        this.getAllPageable = this.getAllPageable.bind(this);
-        this.getPageableResponse = this.getPageableResponse.bind(this);
-        this.getById = this.getById.bind(this);
-        this.findByIdAndValidate = this.findByIdAndValidate.bind(this);
-        this.getAllObjects = this.getAllObjects.bind(this);
-        this.getAllObjectsPageable = this.getAllObjectsPageable.bind(this);
-        this.updateMany = this.updateMany.bind(this);
      }
 
     /**
      * ABSTRACT METHOD that must be implementedin the class where the GenericService extends
      * @param object to be validated
      */
-    async uniqueValidateException(object) {
+    uniqueValidateException = async (object) => {
         throw new Error('Unique validate exeption must be implemented');
     }
 
@@ -39,7 +30,7 @@ class GenericService {
      * @param req Request object
      * @param res Response object
      */
-    async create(req, res) {
+    create = async (req, res) => {
         console.log('Create generic');
         const object = req.body;
         await this.uniqueValidateException(object);
@@ -54,7 +45,7 @@ class GenericService {
      * @returns 200 OK if the list is not empty.
      * @returns 204 NO CONTENT if the list is empty.
      */
-    async getAll(req, res, next, projection = null) {
+    getAll = async (req, res, next, projection = null) => {
         console.log('getAll generic');
         const objectList = await this.genericRepository.getAll(req.query.filters, projection);
         this.getListResponse(res, objectList);
@@ -69,7 +60,7 @@ class GenericService {
      * @returns 200 OK if the list is not empty.
      * @returns 204 NO CONTENT if the list is empty.
      */
-    async getAllPageable(req, res, next, projection = null) {
+    getAllPageable = async(req, res, next, projection = null) => {
         console.log('getAllPageable generic');
         const limit = req.query.limit;
         const page = req.query.page;
@@ -79,14 +70,25 @@ class GenericService {
         this.getPageableResponse(res, objectList, page, limit, totalDocuments);
     }
 
-    async delete(req, res) {
+    delete = async (req, res) => {
         console.log('delete generic');
-        res.json('delete generic');
+        const id = req.params.id;
+        await this.findByIdAndValidate(id);
+        await this.genericRepository.delete(id);
+        return res.status(HttpStatus.OK).send();
     }
 
-    async update(req, res) {
+    update = async (req, res) => {
         console.log('update generic');
-        res.json('update generic');
+        const id = req.params.id;
+        await this.findByIdAndValidate(id);
+        await this.uniqueValidateException(req.body);
+        if(id !== req.body._id) {
+            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.ID_NOT_MATCH)
+                .setField('id').setValue(`${id} !== ${req.body._id}`).build();
+        }
+        const updatedObject = await this.genericRepository.update(id, req.body);
+        res.status(HttpStatus.OK).json(updatedObject);
     }
 
     /**
@@ -96,7 +98,7 @@ class GenericService {
      * @returns 200 OK if there is at least one object in the list
      * @returns 204 NO CONTENT if the list is empty
      */
-    async getListResponse(res, objectList) {
+    getListResponse = async (res, objectList) => {
         console.log('getListResponse generic');
         if (objectList.length > 0) {
             res.status(HttpStatus.OK).json(objectList);
@@ -116,7 +118,7 @@ class GenericService {
      * @returns 200 OK if there is at least one object in the list
      * @returns 204 NO CONTENT if the list is empty
      */
-    async getPageableResponse(res, objectList, page, limit, totalDocuments) {
+    getPageableResponse = async (res, objectList, page, limit, totalDocuments) => {
         console.log('getPageableResponse generic');
         if (objectList.length > 0) {
             res.status(HttpStatus.OK).json(await buildPageableResponse(objectList, page, limit, totalDocuments));
@@ -125,7 +127,7 @@ class GenericService {
         }
     }
 
-    async getById(req, res) {
+    getById = async (req, res) => {
         console.log('getById generic');
         const object = await this.genericRepository.getById(req.params.id);
         if (!object) {
@@ -142,7 +144,7 @@ class GenericService {
      * @returns Object found
      * @throws CustomValidateException 404 NOT FOUND if the object is not found
      */
-    async findByIdAndValidate(id, projection = null) {
+    findByIdAndValidate = async (id, projection = null) => {
         console.log('findByIdAndValidate GenericService');
         const obj = await this.genericRepository.getById(id, projection);
         if(!obj) {
@@ -157,7 +159,7 @@ class GenericService {
      * @param projection projection object. Can be null
      * @returns List of objects found
      */
-    async getAllObjects(filters = Object, projection = null) {
+    getAllObjects = async (filters = Object, projection = null) => {
         console.log('getAllObjects generic');
         return await this.genericRepository.getAll(filters, projection);
     }
@@ -171,7 +173,7 @@ class GenericService {
      * @param projection projection object. Can be null
      * @returns List of objects
      */
-    async getAllObjectsPageable(limit = 10, page = 1, filters = Object, projection = null) {
+    getAllObjectsPageable = async (limit = 10, page = 1, filters = Object, projection = null) => {
         console.log('getAllObjectsPageable generic');
         return await this.genericRepository.getAllPageable(limit, page, filters, projection);
     }
@@ -182,7 +184,7 @@ class GenericService {
      * @param property that must be filtered toUpdate 
      * @returns 
      */
-    async updateMany(filter = Object, toUpdate = Object) {
+    updateMany = async (filter = Object, toUpdate = Object) => {
         return await this.genericRepository.updateMany(filter, toUpdate);
     }
 }

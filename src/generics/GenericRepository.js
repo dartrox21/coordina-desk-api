@@ -81,6 +81,10 @@ class GenericRepository {
         delete filter._id;
         return this.Schema.updateMany(filter, toUpdate);
     }
+
+    async delete(_id) {
+        return this.Schema.deleteOne({_id});
+    }
 }
 
 
