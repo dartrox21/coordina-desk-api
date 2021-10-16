@@ -45,7 +45,7 @@ class TicketService extends GenericService {
         // IMPLEMENT IF NECESARY
     }
 
-    async create(req, res) {
+    create = async (req, res) => {
         console.log('Creating a ticket TicketService');
         const ticket = await ticketRepository.save(req.body);
         await ticketCreation.sendMail(ticket);
@@ -62,9 +62,8 @@ class TicketService extends GenericService {
         console.log(`Evaluating ticket: ${ticket._id}`);
         const titleEvaluation = await nlpService.evaluateData(ticket.title);
         let score = titleEvaluation.sentiment.score + 
-            HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.3 : 0.02
-            HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.3 : 0.05;
-        
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.3 : 0.15) +
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.3 : 0.2);
         let priority = PRIORITY.LOW;
         if(score < -0.1) {
             priority = PRIORITY.HIGH;
