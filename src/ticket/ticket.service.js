@@ -62,8 +62,8 @@ class TicketService extends GenericService {
         console.log(`Evaluating ticket: ${ticket._id}`);
         const titleEvaluation = await nlpService.evaluateData(ticket.title);
         let score = titleEvaluation.sentiment.score + 
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.3 : 0.15) +
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.3 : 0.2);
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.includes(substring)) ? -0.5 : 0.15) +
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.includes(substring)) ? -0.1 : 0.2);
         let priority = PRIORITY.LOW;
         if(score < -0.1) {
             priority = PRIORITY.HIGH;
