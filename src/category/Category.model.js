@@ -8,6 +8,11 @@ const Category = new Schema({
         type: String,
         required:[true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
         unique: true
+    },
+    isActive: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 },
 {
