@@ -126,8 +126,6 @@ class UserSevice extends GenericService {
         const user = await UserRepository.getByIdNoValidation(req.body._id);
         if(user.isActive) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.USER_IS_ACTIVE).build();
-        } else if(user.isDeleted) {
-            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.USER_IS_DELETED).build();
         }
         await ActivationMailService.sendMail(user.email, user._id);
         res.status(HttpStatus.OK).send();
@@ -150,7 +148,6 @@ class UserSevice extends GenericService {
             return res.status(HttpStatus.OK).json(userDb);
         }
         delete user.email;
-        delete user.isDeleted;
         user.isActive = true;
         const hash = await encrypt(user.password);
         user.password = hash;
@@ -166,7 +163,7 @@ class UserSevice extends GenericService {
      * @returns List of Users
      */
     async findUserByRoleWithLessTickets(role) {
-        let users =  await UserRepository.getAll({isActive: true, isDeleted: false, role: role}, ['tickets']);
+        let users =  await UserRepository.getAll({isActive: true, role: role}, ['tickets']);
         users = users.sort((a, b) => (a.ticketsCount > b.ticketsCount) ? 1 : -1);
         return users[0];
     }
@@ -181,7 +178,6 @@ class UserSevice extends GenericService {
         console.log(req.query.filters);
         let filters = req.query.filters || {};
         filters.isActive = true;
-        filters.isDeleted = false;
         const userList = await super.getAllObjects(filters, userProjection);
         super.getListResponse(res, userList);
     }
