@@ -113,7 +113,7 @@ async function buildPageableResponse(list, page, limit, count) {
  * @param roles Array string of roles
  * @param user REQUEST PARAM in the headers named as decodedUser
  */
- function preAuthorize(roles) {
+ function preAuthorize(...roles) {
     return function (req, res, next) {
         if (req.headers.decodedUser == null) {
             next(CustomValidateException.forbidden().build());

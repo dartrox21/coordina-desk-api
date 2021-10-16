@@ -37,16 +37,16 @@ let validateToken = (req, res, next) => {
         return next();
     }
     if (req.headers && req.headers.authorization) {
-        const token = req.headers.authorization.split(' ')[1];
+      const token = req.headers.authorization.split(' ')[1];
         jwt.verify(token, process.env.SECRET, (err, decoded) => { 
             if(err) {
-                throw CustomValidateException.unauthorized().build();
+              throw CustomValidateException.unauthorized().build();
             } else {
-                TokenService.findOne(req, res, next).then(token => {
-                  if(token == null) {
-                    req.headers.decodedUser = decoded;
-                    next();
-                  } else {
+              TokenService.findOne(req, res, next).then(token => {
+                if(token == null) {
+                  req.headers.decodedUser = decoded;
+                  next();
+                } else {
                     next(CustomValidateException.unauthorized().build());
                   }
                 }).catch(() => next(CustomValidateException.status(500).build()));
