@@ -46,7 +46,7 @@ let User = new Schema({
     timestamps: true
 });
 
-User.set('toObject', { virtuals: true, transform: function(doc, ret){delete ret.tickets} });
+User.set('toObject', { virtuals: true });
 User.set('toJSON', { virtuals: true, transform: function(doc, ret){delete ret.tickets} });
 
 User.virtual('ticketsCount').get(function() {

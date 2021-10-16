@@ -12,7 +12,7 @@ class TicketContentService extends GenericService {
      * @param TicketContent ticketContent 
      * @returns TicketContent created
      */
-    async save(ticketContent) {
+    save = async(ticketContent) => {
         return await ticketRepository.save(ticketContent);
     }
 }
