@@ -23,7 +23,7 @@ class GenericRepository {
      * @param Projection projection object. Can be null
      * @returns List list of objects found
      */
-    async getAll(filters = Object, projection = null) {
+    async getAll(filters = Object, projection = null) {    
         return this.Schema.find(filters).select(projection);
     }
 
@@ -41,7 +41,9 @@ class GenericRepository {
      */
     async getAllPageable(limit, page, filters, projection = null) {
         for (const property in filters) {
-            filters[property] = {$regex: filters[property], $options: 'i'};
+            if(typeof filters[property] !== 'boolean') {
+                filters[property] = {$regex: filters[property], $options: 'i'};
+            }
         }
         return this.Schema.find(filters)
         .select(projection)

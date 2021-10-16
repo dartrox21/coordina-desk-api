@@ -164,6 +164,7 @@ class UserSevice extends GenericService {
      */
     async findUserByRoleWithLessTickets(role) {
         let users =  await UserRepository.getAll({isActive: true, role: role}, ['tickets']);
+        console.log(users);
         users = users.sort((a, b) => (a.ticketsCount > b.ticketsCount) ? 1 : -1);
         return users[0];
     }
