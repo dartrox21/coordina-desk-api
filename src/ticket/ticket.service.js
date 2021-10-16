@@ -100,7 +100,6 @@ class TicketService extends GenericService {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
         const tickets = await ticketRepository.getAll({isActive: true}, ticketDashboardProjection);
-        console.log(tickets);
          tickets.forEach(ticket  => {
             ticket.user = userService.cleanUserObject(ticket.user, userProjection);
             switch(ticket.status) {
@@ -180,10 +179,6 @@ class TicketService extends GenericService {
         console.log('reasign TicketService');
         let ticket = await this.findByIdAndValidate(req.params.id);
         const user = await userService.findByIdAndValidate(req.params.userId);
-        if (ticket.user != null && ticket.user._id != user._id) {
-            ticket.user = user;
-            return res.status(HttpStatus.OK).json(ticket);
-        }
         ticket.user = user;
         ticket = await ticketRepository.save(ticket);
         return res.status(HttpStatus.OK).json(ticket);
