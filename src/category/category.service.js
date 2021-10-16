@@ -2,7 +2,7 @@ const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
 const GenericService = require("../generics/GenericService");
 const Category = require('./Category.model');
-const faqService = require("./faq/faq.service");
+
 
 
 class CategoryService extends GenericService {
@@ -43,3 +43,6 @@ class CategoryService extends GenericService {
 }
 
 module.exports = new CategoryService();
+
+// requiring elements at the very botton to avoid circular dependency
+const faqService = require("./faq/faq.service");

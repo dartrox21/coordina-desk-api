@@ -24,4 +24,8 @@ router.put('/faq/:id',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), cleanMiddleware],
     asyncWrapper(FaqService.update));
 
+router.patch('/faq/:id/reorder/:position',
+    preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT),
+    asyncWrapper(FaqService.reorder));
+
 module.exports = router;

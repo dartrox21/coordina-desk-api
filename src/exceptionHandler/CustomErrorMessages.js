@@ -38,6 +38,9 @@ module.exports = class CustomErrorMessages {
     static INVALID_STATUS = 'ERROR.TICKET.INVALID_STATUS';
     static INVALID_PRIORITY = 'ERROR.TICKET.INVALID_PRIORITY';
 
+    // FAQ
+    static INVALID_POSITION = 'ERROR.FAQ.INVALID_POSITION';
+
 
     CustomErrorMessages() {
         throw new Error('Utility class');

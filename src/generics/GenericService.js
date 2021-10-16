@@ -87,8 +87,7 @@ class GenericService {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.ID_NOT_MATCH)
                 .setField('id').setValue(`${id} !== ${req.body._id}`).build();
         }
-        const updatedObject = await this.genericRepository.update(id, req.body);
-        res.status(HttpStatus.OK).json(updatedObject);
+        res.status(HttpStatus.OK).json(await this.updateObject(req.body));
     }
 
     /**
@@ -186,6 +185,15 @@ class GenericService {
      */
     updateMany = async (filter = Object, toUpdate = Object) => {
         return await this.genericRepository.updateMany(filter, toUpdate);
+    }
+
+    /**
+     * Update a simple object
+     * @param Object object to be updated
+     * @returns objectr updated
+     */
+    updateObject = async(object) => {
+        return await this.genericRepository.update(object._id, object);
     }
 }
 
