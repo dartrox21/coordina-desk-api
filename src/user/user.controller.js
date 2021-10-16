@@ -6,7 +6,7 @@ const { asyncWrapper, preAuthorize } = require('../utils/util.functions');
 const ROLE = require('../role/Role.enum');
 
 const cleanMiddleware = cleanModel(User.schema.paths);
-const FILTERS = ['_id', 'email', 'name', 'isActive', 'isDeleted'];
+const FILTERS = ['_id', 'email', 'name', 'isActive'];
 
 router.post('/user',
     [preAuthorize(ROLE.COORDINATOR), cleanMiddleware],

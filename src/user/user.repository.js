@@ -41,7 +41,7 @@ class UserRepository extends GenericRepository {
      * @param id 
      */
     async delete(id) {
-        return User.findByIdAndUpdate(id, {isActive: false, isDeleted: true}, {new: true});
+        return User.findByIdAndUpdate(id, {isActive: false}, {new: true});
     }
 
     /**

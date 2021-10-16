@@ -27,11 +27,6 @@ let User = new Schema({
         required: true,
         default: false
     },
-    isDeleted: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
     role: {
         type: String,
         required: false,
