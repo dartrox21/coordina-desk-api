@@ -171,8 +171,8 @@ class UserSevice extends GenericService {
         console.log(req.query.filters);
         let filters = req.query.filters || {};
         filters.isActive = true;
-        const userList = await super.getAllObjects(filters, userProjection);
-        super.getListResponse(res, userList);
+        const userList = await this.getAllObjects(filters, userProjection);
+        this.getListResponse(res, userList);
     }
 
     /**
@@ -185,7 +185,7 @@ class UserSevice extends GenericService {
         const limit = req.query.limit;
         const page = req.query.page;
         let filters = req.query.filters || {};
-        const users =  await super.getAllObjectsPageable(limit, page, filters, userProjection);
+        const users =  await this.getAllObjectsPageable(limit, page, filters, userProjection);
         const totalDocuments = await UserRepository.countDocuments();
         this.getPageableResponse(res, users, page, limit, totalDocuments);
     }
