@@ -22,8 +22,7 @@ class UserRepository extends GenericRepository {
      * Method used to count all the active users in the db
      */
     async countDocuments() {
-        return User.countDocuments()
-        .where('isActive').equals('true');
+        return User.countDocuments();
     }
 
     /**
