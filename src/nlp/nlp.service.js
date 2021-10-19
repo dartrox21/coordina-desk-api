@@ -1,42 +1,40 @@
-const csv = require('csv-parser');
-const fs = require('fs');
 const { NlpManager } = require('node-nlp');
+
+const fs = require('fs');
 const HttpStatus = require('http-status-codes');
 
 class NlpService {
-
     nlp;
 
     constructor() {
-        this.configure();
+        setTimeout(() => {
+            this.configure();
+            
+        }, 2000);
     }
-
+    
     configure = async () => {
         this.nlp = new NlpManager({ languages: ['es'], nlu: { log: true } });
         this.nlp.settings.autoSave = false;
         this.nlp.addLanguage('es');
+        await this.readInputData();
         await this.train();
-        
     }
 
+    /**
+     * Read the input data file
+     * @param String question except. Do not add the question to the nlp 
+     */
     readInputData = async () => {
-        return new Promise((resolve)=>{
-            return fs.createReadStream('./resources/inputData.csv')
-            .pipe(csv())
-            .on('data', (row) => {
-                this.nlp.addDocument('es', row.INPUT, row.ID);
-                this.nlp.addAnswer('es', row.ID, row.RESPONSE);
-            })
-            .on('end', () => {
-                console.log('CSV file successfully processed');
-                resolve();
-            });
+        const faqs = await faqService.getAllObjects();
+        faqs.forEach(faq => {
+            this.nlp.addDocument('es', faq.question, faq._id);
+            this.nlp.addAnswer('es', faq._id, faq.answer);
         });
     }
 
     train = async () => { 
         console.log('Training NLP');
-        await this.readInputData();
         await this.nlp.train();
         const data = this.nlp.export(false);
         await fs.writeFile('./resources/model.nlp', data, 'utf8', (err) => {
@@ -56,9 +54,6 @@ class NlpService {
      */
     evaluateQuestion = async (req, res) => {
         const response = await this.evaluateData(req.body.question);
-        // console.table(response.classifications);
-        // console.log(`ANSWER: ${response.answer}`);
-        // console.table(response.sentiment);
         if(response.answer) {
             res.status(HttpStatus.OK).json({answer: response.answer});
         } else {
@@ -71,6 +66,22 @@ class NlpService {
         return await this.nlp.process('es', data);
     }
 
+    /**
+     * Write\update or delete data nlp manager.
+     * 
+     * note: The nlp manager must be instanciated again on update/delete because sometimes
+     * it stores data in memory from the previous document and answer that was deleted or updated
+     * @param FAQ data with the new question to be updated in the faqs
+     */
+    updateData = async () => {
+        console.log('updateData NlpService');
+        this.configure();
+        
+    }
+
 }
 
 module.exports = new NlpService();
+
+// requiring elements at the very botton to avoid circular dependency
+const faqService = require('../category/faq/faq.service');
