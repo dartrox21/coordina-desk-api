@@ -13,7 +13,7 @@ router.post('/faq',
     asyncWrapper(FaqService.create));
 
 router.get('/faq/category/:id',
-    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
+    [setFilters(FILTERS)],
     asyncWrapper(FaqService.getAllByCategory));
 
 router.delete('/faq/:id',
