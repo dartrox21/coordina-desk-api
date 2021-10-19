@@ -234,6 +234,22 @@ class TicketService extends GenericService {
         this.getPageableResponse(res, tickets, page, limit, totalDocuments);
     }
 
+    /**
+     * 
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns ticket reasigned
+     * @throws  404 NOT FOUND if the ticket id is not found
+     */
+    changePriority = async (req, res) => {
+        console.log('changePriority TicketService');
+        let ticket = await this.findByIdAndValidate(req.params.id);
+        ticket.priority = req.body.priority;
+        ticket = await ticketRepository.save(ticket);
+        res.status(HttpStatus.OK).json(ticket);
+        await updateTicketMailService.sendMail(ticket);
+    }
+
 }
 
 module.exports = new TicketService();
