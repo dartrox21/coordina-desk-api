@@ -23,7 +23,7 @@ class DashBoard {
     done = new Array();
 }
 
-const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'agendar', 'permuta', 'acoso', 'indevido', 'molestar'];
+const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'permuta', 'acoso', 'indevido', 'molestar'];
 
 class TicketService extends GenericService {
 
