@@ -1,11 +1,14 @@
+module.exports = {};
 const GenericService = require("../../generics/GenericService");
 const Faq = require('./Faq.model');
-const categoryService = require("../category.service");
 const HttpStatus = require('http-status-codes');
-const { lastIndexOf } = require("underscore");
 const CustomValidateException = require("../../exceptionHandler/CustomValidateException");
 const CustomErrorMessages = require("../../exceptionHandler/CustomErrorMessages");
 const orderProjection = require("./projections/order.projections");
+const faqRepository = require("./faq.repository");
+const categoryService = require("../category.service");
+const nlpService = require('../../nlp/nlp.service');
+
 
 class FaqService extends GenericService {
     constructor() {
@@ -21,10 +24,12 @@ class FaqService extends GenericService {
      */
     create = async (req, res) => {
        console.log('Create FaqService');
-       const faq = req.body;
+       let faq = req.body;
        const faqs = await this.getAllObjects({category: faq.category});
        faq.order = faqs.length > 0 ? faqs.length : 0;
-       res.status(HttpStatus.CREATED).json(await this.genericRepository.save(faq));
+       faq = await faqRepository.save(faq);
+       res.status(HttpStatus.CREATED).json(faq);
+       this.updateNlpData();
     }
 
     /**
@@ -66,6 +71,34 @@ class FaqService extends GenericService {
             await this.updateObject(faq);
         });
         res.status(HttpStatus.OK).send();
+    }
+
+    delete = async (req, res) => {
+        console.log('delete faqService');
+        const id = req.params.id;
+        const faq = await this.findByIdAndValidate(id);
+        await faqRepository.delete(id);
+        res.status(HttpStatus.OK).send();
+        this.updateNlpData();
+        
+    }
+
+    update = async (req, res) => {
+        console.log('update faqService');
+        const id = req.params.id;
+        let newFaq = req.body;
+        const previousFaq = await this.findByIdAndValidate(id);
+        if(id !== newFaq._id) {
+            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.ID_NOT_MATCH)
+                .setField('id').setValue(`${id} !== ${newFaq._id}`).build();
+        }
+        newFaq = await this.updateObject(newFaq);
+        res.status(HttpStatus.OK).json(newFaq);
+        this.updateNlpData();
+    }
+
+    updateNlpData = async () => {
+        await nlpService.updateData();
     }
 }
 
