@@ -43,7 +43,11 @@ router.patch('/ticket/deactivate/id/:id',
 
 router.get('/ticket/inactive/all', 
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
-    TicketService.getAllInactiveTicketsPageable
-    );
+    asyncWrapper(TicketService.getAllInactiveTicketsPageable));
+
+router.patch('/ticket/id/:id/change-priority',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(TicketService.changePriority));
+
 
 module.exports = router;
