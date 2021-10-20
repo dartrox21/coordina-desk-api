@@ -3,6 +3,7 @@ const CustomValidateException = require('../exceptionHandler/CustomValidateExcep
 const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
 const HttpStatus = require('http-status-codes');
 const mongoose = require('mongoose');
+const { isArguments } = require('underscore');
 
 /** 
  * Wrapper used for the routes to manage all the errors in the Service layer.
@@ -94,7 +95,7 @@ function handleMongooseError(error) {
  */
 async function buildPageableResponse(list, page, limit, count) {
     page = page === 0 ? 1 : page === 1 ? 1 : page;
-    pages = parseInt(count / limit);
+    pages = parseInt(count / limit) + (count%limit > 0 ? 1 : 0);
     const pageable = {
         content: list,
         page,
