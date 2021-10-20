@@ -6,7 +6,14 @@ const routes = require('./routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 const { validateToken } = require('./auth/auth.middleware');
 const cors = require('cors');
+const CustomValidateException = require('./exceptionHandler/CustomValidateException');
+
+
+CustomErrorMessages
+
 require('./crons');
+const CustomErrorMessages = require('./exceptionHandler/CustomErrorMessages');
+
 
 var corsOptions = {
     origin: 'https://coordinadesk.netlify.app/',
@@ -17,7 +24,7 @@ corsOptions = {
         if([].indexOf(origin) !== -1) {
             cb(null, true);
         } else {
-            cb(new Error('Not allowed by cors'));
+            cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
         }
     },
     methods: "DELETE",

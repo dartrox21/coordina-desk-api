@@ -7,6 +7,7 @@
 module.exports = class CustomErrorMessages {
 
     // Common
+    static ORIGIN_NOT_ALLOWED = 'ERROR.COMMON.ORIGIN_NOT_ALLOWED';
     static ID_NOTFOUND = 'ERROR.COMMON.ID_NOTFOUND';
     static UNIQUE_ID = 'ERROR.COMMON.UNIQUE_ID';
     static DELETE_HAS_DEPENDENCIES = 'ERROR.COMMON.DELETE_HAS_DEPENDENCIES';
