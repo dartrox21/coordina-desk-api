@@ -24,7 +24,7 @@ corsOptions = {
             cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
         }
     },
-    methods: "DELETE",
+    methods: "GET,OPTIONS,PUT,PATCH,POST,DELETE",
     preflightContinue: false,
     optionsSuccessStatus: 200
 }
