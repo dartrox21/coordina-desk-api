@@ -14,6 +14,8 @@ require('./crons');
 
 corsOptions = {
     origin: function(origin, cb) {
+        console.log(origin);
+        console.log(['https://coordinadesk.netlify.app/'].indexOf(origin));
         if(['https://coordinadesk.netlify.app/'].indexOf(origin) !== -1) {
             cb(null, true);
         } else {
