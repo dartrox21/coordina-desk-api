@@ -22,7 +22,8 @@ corsOptions = {
     },
     methods: "GET,OPTIONS,PUT,PATCH,POST,DELETE",
     preflightContinue: false,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    allowedHeaders: 'Content-Type,Authorization'
 }
 
 app = express();
