@@ -12,23 +12,24 @@ const CustomErrorMessages = require('./exceptionHandler/CustomErrorMessages');
 require('./crons');
 
 
-corsOptions = {
-    origin: function(origin, cb) {
-        if(['https://coordinadesk.netlify.app'].indexOf(origin) !== -1) {
-            cb(null, true);
-        } else {
-            cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
-        }
-    },
-    methods: "GET,OPTIONS,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-    allowedHeaders: 'Content-Type,Authorization'
-}
+// corsOptions = {
+//     origin: function(origin, cb) {
+//         if(['https://coordinadesk.netlify.app'].indexOf(origin) !== -1) {
+//             cb(null, true);
+//         } else {
+//             cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
+//         }
+//     },
+//     methods: "GET,OPTIONS,PUT,PATCH,POST,DELETE",
+//     preflightContinue: false,
+//     optionsSuccessStatus: 200,
+//     allowedHeaders: 'Content-Type,Authorization'
+// }
 
 app = express();
 
-app.use(cors(corsOptions));
+app.use(cors());
+// app.use(cors(corsOptions));
 
 app.use(bodyparser.urlencoded({extended : false}));
 
