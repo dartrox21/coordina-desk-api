@@ -212,7 +212,9 @@ class TicketService extends GenericService {
     deactivateTicket = async (req, res) => {
         console.log('deactivateTicket TicketService');
         let ticket = await this.findByIdAndValidate(req.params.id);
+        await userService.removeTicket(ticket.user, ticket._id);
         ticket.isActive = false;
+        ticket.status = STATUS.CLOSED_DUE_TO_INACTIVITY;
         await this.updateObject(ticket);
         res.status(HttpStatus.OK).send();
     }

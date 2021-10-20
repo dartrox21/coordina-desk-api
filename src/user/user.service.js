@@ -179,7 +179,6 @@ class UserSevice extends GenericService {
      * @param Response object res 
      */
     getAllPageable = async (req, res) => {
-        await this.findUserByRoleWithLessTickets('ASSISTANT');
         console.log('getAllPageable UserService');
         const limit = req.query.limit;
         const page = req.query.page;
@@ -197,6 +196,17 @@ class UserSevice extends GenericService {
      */
     cleanUserObject(user, properties = []) {
         return pick(user, properties);
+    }
+
+    /**
+     * Remove a ticket from an user list of tickets
+     * @param  userId 
+     * @param  ticketId 
+     */
+    removeTicket = async (userId, ticketId) => {
+        const user = await this.findByIdAndValidate(userId);
+        user.tickets = user.tickets.filter(t => t != ticketId);
+        await this.updateUser(user, user._id);
     }
 }
 

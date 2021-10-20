@@ -3,6 +3,7 @@ const ticketService = require('./ticket.service');
 const STATUS = require('./Status.enum'); 
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
 const updateTicketMailService = require('../mail/updateTicket.mail.service');
+const userService = require('../user/user.service');
 
 
 // # ┌────────────── second (optional)
@@ -20,12 +21,15 @@ const updateTicketMailService = require('../mail/updateTicket.mail.service');
  * for more than 2 days will be set to isActive = false
  */
 const closedTickets = cron.schedule('* * 1 * * *', async () => {
-    console.log('....::::: CRON JOB CLOSED TICKERS :::::.....');
+    console.log('....::::: CRON JOB CLOSED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 2);
+    const tickets = await ticketService.getAllObjects({isActive:true, updatedAt: {$lte: nDaysAgo}});
     await ticketService.updateMany({updatedAt: {$lte: nDaysAgo}, $or:[{status: STATUS.RESOLVE}, {status: STATUS.FINAL_RESOLVE}]}, 
-        {isActive: false});
-
+        {isActive: false, status: STATUS.CLOSED_DUE_TO_INACTIVITY});
+    await tickets.forEach(async ticket =>  {
+        await userService.removeTicket(ticket.user, ticket._id);
+    });
 }, {
     scheduled: false,
     timezone: "America/Mexico_City"
@@ -35,16 +39,16 @@ const closedTickets = cron.schedule('* * 1 * * *', async () => {
  * At 2am if the tickets in the dashboard that have not been updated
  * for more than 5 days will be set to isActive = false
  */
-//  const expiredTickets = cron.schedule('*/5 * * * * *', async () => {
 const expiredTickets = cron.schedule('* * 2 * * *', async () => {
-    console.log('....::::: CRON JOB EXPIRED TICKERS :::::.....');
+    console.log('....::::: CRON JOB EXPIRED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 5);
-    let tickets = await ticketService.getAllObjects({isActive:true, updatedAt: {$lte: nDaysAgo}});
+    const tickets = await ticketService.getAllObjects({isActive:true, updatedAt: {$lte: nDaysAgo}});
     await ticketService.updateMany({updatedAt: {$lte: nDaysAgo}}, {isActive: false, status: STATUS.CLOSED_DUE_TO_INACTIVITY});
     await tickets.forEach(async ticket =>  {
         ticket.status = STATUS.CLOSED_DUE_TO_INACTIVITY;
         await updateTicketMailService.sendMail(ticket);
+        await userService.removeTicket(ticket.user, ticket._id);
     });
   }, {
       scheduled: false,

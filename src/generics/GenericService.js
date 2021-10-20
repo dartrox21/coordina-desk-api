@@ -183,7 +183,8 @@ class GenericService {
      * @param property that must be filtered toUpdate 
      * @returns 
      */
-    updateMany = async (filter = Object, toUpdate = Object) => {
+    updateMany = async (filter, toUpdate = Object) => {
+        console.log('updateMany GenericService');
         return await this.genericRepository.updateMany(filter, toUpdate);
     }
 
@@ -193,6 +194,7 @@ class GenericService {
      * @returns objectr updated
      */
     updateObject = async(object) => {
+        console.log('updateObject GenericService');
         return await this.genericRepository.update(object._id, object);
     }
 }
