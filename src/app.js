@@ -12,13 +12,9 @@ const CustomErrorMessages = require('./exceptionHandler/CustomErrorMessages');
 require('./crons');
 
 
-var corsOptions = {
-    origin: 'https://coordinadesk.netlify.app/',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
 corsOptions = {
     origin: function(origin, cb) {
-        if([].indexOf(origin) !== -1) {
+        if(['https://coordinadesk.netlify.app/'].indexOf(origin) !== -1) {
             cb(null, true);
         } else {
             cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
