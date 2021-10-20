@@ -7,12 +7,9 @@ const errorMiddleware = require('./middlewares/error.middleware');
 const { validateToken } = require('./auth/auth.middleware');
 const cors = require('cors');
 const CustomValidateException = require('./exceptionHandler/CustomValidateException');
-
-
-CustomErrorMessages
+const CustomErrorMessages = require('./exceptionHandler/CustomErrorMessages');
 
 require('./crons');
-const CustomErrorMessages = require('./exceptionHandler/CustomErrorMessages');
 
 
 var corsOptions = {
