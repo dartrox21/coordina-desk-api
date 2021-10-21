@@ -65,8 +65,6 @@ class TicketService extends GenericService {
             role = ROLE.COORDINATOR;
         }
         ticket.priority = priority;
-        console.log(role)
-        console.log(userProjection)
         const user = await userService.findUserByRoleWithLessTickets(role, userProjection);
         await this.assignTicket(ticket, user, STATUS.ASIGNED);
         await updateTicketMailService.sendMail(ticket);
@@ -180,7 +178,10 @@ class TicketService extends GenericService {
     reasign = async (req, res) => {
         console.log('reasign TicketService');
         let ticket = await this.findByIdAndValidate(req.params.id);
+        await userService.removeTicket(ticket.user, ticket._id);
         const user = await userService.findByIdAndValidate(req.params.userId);
+        user.tickets.push(ticket._id);
+        await userService.updateUser(user, user._id);
         ticket.user = user;
         ticket = await ticketRepository.save(ticket);
         return res.status(HttpStatus.OK).json(ticket);
