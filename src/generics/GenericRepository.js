@@ -40,12 +40,19 @@ class GenericRepository {
      * @returns List list of objects found
      */
     async getAllPageable(limit, page, filters, projection = null) {
+        let filtersList = [];
         for (const property in filters) {
             if(typeof filters[property] !== 'boolean') {
-                filters[property] = {$regex: filters[property], $options: 'i'};
+                const filter = {}
+                filter[property] = {$regex: filters[property], $options: 'i'};
+                filtersList.push(filter);
+            } else {
+                filtersList.push(filters);
             }
         }
-        return this.Schema.find(filters)
+        filtersList = { $or: filtersList};
+        console.log(filtersList);
+        return this.Schema.find(filtersList)
         .select(projection)
         .limit(limit)
         .skip(page);
