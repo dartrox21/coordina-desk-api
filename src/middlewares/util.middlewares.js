@@ -61,7 +61,7 @@ function setFilters(projection) {
         const limit = req.query.limit !== undefined ? Number(req.query.limit) : 10;
         req.query.limit = limit;
         let page = req.query.page !== undefined ? Number(req.query.page) - 1 : 0;
-        req.query.page = page === 0 ? page : limit * page;
+        req.query.page = page
         req.query.q = req.query.q !== undefined ? new RegExp(req.query.q) : undefined;
         let filter = {};
         const keys = Object.keys(req.query).filter(filter => projection.includes(filter));

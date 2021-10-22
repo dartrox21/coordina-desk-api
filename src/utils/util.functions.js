@@ -94,7 +94,7 @@ function handleMongooseError(error) {
  * @returns Pageable object
  */
 async function buildPageableResponse(list, page, limit, count) {
-    page = page === 0 ? 1 : page === 1 ? 1 : page;
+    page++;
     pages = parseInt(count / limit) + (count%limit > 0 ? 1 : 0);
     const pageable = {
         content: list,
