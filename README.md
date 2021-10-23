@@ -17,6 +17,7 @@ DB_USER=username
 DB_PASSWORD=password
 BD_URI=database_example.com/market
 NODE_ENV=production | delevopment
+TZ=timezone that will be used by the server and cron jobs
 
 
 ##### Authentication

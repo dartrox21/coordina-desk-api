@@ -20,8 +20,7 @@ const userService = require('../user/user.service');
  * At 1am if the tickets with status resolved that have not been updated
  * for more than 2 days will be set to isActive = false
  */
-// const closedTickets = cron.schedule('* 10 1 * * *', async () => {
-const closedTickets = cron.schedule('* 37 16 * * *', async () => {
+const closedTickets = cron.schedule('1 1 1 * * *', async () => {
     console.log('....::::: CRON JOB CLOSED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 2);
@@ -34,15 +33,14 @@ const closedTickets = cron.schedule('* 37 16 * * *', async () => {
     console.log('....::::: ENDS CRON JOB CLOSED TICKETS :::::.....');
 }, {
     scheduled: false,
-    timezone: "America/Mexico_City"
+    timezone: process.env.TZ
 });
 
 /**
  * At 2am if the tickets in the dashboard that have not been updated
  * for more than 5 days will be set to isActive = false
  */
-// const expiredTickets = cron.schedule('* 20 1 * * *', async () => {
-const expiredTickets = cron.schedule('* 40 16 * * *', async () => {
+const expiredTickets = cron.schedule('1 10 1 * * *', async () => {
     console.log('....::::: CRON JOB EXPIRED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 5);
@@ -56,7 +54,7 @@ const expiredTickets = cron.schedule('* 40 16 * * *', async () => {
     console.log('....::::: ENDS CRON JOB EXPIRED TICKETS :::::.....');
   }, {
       scheduled: false,
-      timezone: "America/Mexico_City"
+      timezone: process.env.TZ
 });
 
 
