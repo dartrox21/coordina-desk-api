@@ -24,9 +24,11 @@ if (process.env.NODE_ENV === 'production') {
         optionsSuccessStatus: 200,
         allowedHeaders: 'Content-Type,Authorization'
     }
+    app.use(cors(corsOptions));
+} else {
+    app.use(cors());
 }
 
-app.use(cors(corsOptions));
 
 
 module.exports = app;
