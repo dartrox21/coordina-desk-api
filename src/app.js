@@ -25,4 +25,5 @@ app.use(errorMiddleware);
 app.listen(process.env.PORT ,() => {
     console.log(`Running in NODE_ENV: ${process.env.NODE_ENV}`);
     console.log(`Running EDP in PORT: ${process.env.PORT}`);
+    console.log(`Current timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
 });
