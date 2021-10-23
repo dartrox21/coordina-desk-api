@@ -26,5 +26,7 @@ const app = express();
 //     app.use(cors(corsOptions));
 // }
 
+app.use(cors());
+
 
 module.exports = app;
