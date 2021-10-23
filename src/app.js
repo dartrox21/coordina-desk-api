@@ -7,7 +7,6 @@ const errorMiddleware = require('./middlewares/error.middleware');
 const { validateToken } = require('./auth/auth.middleware');
 const cors = require('cors');
 require('./crons');
-// require('./configuration/cors');
 
 
 
@@ -17,7 +16,7 @@ app.use(bodyparser.urlencoded({extended : false}));
 
 app.use(bodyparser.json());
 
-app.use(cors())
+require('./configuration/cors');
 
 app.use(validateToken);
 
