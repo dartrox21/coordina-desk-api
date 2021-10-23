@@ -26,7 +26,8 @@ if (process.env.NODE_ENV === 'production') {
     }
     app.use(cors(corsOptions));
 } else {
-    app.use(cors());
+    console.log('...::: SETTING SIMPLE CORS :::...');
+    // app.use(cors());
 }
 
 
