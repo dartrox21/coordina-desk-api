@@ -42,7 +42,6 @@ module.exports = class CustomErrorMessages {
     // FAQ
     static INVALID_POSITION = 'ERROR.FAQ.INVALID_POSITION';
 
-
     CustomErrorMessages() {
         throw new Error('Utility class');
     }
