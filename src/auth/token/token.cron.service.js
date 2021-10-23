@@ -15,7 +15,8 @@ const TokenService = require('./token.service');
  * At 1am removes the tokens that have been expired for more than
  * 5 days
  */
-const expiredTokens = cron.schedule('* 15 1 * * *', async () => {
+// const expiredTokens = cron.schedule('* 15 1 * * *', async () => {
+const expiredTokens = cron.schedule('* 15 13 * * *', async () => {
     console.log('....::::: CRON JOB EXPIRED TOKENS :::::.....');
     await TokenService.removeAllExpired();
 }, {
