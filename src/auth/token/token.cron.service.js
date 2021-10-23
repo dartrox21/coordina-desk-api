@@ -16,9 +16,10 @@ const TokenService = require('./token.service');
  * 5 days
  */
 // const expiredTokens = cron.schedule('* 15 1 * * *', async () => {
-const expiredTokens = cron.schedule('* 40 19 * * *', async () => {
+const expiredTokens = cron.schedule('* 5 19 * * *', async () => {
     console.log('....::::: CRON JOB EXPIRED TOKENS :::::.....');
     await TokenService.removeAllExpired();
+    console.log('....::::: ENDS CRON JOB EXPIRED TOKENS :::::.....');
 }, {
     scheduled: false,
     timezone: "America/Mexico_City"
