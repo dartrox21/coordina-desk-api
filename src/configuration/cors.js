@@ -6,7 +6,7 @@ const CustomValidateException = require('../exceptionHandler/CustomValidateExcep
 
 
 const app = express();
-let corsOptions = {};
+let corsOptions = null;
 
 if (process.env.NODE_ENV === 'production') {
     console.log('...::: SETTING CORS OPTIONS :::...');
