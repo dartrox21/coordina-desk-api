@@ -21,7 +21,7 @@ const userService = require('../user/user.service');
  * for more than 2 days will be set to isActive = false
  */
 // const closedTickets = cron.schedule('* 10 1 * * *', async () => {
-const closedTickets = cron.schedule('* 10 20 * * *', async () => {
+const closedTickets = cron.schedule('* 37 16 * * *', async () => {
     console.log('....::::: CRON JOB CLOSED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 2);
@@ -42,7 +42,7 @@ const closedTickets = cron.schedule('* 10 20 * * *', async () => {
  * for more than 5 days will be set to isActive = false
  */
 // const expiredTickets = cron.schedule('* 20 1 * * *', async () => {
-const expiredTickets = cron.schedule('* 20 20 * * *', async () => {
+const expiredTickets = cron.schedule('* 40 16 * * *', async () => {
     console.log('....::::: CRON JOB EXPIRED TICKETS :::::.....');
     let nDaysAgo = new Date();
     nDaysAgo.setDate(nDaysAgo.getDate() - 5);
