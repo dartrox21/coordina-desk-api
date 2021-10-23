@@ -50,8 +50,7 @@ class GenericRepository {
                 filtersList.push(filters);
             }
         }
-        filtersList = { $or: filtersList};
-        console.log(filtersList);
+        filtersList = filtersList.length > 0 ?  { $or: filtersList} : {};
         return this.Schema.find(filtersList)
         .select(projection)
         .limit(limit)

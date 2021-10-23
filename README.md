@@ -16,6 +16,7 @@ SALT_ROUNDS=10
 DB_USER=username
 DB_PASSWORD=password
 BD_URI=database_example.com/market
+NODE_ENV=production | delevopment
 
 
 ##### Authentication
