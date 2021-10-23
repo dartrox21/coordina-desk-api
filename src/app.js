@@ -5,9 +5,8 @@ const bodyparser = require('body-parser');
 const routes = require('./routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 const { validateToken } = require('./auth/auth.middleware');
-const cors = require('cors');
 require('./crons');
-
+const setUpCors = require('./configuration/cors');
 
 
 app = express();
@@ -16,7 +15,7 @@ app.use(bodyparser.urlencoded({extended : false}));
 
 app.use(bodyparser.json());
 
-require('./configuration/cors');
+setUpCors(app);
 
 app.use(validateToken);
 
