@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === 'production') {
             if([process.env.PORTAL_URL].indexOf(origin) !== -1) {
                 cb(null, true);
             } else {
+                console.log(`CORS ERROR INVALID ORIGIN ${origin}`);
                 cb(CustomValidateException.errorMessage(CustomErrorMessages.ORIGIN_NOT_ALLOWED).build());
             }
         },
@@ -23,8 +24,8 @@ if (process.env.NODE_ENV === 'production') {
         optionsSuccessStatus: 200,
         allowedHeaders: 'Content-Type,Authorization'
     }
+    app.use(cors(corsOptions));
 }
 
-app.use(cors(corsOptions));
 
 module.exports = app;
