@@ -1,44 +1,234 @@
+<!DOCTYPE html>
 <html>
-    <style>
-        a.button {
-            -webkit-appearance: button;
-            -moz-appearance: button;
-            appearance: button;
-        
-            text-decoration: none;
-            color: initial;
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style type="text/css">
+        /* FONTS */
+        @media screen {
+            @font-face {
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Lato Regular'), local('Lato-Regular'), url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+            }
+
+            @font-face {
+                font-family: 'Lato';
+                font-style: normal;
+                font-weight: 700;
+                src: local('Lato Bold'), local('Lato-Bold'), url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff) format('woff');
+            }
+
+            @font-face {
+                font-family: 'Lato';
+                font-style: italic;
+                font-weight: 400;
+                src: local('Lato Italic'), local('Lato-Italic'), url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+            }
+
+            @font-face {
+                font-family: 'Lato';
+                font-style: italic;
+                font-weight: 700;
+                src: local('Lato Bold Italic'), local('Lato-BoldItalic'), url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+            }
         }
-        table {
-            border:1px solid black;
+
+        /* CLIENT-SPECIFIC STYLES */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
         }
+
+        table,
         td {
-            border-top: 1px solid black;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+
+        /* RESET STYLES */
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+
+        body {
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        /* iOS BLUE LINKS */
+        a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+
+        /* MOBILE STYLES */
+        @media screen and (max-width:600px) {
+            h1 {
+                font-size: 32px !important;
+                line-height: 32px !important;
+            }
+        }
+
+        /* ANDROID CENTER FIX */
+        div[style*="margin: 16px 0;"] {
+            margin: 0 !important;
         }
     </style>
+</head>
 
-    <div align="center">
-        <h1>Nueva incidencia Coordina Desk</h1>
-        <h3>USERNAME a generado un nuevo ticket con id TICKET_ID en el sistema de Coordina desk</h3>
-        <table >
-            <tr><td>Titulo: TITLE</td></tr>
-            <tr><td>Descripcion: DESCRIPTION</td></tr>
-            <tr><td>Estatus: STATUS</td></tr>
-            <tr><td>Ticket Id: TICKET_ID</td></tr>
-        </table>
-        <br>
-        <p>Para darle seguimiento al ticket ingrese el ticket id(TICKET_ID) en la aplicacion de coordina desk</p>
-        <a href="PORTAL_URL" class="button">ABIR PAGINA COORDINA DESK</a>
-        <p>Si el boton de arriba no functiona puedes acceder usando este link <a href="PORTAL_URL">PORTAL_URL</a></p>
+<body style="background-color: #f4f4f4; margin: 0 !important; padding: 0 !important;">
+
+    <div
+        style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: 'Lato', Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
+        Nueva ticket Coordina Desk
     </div>
 
-    <div>
-        Tipos de Status:
-        WAITING_ASIGNATION: El ticket esta esperando a ser asignado,
-        ASIGNED: El ticket se a asignado,
-        IN_PROGRESS: El ticket esta siendo evaluado,
-        WAITING_RESPONSE: Esperamos que nos des una respuesta del ticket,
-        RESOLVE: Se a marcado el ticket como resuelto, se puede volver a abrir si quedan dudas,
-        FINAL_RESOLVE: El ticket se le a dado una respuesta final, no se puede vovler a abrir
-        CLOSED_DUE_TO_INACTIVITY: Por mas de 5 dias de inactividad se a cerado el ticket
-    </div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td bgcolor="#FDE68A" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td align="center" valign="top" style="padding: 40px 10px 40px 10px;">
+                            <a href="https://coordinadesk.netlify.app" target="_blank">
+                                <img alt="Logo"
+                                    src="https://coordinadesk.netlify.app/static/media/Logo-Large.ac008da7.png"
+                                    width="300" height=""
+                                    style="display: block; width: 300px; max-width: 300px; min-width: 100px; font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;"
+                                    border="0">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#FDE68A" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" valign="top"
+                            style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 25px; font-weight: 400; line-height: 25px;">
+                            <h1 style="font-size: 25px; font-weight: 400; margin: 0;">Nueva incidencia <strong>Coordina
+                                    Desk</strong></h1>
+                            <br>
+                            <h3 style="font-size: 18px; font-weight: 400; margin: 0;">USERNAME ha generado un nuevo
+                                ticket con id TICKET_ID en el sistema de Coordina desk</h3>
+                            </h3>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#FDE68A" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td bgcolor="#ffffff" align="center" valign="top"
+                            style="padding: 10px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 25px; font-weight: 400; line-height: 25px;">
+                            <table style="text-align: center; font-size: 18px;">
+                                <tr>
+                                    <td>Titulo: TITLE</td>
+                                </tr>
+                                <tr>
+                                    <td>Descripcion: DESCRIPTION</td>
+                                </tr>
+                                <tr>
+                                    <td>Estatus: STATUS</td>
+                                </tr>
+                                <tr>
+                                    <td>Ticket Id: TICKET_ID</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                    <tr>
+                        <td bgcolor="#ffffff" align="center"
+                            style="padding: 10px 20px 0px 20px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;">Para darle seguimiento al ticket ingrese el ticket id (TICKET_ID) en
+                                la aplicacion de Coordina Desk</p>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
+                                        <table border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td align="center" style="border-radius: 10px;" bgcolor="#FBBF24"><a
+                                                        href="PORTAL_URL" target="_blank"
+                                                        style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; display: inline-block;">Abrir
+                                                        Pagina Coordina Desk</a></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;">Si eso no funciona, copia y pega el siguiente link en tu navegador:
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 20px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;"><a href="PORTAL_URL" target="_blank"
+                                    style="color: #FBBF24;">PORTAL_URL</a></p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td bgcolor="#ffffff" align="left"
+                            style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <p style="margin: 0;">Cordiales saludos ✌🏼,<br>El equipo de Coordina Desk </p>
+                        </td>
+                    </tr>
+                </table>
+                <!--[if (gte mso 9)|(IE)]>
+            </td>
+            </tr>
+            </table>
+            <![endif]-->
+            </td>
+        </tr>
+    </table>
+
+</body>
+
 </html>
