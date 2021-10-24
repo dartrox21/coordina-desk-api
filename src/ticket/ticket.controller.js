@@ -49,5 +49,7 @@ router.patch('/ticket/id/:id/change-priority',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(TicketService.changePriority));
 
+router.patch('/ticket/id/:id/email-updates', asyncWrapper(TicketService.changeEmailNotifications));
+
 
 module.exports = router;

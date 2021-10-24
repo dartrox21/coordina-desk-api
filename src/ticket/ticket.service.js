@@ -130,7 +130,6 @@ class TicketService extends GenericService {
         console.log('postStudentAnswer TicketService');
         req.body.isUser = false;
         await this.postAnswer(req, res, STATUS.IN_PROGRESS);
-
     }
 
     /**
@@ -250,7 +249,21 @@ class TicketService extends GenericService {
         ticket.priority = req.body.priority;
         ticket = await ticketRepository.save(ticket);
         res.status(HttpStatus.OK).json(ticket);
-        await updateTicketMailService.sendMail(ticket);
+    }
+
+    /**
+     * change the boolean flag hasEmailUpdates
+     * @param Request obj req 
+     * @param Response obj res 
+     * @returns 200 OK
+     * @throws  404 NOT FOUND if the ticket id is not found
+     */
+    changeEmailNotifications = async (req, res) => {
+        console.log('changeEmailNotifications TicketService');
+        let ticket = await this.findByIdAndValidate(req.params.id);
+        ticket.hasEmailUpdates = !ticket.hasEmailUpdates;
+        ticket = await ticketRepository.save(ticket);
+        res.status(HttpStatus.OK).json(ticket);
     }
 
 }

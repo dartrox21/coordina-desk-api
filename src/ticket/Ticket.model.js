@@ -66,6 +66,11 @@ let Ticket = new Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    hasEmailUpdates: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 },
 {
