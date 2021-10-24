@@ -16,7 +16,7 @@ router.post('/ticket',
     asyncWrapper(TicketService.create));
 
 router.get('/ticket/dashboard',
-    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
     asyncWrapper(TicketService.dashboard));
 
 router.get('/ticket/id/:id', asyncWrapper(TicketService.getById));

@@ -99,7 +99,8 @@ class TicketService extends GenericService {
     dashboard = async (req, res) => {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
-        const tickets = await ticketRepository.getAll({isActive: true}, ticketDashboardProjection);
+        req.query.filters.isActive = true;
+        const tickets = await ticketRepository.getAll(req.query.filters, ticketDashboardProjection);
          tickets.forEach(ticket  => {
             ticket.user = userService.cleanUserObject(ticket.user, userProjection);
             switch(ticket.status) {
@@ -262,8 +263,8 @@ class TicketService extends GenericService {
         console.log('changeEmailNotifications TicketService');
         let ticket = await this.findByIdAndValidate(req.params.id);
         ticket.hasEmailUpdates = !ticket.hasEmailUpdates;
-        ticket = await ticketRepository.save(ticket);
-        res.status(HttpStatus.OK).json(ticket);
+        await ticketRepository.save(ticket);
+        res.status(HttpStatus.OK).send();
     }
 
 }
