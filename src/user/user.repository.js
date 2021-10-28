@@ -19,13 +19,6 @@ class UserRepository extends GenericRepository {
     }
 
     /**
-     * Method used to count all the active users in the db
-     */
-    async countDocuments() {
-        return User.countDocuments();
-    }
-
-    /**
      * Gets an active user by id 
      * @param id 
      * @param projection object. Can be null

@@ -189,7 +189,7 @@ class UserSevice extends GenericService {
         const page = req.query.page;
         let filters = req.query.filters || {};
         const users =  await this.getAllObjectsPageable(limit, page, filters, userProjection);
-        const totalDocuments = await UserRepository.countDocuments();
+        const totalDocuments = await UserRepository.countDocuments(filters);
         this.getPageableResponse(res, users, page, limit, totalDocuments);
     }
 

@@ -40,19 +40,8 @@ class GenericRepository {
      * @returns List list of objects found
      */
     async getAllPageable(limit, page, filters, projection = null) {
-        let filtersList = [];
-        for (const property in filters) {
-            if(typeof filters[property] !== 'boolean') {
-                const filter = {}
-                filter[property] = {$regex: filters[property], $options: 'i'};
-                filtersList.push(filter);
-            } else {
-                filtersList.push(filters);
-            }
-        }
         page = page * limit;
-        filtersList = filtersList.length > 0 ?  { $or: filtersList} : {};
-        return this.Schema.find(filtersList)
+        return this.Schema.find(this.createFilterList(filters))
             .select(projection)
             .limit(limit)
             .skip(page);
@@ -61,8 +50,8 @@ class GenericRepository {
     /**
      * Method used to count the element in the db collection
      */
-    async countDocuments() {
-        return this.Schema.countDocuments();
+    async countDocuments(filters = null) {
+        return this.Schema.countDocuments(this.createFilterList(filters));
     }
 
     /**
@@ -93,6 +82,25 @@ class GenericRepository {
 
     async delete(_id) {
         return this.Schema.deleteOne({_id});
+    }
+
+    /**
+     * Creates a list of filter adding regex operator and or operator
+     * @param  filters 
+     * @returns 
+     */
+    createFilterList = (filters) => {
+        let filtersList = [];
+        for (const property in filters) {
+            if(typeof filters[property] !== 'boolean') {
+                const filter = {}
+                filter[property] = {$regex: filters[property], $options: 'i'};
+                filtersList.push(filter);
+            } else {
+                filtersList.push(filters);
+            }
+        }
+        return filtersList.length > 0 ?  { $or: filtersList} : {};
     }
 }
 
