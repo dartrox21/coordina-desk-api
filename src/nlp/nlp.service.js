@@ -2,9 +2,12 @@ const { NlpManager } = require('node-nlp');
 
 const fs = require('fs');
 const HttpStatus = require('http-status-codes');
+const configuration = require('../configuration/configuration.model');
+
 
 class NlpService {
     nlp;
+    nlpFile = './resources/model.nlp';
 
     constructor() {
         setTimeout(() => {
@@ -12,13 +15,35 @@ class NlpService {
             
         }, 2000);
     }
+
+    getIsTrainedKey = async () => {
+        return configuration.findOne({$or: [
+            {configKey: {isTrained: true}},
+            {configKey: {isTrained: false}},
+        ]});
+    }
+
+    updateIsTrainedKey = async (key, isTrained) => {
+        console.log(`Updating IsTrained configuration key with value ${isTrained}`);
+        key.configKey.isTrained = isTrained;
+        await configuration.updateOne(key);
+    }
     
     configure = async () => {
         this.nlp = new NlpManager({ languages: ['es'], nlu: { log: true } });
         this.nlp.settings.autoSave = false;
         this.nlp.addLanguage('es');
-        await this.readInputData();
-        await this.train();
+        let key = await this.getIsTrainedKey();
+        if(key != null && !key.configKey.isTrained) {
+            console.log('training');
+            await this.readInputData();
+            await this.train();
+            await this.updateIsTrainedKey(key, true);
+        } else {
+            console.log('Model is already trained');
+            const data = fs.readFileSync(this.nlpFile, 'utf8');
+            await this.nlp.import(data);
+        }
     }
 
     /**
@@ -37,7 +62,7 @@ class NlpService {
         console.log('Training NLP');
         await this.nlp.train();
         const data = this.nlp.export(false);
-        await fs.writeFile('./resources/model.nlp', data, 'utf8', (err) => {
+        await fs.writeFile(this.nlpFile, data, 'utf8', (err) => {
             if(err) {
               console.log(err);
             }
@@ -75,18 +100,20 @@ class NlpService {
      */
     updateData = async () => {
         console.log('updateData NlpService');
+        const isTrainedKey = await this.getIsTrainedKey();
+        await this.updateIsTrainedKey(isTrainedKey, false);
         this.configure();
     }
 
     retrain = async (req, res) => {
         console.log('Retraining NlpService');
-        await this.configure();
+        await this.updateData();
         res.status(HttpStatus.OK).send();
     }
-
 }
 
 module.exports = new NlpService();
 
 // requiring elements at the very botton to avoid circular dependency
-const faqService = require('../category/faq/faq.service');
+const faqService = require('../category/faq/faq.service');const { any, isArguments } = require('underscore');
+
