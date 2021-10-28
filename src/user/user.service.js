@@ -61,7 +61,7 @@ class UserSevice extends GenericService {
     }
 
     /**
-     * Serivce used to logically deletes a user setting its flag active to false
+     * Serivce used to logically delete a user, setting its flag active to false
      * @param req Request object
      * @param res Response object
      * @returns 404 NOT FOUND if the user is not found
@@ -69,7 +69,12 @@ class UserSevice extends GenericService {
      */
     delete = async (req, res) => {
         console.log('delete UserSevice');
-        await this.findByIdAndValidate(req.params.id);
+        const user = await this.findByIdAndValidate(req.params.id);
+        if(user.ticketsCount > 0) {
+            throw CustomValidateException.conflict()
+                .errorMessage(CustomErrorMessages.DELETE_HAS_DEPENDENCIES)
+                .setField('ticketsCount').setValue(user.ticketsCount).build();
+        }
         await UserRepository.delete(req.params.id);
         res.status(HttpStatus.OK).send();
     }
