@@ -21,6 +21,7 @@
     "fs": "^0.0.1-security",
     "http-status-codes": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
+    "ml-classify-text": "^2.0.0",
     "mongoose": "^5.12.1",
     "mongoose-sequence": "^5.3.1",
     "mongoose-unique-validator": "^2.0.3",

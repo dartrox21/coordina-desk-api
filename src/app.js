@@ -8,6 +8,7 @@ const { validateToken } = require('./auth/auth.middleware');
 require('./crons');
 const setUpCors = require('./configuration/cors');
 const rateLimit = require('./configuration/rateLimit');
+require('./classify');
 
 app = express();
 

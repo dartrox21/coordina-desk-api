@@ -14,13 +14,16 @@ let User = new Schema({
     email: {
         type: String,
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
-        unique: true
+        unique: true,
+        maxLength: 200
     },
     password: {
-        type: String
+        type: String,
+        maxLength: 200
     },
     name: {
-        type: String
+        type: String,
+        maxLength: 200
     },
     isActive: {
         type: Boolean,

@@ -7,11 +7,13 @@ let Schema = mongoose.Schema;
 let Auth = new Schema({
     email: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 200
     },
     password: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 200
     }
 });
 
