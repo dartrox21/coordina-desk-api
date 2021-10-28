@@ -7,11 +7,13 @@ const Schema = mongoose.Schema;
 const Faq = new Schema({
     question: {
         type: String,
-        required:[true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required:[true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 500
     },
     answer: {
         type: String,
-        required:[true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required:[true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 10000
     },
     isActive: {
         type: Boolean,

@@ -23,15 +23,18 @@ let Ticket = new Schema({
     },
     title: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 200
     },
     description: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 1000
     },
     name: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 200
     },
     udgId: {
         type: Number,
@@ -39,7 +42,8 @@ let Ticket = new Schema({
     },
     email: {
         type: String,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
+        maxLength: 200
     },
     phone: {
         type: Number
