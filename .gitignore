@@ -1,3 +1,4 @@
 node_modules/
 src/configuration/.env
 resources/model.nlp
+/*.xlsx
