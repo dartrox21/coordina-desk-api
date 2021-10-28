@@ -76,7 +76,12 @@ class NlpService {
     updateData = async () => {
         console.log('updateData NlpService');
         this.configure();
-        
+    }
+
+    retrain = async (req, res) => {
+        console.log('Retraining NlpService');
+        await this.configure();
+        res.status(HttpStatus.OK).send();
     }
 
 }
