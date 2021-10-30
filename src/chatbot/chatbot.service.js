@@ -23,13 +23,18 @@ class ChatbotService extends GenericService  {
     evaluateQuestion = async (req, res) => {
         const chatbot = new Chatbot();
         chatbot.input = req.body.question;
-        this.createObject(chatbot);
+        await this.createObject(chatbot);
         const response = await nlpService.evaluateData(req.body.question);
         if(response.answer) {
             res.status(HttpStatus.OK).json({answer: response.answer});
         } else {
             res.status(HttpStatus.NO_CONTENT).send();
         }
+    }
+
+
+    generateCurrentDataFile = async (req, res) => {
+        res.status(HttpStatus.OK).send();
     }
 }
 
