@@ -1,12 +1,13 @@
 const HttpStatus = require('http-status-codes')
-const fs = require('fs');
-
-
 const Chatbot = require('./Chatbot.model')
 const GenericService = require('../generics/GenericService')
 const nlpService = require('../nlp/nlp.service')
 const chatbotRepository = require('./chatbot.repository');
 const utilFunctions = require('../utils/util.functions');
+const chatbotFileService = require('./chatbotFile/chatbotFile.service');
+const ChatbotFile = require('./chatbotFile/chatbotFile.model');
+
+
 
 
 
@@ -41,16 +42,43 @@ class ChatbotService extends GenericService  {
 
 
     /**
-     * Generate a csv file with all the data from the Schema
+     * Generates a csv with all the data from the db Schema
+     * @returns Object {filename, csvFile, file path}
+     */
+    generateCsv = async () => {
+        console.log('generateCsv ChatbotService');
+        const date = new Date();
+        const filename = `CHATBOT_DATA-${date.getMonth()}-${date.getFullYear()}`;
+        const {stream, csv} = await chatbotRepository.generateCsv(`${filename}`);
+        const path = stream.path;
+        return {filename, csv, path};
+    }
+
+    /**
+     * Get the csv with all the data from the db
+     * the csv that has been created is later deleted
      * @param Request req 
      * @param Response res 
      */
     generateCurrentDataFile = async (req, res) => {
-        const date = new Date();
-        const filename = `CHATBOT_DATA-${date.getMonth()}-${date.getFullYear()}`;
-        const {stream, csv} = await chatbotRepository.generateCsv(`${filename}`);
+        console.log('generateCurrentDataFile ChatbotService');
+        const {filename, csv, path} = await this.generateCsv();
         res.attachment(`${filename}.csv`).send(csv);
-        utilFunctions.deleteFileByStream(stream.path);
+        await utilFunctions.deleteFileByStream(path);
+    }
+
+    /**
+     * Generates a csv and creates a ChatbotFile object to store the csv
+     * in the db
+     */
+    generateCsvAndSave = async () => {
+        console.log('generateCsvAndSave ChatbotService');
+        const {filename, csv, path} = await this.generateCsv();
+        const chatbotFile = new ChatbotFile();
+        chatbotFile.name = filename;
+        chatbotFile.file = csv;
+        await chatbotFileService.createObject(chatbotFile);
+        await utilFunctions.deleteFileByStream(path); 
     }
 }
 

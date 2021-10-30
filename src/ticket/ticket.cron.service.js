@@ -1,4 +1,4 @@
-var cron = require('node-cron');
+const cron = require('node-cron');
 const ticketService = require('./ticket.service');
 const STATUS = require('./Status.enum'); 
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');

@@ -40,7 +40,7 @@ class GenericRepository {
      * @returns List list of objects found
      */
     async getAllPageable(limit, page, filters, projection = null) {
-        page = page * limit;
+        page = page == 1 ? 0: page * limit;
         return this.Schema.find(this.createFilterList(filters))
             .select(projection)
             .limit(limit)

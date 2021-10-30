@@ -128,16 +128,20 @@ async function buildPageableResponse(list, page, limit, count) {
     }
 }
 
-deleteFileByStream = (path) => {
+deleteFileByStream = async (path) => {
     console.log('deleteFileByStream UtilFunctions');
-    setTimeout(() => {
-        try {
-            fs.unlinkSync(path)
-            console.log(`File removed ${path}`);
-          } catch(err) {
-            console.error('Something wrong happened removing the file', err)
-          }
-    }, 5000);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            try {
+                fs.unlinkSync(path)
+                console.log(`File removed ${path}`);
+                resolve('File removed');
+              } catch(err) {
+                console.error('Something wrong happened removing the file', err)
+                reject(err);
+              }
+        }, 5000);
+    });
 }
 
 readFile = async (file) => {
@@ -155,6 +159,15 @@ readFile = async (file) => {
     });
 }
 
+/**
+ * Writes a file from a binary buffer
+ */
+writeBinaryFile = async (binaryBuffer) => {
+    return new Promise((resolve, reject) => {
+
+    });
+}
+
 module.exports = {
     userHasAuthority,
     encrypt,
@@ -163,5 +176,6 @@ module.exports = {
     buildPageableResponse,
     preAuthorize,
     deleteFileByStream,
-    readFile
+    readFile,
+    writeBinaryFile
 }
