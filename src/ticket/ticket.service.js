@@ -275,7 +275,13 @@ class TicketService extends GenericService {
     }
 
 
-    isFinalStatus = async (ticket) => {
+    /**
+     * Validates if  the ticket has a final status
+     * STATUS.FINAL_RESOLVE or STATUS.CLOSED_DUE_TO_INACTIVITY
+     * @param Ticket ticket 
+     * @returns boolean
+     */
+    isFinalStatus = (ticket) => {
         if(ticket.status === STATUS.FINAL_RESOLVE ||
             ticket.status === STATUS.CLOSED_DUE_TO_INACTIVITY) {
                 return true;
