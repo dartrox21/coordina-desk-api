@@ -38,6 +38,17 @@ class GenericService {
     }
 
     /**
+     * Creates a object and saves it in the DB
+     * @param req Request object
+     * @param res Response object
+     */
+    createObject = async (object) => {
+        console.log('CreateObject generic');
+        await this.uniqueValidateException(object);
+        return await this.genericRepository.save(object);
+    }
+
+    /**
      * Get the list of all objects
      * @param req Request object
      * @param res Response object

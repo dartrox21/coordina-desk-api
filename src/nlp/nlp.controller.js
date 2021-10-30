@@ -4,8 +4,6 @@ const NlpService = require('./nlp.service');
 const ROLE = require('../role/Role.enum');
 
 
-router.post('/nlp/evaluate', asyncWrapper(NlpService.evaluateQuestion));
-
 router.post('/nlp/train', preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), asyncWrapper(NlpService.retrain));
 
 module.exports = router;

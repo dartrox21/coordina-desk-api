@@ -70,22 +70,6 @@ class NlpService {
         console.log('Training finalized');
     }
 
-    /**
-     * Evaluates the input data from the user and returns a response based in its question
-     * @param RequestObj req 
-     * @param ResponseObj res 
-     * @returns 200 OK if a response has been found
-     *          204 NO CONTENT if a response has not been found
-     */
-    evaluateQuestion = async (req, res) => {
-        const response = await this.evaluateData(req.body.question);
-        if(response.answer) {
-            res.status(HttpStatus.OK).json({answer: response.answer});
-        } else {
-            res.status(HttpStatus.NO_CONTENT).send();
-        }
-    }
-
 
     evaluateData = async (data) => {
         return await this.nlp.process('es', data);
