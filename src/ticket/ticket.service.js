@@ -13,6 +13,9 @@ const userProjection = require("../user/projections/user.projection");
 const nlpService = require("../nlp/nlp.service");
 const PRIORITY = require("./Priority.enum");
 const updateTicketMailService = require("../mail/updateTicket.mail.service");
+const tokenRepository = require("../auth/token/token.repository");
+const CustomValidateException = require("../exceptionHandler/CustomValidateException");
+const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 
 
 
@@ -158,6 +161,10 @@ class TicketService extends GenericService {
      */
     postAnswer = async (req, res, status) => {
         let ticket = await this.findByIdAndValidate(req.params.id);
+        if(!req.body.isUser && this.isFinalStatus(ticket)) {
+            throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.UNABLE_TO_REOPEN)
+                .setField('status').setValue(ticket.status).build();
+        }
         if(ticket.status !== STATUS.ASIGNED && ticket.status !== STATUS.WAITING_ASIGNATION) {
             ticket.status = status;
         }
@@ -265,6 +272,15 @@ class TicketService extends GenericService {
         ticket.hasEmailUpdates = !ticket.hasEmailUpdates;
         await ticketRepository.save(ticket);
         res.status(HttpStatus.OK).send();
+    }
+
+
+    isFinalStatus = async (ticket) => {
+        if(ticket.status === STATUS.FINAL_RESOLVE ||
+            ticket.status === STATUS.CLOSED_DUE_TO_INACTIVITY) {
+                return true;
+        }
+        return false;
     }
 
 }
