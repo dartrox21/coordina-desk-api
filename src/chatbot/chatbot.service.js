@@ -1,8 +1,15 @@
 const HttpStatus = require('http-status-codes')
+const fs = require('fs');
+
 
 const Chatbot = require('./Chatbot.model')
 const GenericService = require('../generics/GenericService')
 const nlpService = require('../nlp/nlp.service')
+const chatbotRepository = require('./chatbot.repository');
+const utilFunctions = require('../utils/util.functions');
+
+
+
 
 class ChatbotService extends GenericService  {
     constructor() {
@@ -33,8 +40,17 @@ class ChatbotService extends GenericService  {
     }
 
 
+    /**
+     * Generate a csv file with all the data from the Schema
+     * @param Request req 
+     * @param Response res 
+     */
     generateCurrentDataFile = async (req, res) => {
-        res.status(HttpStatus.OK).send();
+        const date = new Date();
+        const filename = `CHATBOT_DATA-${date.getMonth()}-${date.getFullYear()}`;
+        const {stream, csv} = await chatbotRepository.generateCsv(`${filename}`);
+        res.attachment(`${filename}.csv`).send(csv);
+        utilFunctions.deleteFileByStream(stream.path);
     }
 }
 

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const fs = require('fs');
 const CustomValidateException = require('../exceptionHandler/CustomValidateException');
 const CustomErrorMessages = require('../exceptionHandler/CustomErrorMessages');
 const HttpStatus = require('http-status-codes');
@@ -127,11 +128,40 @@ async function buildPageableResponse(list, page, limit, count) {
     }
 }
 
+deleteFileByStream = (path) => {
+    console.log('deleteFileByStream UtilFunctions');
+    setTimeout(() => {
+        try {
+            fs.unlinkSync(path)
+            console.log(`File removed ${path}`);
+          } catch(err) {
+            console.error('Something wrong happened removing the file', err)
+          }
+    }, 5000);
+}
+
+readFile = async (file) => {
+    console.log('readFile UtilFunctions');
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            fs.readFile(file, 'utf8', (err, data) => {
+                if(err) {
+                    console.error('There was an errror reading the file', err);
+                    reject('There was an errror reading the file');
+                }
+                resolve(data);
+            });
+        }, 2000);
+    });
+}
+
 module.exports = {
     userHasAuthority,
     encrypt,
     handleMongooseError,
     asyncWrapper,
     buildPageableResponse,
-    preAuthorize
+    preAuthorize,
+    deleteFileByStream,
+    readFile
 }

@@ -9,6 +9,7 @@ require('./crons');
 const setUpCors = require('./configuration/cors');
 const rateLimit = require('./configuration/rateLimit');
 
+global.__basedir = __dirname.slice(0, -4); 
 app = express();
 
 app.use(bodyparser.urlencoded({extended : false}));
