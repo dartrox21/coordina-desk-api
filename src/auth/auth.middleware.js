@@ -8,7 +8,7 @@ const _ = require('underscore');
 
 const WHITE_LIST = ['/auth/login', '/chatbot/evaluate', '/ticket', '/ticket/id/*',
                     '/category/all', '/ticket/id/*/student/answer', '/faq/category/*',
-                    '/ticket/id/*/email-updates', '/chatbot/generate-current'];
+                    '/ticket/id/*/email-updates'];
 
 /**
  * Middleware to validate that the body contains a user and a password
