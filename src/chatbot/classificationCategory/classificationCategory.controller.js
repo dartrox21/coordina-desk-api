@@ -16,6 +16,11 @@ router.get('/classification-category/all',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(ClassificationCategoryService.getAll));
 
+
+router.get('/classification-category/:id',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(ClassificationCategoryService.getById));
+
 router.put('/classification-category/:id',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), cleanMiddleware],
     asyncWrapper(ClassificationCategoryService.update));
