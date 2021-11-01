@@ -103,8 +103,10 @@ class TicketService extends GenericService {
         console.log('get dashboard tickets TicketSerivce');
         const response = new DashBoard();
         req.query.filters.isActive = true;
-        const tickets = await ticketRepository.getAll(req.query.filters, ticketDashboardProjection);
-         tickets.forEach(ticket  => {
+        let tickets = await ticketRepository.getAll(req.query.filters, ticketDashboardProjection);
+        // If a deep copy is not made when creating a copy of a user and reasigning it to the ticket it causes that a new id is being created for the user prop
+        tickets = JSON.parse(JSON.stringify(tickets));
+        tickets.forEach(ticket  => {
             ticket.user = userService.cleanUserObject(ticket.user, userProjection);
             switch(ticket.status) {
                 case STATUS.WAITING_ASIGNATION:
