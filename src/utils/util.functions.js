@@ -77,12 +77,11 @@ async function encrypt(password) {
  * @param error Mongoose Error
  */
 function handleMongooseError(error) {
-    console.log('Handle Mongoose Error')
+    console.log('Handle Mongoose Error');
     const field = error.stringValue ;
     const props = error.path;
     return CustomValidateException.status(HttpStatus.BAD_REQUEST)
-      .setField(props)
-      .setValue(error)
+      .setValue(error.message)
       .errorMessage(CustomErrorMessages.MONGOOSE_ERROR).build();
 };
 

@@ -22,6 +22,7 @@ module.exports = class CustomErrorMessages {
     static BAD_REQUEST = 'ERROR.COMMON.BAD_REQUEST';
     static MUST_BE_UNIQUE = 'ERROR.COMMON.MUST_BE_UNIQUE';
     static ID_NOT_MATCH = 'ERROR.COMMON.ID_DOES_NOT_MATCH';
+    static MAX_LENGTH = 'ERROR.COMMON.MAX_LENGTH_EXCEDED'
     
     // Auth
     static BAD_CREDENTIALS = 'ERROR.AUTH.BAD_CREDENTIALS';

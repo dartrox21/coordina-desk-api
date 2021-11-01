@@ -10,5 +10,7 @@ app.use(require('./ticket/ticket.controller'));
 app.use(require('./category/category.controller'));
 app.use(require('./category/faq/faq.controller'));
 app.use(require('./chatbot/chatbot.controller'));
+app.use(require('./chatbot/classificationCategory/classificationCategory.controller'));
+
 
 module.exports = app;
