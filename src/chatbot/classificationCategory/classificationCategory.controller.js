@@ -24,4 +24,7 @@ router.delete('/classification-category/:id',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(ClassificationCategoryService.delete));
 
+router.post('/classification-category/classify',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(ClassificationCategoryService.classifyData));
 module.exports = router;

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const AutoIncrementFactory = require('mongoose-sequence');
 const ConfigurationModel = require('./configuration.model');
+const Category = require('../category/Category.model');
+const ClassificationCategory = require('../chatbot/classificationCategory/ClassificationCategory.model');
+
+
 
 
 mongoose.set('useNewUrlParser',true);
@@ -16,16 +20,33 @@ mongoose.set('debug', true);
  */
 mongoose.set('useFindAndModify', false);
 
-(async function connect() {
-    const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.BD_URI}?retryWrites=true&w=majority`)
-        .catch(err => console.log(`DB connection ERROR: ${err}`));
-    const AutoIncrement = AutoIncrementFactory(connection);
-    let configurationKeys = await ConfigurationModel.find();
+generateBaseData = async () => {
+    console.log('...::: GENERATING DB BASE DATA :::...');
+    const configurationKeys = await ConfigurationModel.find();
     if(configurationKeys.length < 1) {
         console.log('CREATING CONFIGURATION KEYS');
         await ConfigurationModel.create({configKey: {isTrained: false}});
     }
+    const category = await Category.findOne({category: 'CHATBOT'});
+    if(category == null) {
+        console.log('CREATING CHATBOT CATEGORY');
+        await Category.create({category: 'CHATBOT', isActive: false});
+    }
+    const classificationCategory = await ClassificationCategory.findOne({category: 'OTHERS'});
+    if(classificationCategory == null) {
+        console.log('CREATING OTHERS CLASSIFICATION CATEGORY');
+        await ClassificationCategory.create({category: 'OTHERS', keywords: 'others'});
+    }
+}
+
+(async function connect() {
+    const connection = await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.BD_URI}?retryWrites=true&w=majority`)
+        .catch(err => console.log(`DB connection ERROR: ${err}`));
+    AutoIncrementFactory(connection);
+    generateBaseData();
 })();
+
+
 
 /**
  * Connection ready state 
