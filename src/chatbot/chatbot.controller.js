@@ -4,10 +4,10 @@ const { setFilters } = require('../middlewares/util.middlewares');
 const ChatbotService = require('./chatbot.service');
 const ROLE = require('../role/Role.enum');
 const ChatbotFileService = require('./chatbotFile/chatbotFile.service');
+const FILTERS = ['name'];
 
 
 router.post('/chatbot/evaluate', asyncWrapper(ChatbotService.evaluateQuestion));
-const FILTERS = ['name'];
 
 router.get('/chatbot/files/all/pageable',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
