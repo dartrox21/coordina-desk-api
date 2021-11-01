@@ -13,8 +13,14 @@ router.get('/chatbot/files/all/pageable',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
     asyncWrapper(ChatbotFileService.getAllFilesPageable));
 
+// router.get('/chatbot/generate-current',
+//     [preAuthorize(ROLE.COORDINATOR)],
+//     asyncWrapper(ChatbotService.generateCurrentDataFile));
 router.get('/chatbot/generate-current',
-    [preAuthorize(ROLE.COORDINATOR)],
     asyncWrapper(ChatbotService.generateCurrentDataFile));
+
+router.get('/chatbot/files/:id',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(ChatbotFileService.getById));
 
 module.exports = router;

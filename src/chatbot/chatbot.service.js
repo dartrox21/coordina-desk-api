@@ -59,7 +59,7 @@ class ChatbotService extends GenericService  {
     generateCurrentDataFile = async (req, res) => {
         console.log('generateCurrentDataFile ChatbotService');
         const {filename, csv, path} = await this.generateCsv();
-        res.attachment(`${filename}.csv`).send(csv);
+        res.status(HttpStatus.OK).attachment(`${filename}.csv`).send(csv);
         await utilFunctions.deleteFileByStream(path);
     }
 
