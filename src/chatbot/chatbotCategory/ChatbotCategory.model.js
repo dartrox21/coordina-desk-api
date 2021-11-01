@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
 
-const ChatbotCategory = new Schema({
+const ClassificationCategory = new Schema({
     category: {
         type: String,
         maxLength: 200
@@ -13,8 +13,8 @@ const ChatbotCategory = new Schema({
     }
 }, 
 { 
-    collection: 'chatbot_category',
+    collection: 'classification_category',
     timestamps: true
 });
 
-module.exports = mongoose.model('chatbot_category', ChatbotCategory);
+module.exports = mongoose.model('classification_category', ClassificationCategory);

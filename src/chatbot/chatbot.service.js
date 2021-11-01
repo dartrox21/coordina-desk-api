@@ -9,9 +9,6 @@ const ChatbotFile = require('./chatbotFile/chatbotFile.model');
 
 
 
-
-
-
 class ChatbotService extends GenericService  {
     constructor() {
         super(Chatbot);
