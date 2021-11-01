@@ -7,8 +7,6 @@ const utilFunctions = require('../utils/util.functions');
 const chatbotFileService = require('./chatbotFile/chatbotFile.service');
 const ChatbotFile = require('./chatbotFile/chatbotFile.model');
 
-
-
 class ChatbotService extends GenericService  {
     constructor() {
         super(Chatbot);
@@ -28,7 +26,8 @@ class ChatbotService extends GenericService  {
     evaluateQuestion = async (req, res) => {
         const chatbot = new Chatbot();
         chatbot.input = req.body.question;
-        await this.createObject(chatbot);
+        const data = await this.createObject(chatbot);
+        await classificationCategoryService.classifyOneAndUpdate(data);
         const response = await nlpService.evaluateData(req.body.question);
         if(response.answer) {
             res.status(HttpStatus.OK).json({answer: response.answer});
@@ -80,3 +79,5 @@ class ChatbotService extends GenericService  {
 }
 
 module.exports = new ChatbotService();
+
+const classificationCategoryService = require('./classificationCategory/classificationCategory.service');
