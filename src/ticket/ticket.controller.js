@@ -9,6 +9,7 @@ const ROLE = require('../role/Role.enum');
 const cleanMiddleware = cleanModel(Ticket.schema.paths);
 const cleanTicketContentMiddleware = cleanModel(TicketContent.schema.paths);
 const FILTERS = ['_id', 'status', 'priority', 'user', 'createdAt', 'updatedAt'];
+const DEACTIVATED_FILTERS = ['_id', 'title', 'priority', 'status'];
 
 
 router.post('/ticket', 
@@ -42,7 +43,7 @@ router.patch('/ticket/deactivate/id/:id',
     asyncWrapper(TicketService.deactivateTicket));
 
 router.get('/ticket/inactive/all', 
-    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(DEACTIVATED_FILTERS)],
     asyncWrapper(TicketService.getAllInactiveTicketsPageable));
 
 router.patch('/ticket/id/:id/change-priority',
