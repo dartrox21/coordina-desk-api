@@ -42,6 +42,14 @@ let User = new Schema({
         }],
         default: [],
         required: true
+    },
+    createdAt: {
+        type: Date, 
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date, 
+        default: Date.now
     }
 }, 
 { 

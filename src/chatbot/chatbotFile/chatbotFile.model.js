@@ -8,6 +8,14 @@ const ChatbotFile = new Schema({
     },
     file: {
         type: Buffer
+    },
+    createdAt: {
+        type: Date, 
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date, 
+        default: Date.now
     }
 }, 
 { 

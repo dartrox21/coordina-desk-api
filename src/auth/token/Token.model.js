@@ -8,6 +8,14 @@ let Token = new Schema({
     token: {
         type: String,
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+    },
+    createdAt: {
+        type: Date, 
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date, 
+        default: Date.now
     }
 },
 {
