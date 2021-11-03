@@ -1,9 +1,9 @@
+const HttpStatus = require("http-status-codes");
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
 const GenericService = require("../generics/GenericService");
 const Category = require('./Category.model');
 const categoryRepository = require("./category.repository");
-
 
 class CategoryService extends GenericService {
 
