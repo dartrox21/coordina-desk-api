@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const ticketService = require('./ticket.service');
-const STATUS = require('./Status.enum'); 
+const { STATUS } = require('./Status.enum'); 
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
 const updateTicketMailService = require('../mail/updateTicket.mail.service');
 const userService = require('../user/user.service');

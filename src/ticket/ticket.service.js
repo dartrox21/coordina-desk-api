@@ -3,7 +3,7 @@ const Ticket = require('./Ticket.model');
 const HttpStatus = require('http-status-codes');
 const ticketRepository = require('./ticket.repository');
 const ticketCreation = require("../mail/ticketCreation.mail.service");
-const STATUS = require('./Status.enum');
+const { STATUS } = require('./Status.enum');
 require('./ticketContent/TicketContet.model');
 const ticketDashboardProjection = require('./projections/ticketDashboard.projections');
 const ticketContentService = require('./ticketContent/ticketContent.service.js ');

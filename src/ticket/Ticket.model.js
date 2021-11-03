@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
-const STATUS = require('./Status.enum');
+const { STATUS } = require('./Status.enum');
 const PRIORITY = require('./Priority.enum');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 

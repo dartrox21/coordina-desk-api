@@ -1,5 +1,6 @@
 require('dotenv').config({path: __dirname + '/configuration/.env'});
 const MailService = require('./mail.service');
+const { getStatusTranslate } = require('../ticket/Status.enum');
 
 class TicketCreationService {
     BODY = '';
@@ -23,7 +24,7 @@ class TicketCreationService {
             body = body.replace(/TICKET_ID/g, ticket._id);
             body = body.replace(/TITLE/g, ticket.title);
             body = body.replace(/DESCRIPTION/g, ticket.description);
-            body = body.replace(/STATUS/g, ticket.status);
+            body = body.replace(/STATUS/g, getStatusTranslate(ticket.status));
             body = body.replace(/PORTAL_URL/g, this.URL);
             await MailService.sendMail(this.SUBJECT, body, ticket.email);
         } else {

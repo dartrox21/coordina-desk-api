@@ -8,4 +8,22 @@ const STATUS = {
     CLOSED_DUE_TO_INACTIVITY: 'CLOSED_DUE_TO_INACTIVITY'
 };
 
-module.exports = STATUS;
+const STATUS_TRANSLATE = {
+    WAITING_ASIGNATION: 'ESPERANDO ASIGNACIÓN',
+    ASIGNED: 'ASIGNADO',
+    IN_PROGRESS: 'EN PROGRESO',
+    WAITING_RESPONSE: 'ESPERANDO RESPUESTA',
+    RESOLVE: 'RESUELTO',
+    FINAL_RESOLVE: 'FINALIZADO',
+    CLOSED_DUE_TO_INACTIVITY: 'CERRADO POR INACTIVIDAD'
+}
+
+getStatusTranslate = (status) => {
+    return STATUS_TRANSLATE[status];
+}
+
+module.exports = {
+    STATUS,
+    STATUS_TRANSLATE,
+    getStatusTranslate
+};
