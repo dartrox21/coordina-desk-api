@@ -100,6 +100,17 @@ class FaqService extends GenericService {
     updateNlpData = async () => {
         await nlpService.updateData();
     }
+
+    /**
+     * Get the list of all objects
+     * @param filters object of filters
+     * @param projection projection object. Can be null
+     * @returns List of objects found
+     */
+     getAllFaqs = async (filters = Object, projection = null) => {
+        console.log('getAllFaqs faqService');
+        return await faqRepository.getAll(filters, projection);
+    }
 }
 
 module.exports = new FaqService();

@@ -1,9 +1,12 @@
+module.exports = {};
 const HttpStatus = require("http-status-codes");
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
 const GenericService = require("../generics/GenericService");
 const Category = require('./Category.model');
 const categoryRepository = require("./category.repository");
+const faqService = require("./faq/faq.service");
+const faqRepository = require('./faq/faq.repository');
 
 class CategoryService extends GenericService {
 
@@ -43,7 +46,10 @@ class CategoryService extends GenericService {
         const id = req.params.id;
         let category = await this.findByIdAndValidate(id);
         this.validateChatbotCategory(category);
-        const faqs = await faqService.getAllObjects({category: id});
+        // const faqs = await faqService.getAllObjects({category: id});
+        // const faqs = await this.getAllFaqs(id);
+        // const faqs = await getAllFaqs({category: id});
+        const faqs = await faqRepository.getAll({category: id});
         if(faqs.length > 0) {
             throw CustomValidateException.conflict()
                 .setField('Has faqs. Faqs count').setValue(faqs.length)
@@ -84,4 +90,3 @@ class CategoryService extends GenericService {
 module.exports = new CategoryService();
 
 // requiring elements at the very botton to avoid circular dependency
-const faqService = require("./faq/faq.service");
