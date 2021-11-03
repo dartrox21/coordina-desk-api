@@ -240,7 +240,7 @@ class TicketService extends GenericService {
         const page = req.query.page;
         const filters = req.query.filters;
         filters.isActive = false;
-        const tickets = await this.getAllObjectsPageable(limit, page, filters, ticketDashboardProjection);
+        const tickets = await ticketRepository.getAllPageable(limit, page, filters, ticketDashboardProjection);
         tickets.forEach(ticket =>  {ticket.user = userService.cleanUserObject(ticket.user, userProjection);});
         const totalDocuments = await ticketRepository.countDocuments(filters);
         this.getPageableResponse(res, tickets, page, limit, totalDocuments);

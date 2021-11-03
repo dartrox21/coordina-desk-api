@@ -92,13 +92,13 @@ class GenericRepository {
     createFilterList = (filters) => {
         let filtersList = [];
         for (const property in filters) {
+            const filter = {}
             if(typeof filters[property] !== 'boolean') {
-                const filter = {}
                 filter[property] = {$regex: filters[property], $options: 'i'};
-                filtersList.push(filter);
-            } else {
-                filtersList.push(filters);
-            }
+             } else {
+                 filter[property] = filters[property];
+             }
+             filtersList.push(filter);
         }
         return filtersList.length > 0 ?  { $or: filtersList} : {};
     }
