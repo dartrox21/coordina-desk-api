@@ -36,7 +36,7 @@ class ClassificationCategoryService extends GenericService {
         console.log('setUpClassifierInstance ClassificationCategoryService');
         this.classifier = new Classifier({
             nGramMin: 1,
-            nGramMax: 3
+            nGramMax: 2
         });
         this.classificationCategories = await this.getAllObjects();
         const categoriesWithoutOthers = this.classificationCategories.filter(c => c.category != this.OTHERS);
