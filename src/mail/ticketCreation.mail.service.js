@@ -19,17 +19,13 @@ class TicketCreationService {
 
      async sendMail(ticket) {
         console.log(`Sending ticket creation mail to ticket ${ticket._id}`);
-        if(ticket.hasEmailUpdates) {
-            let body = this.BODY.replace(/USERNAME/g, ticket.name);
-            body = body.replace(/TICKET_ID/g, ticket._id);
-            body = body.replace(/TITLE/g, ticket.title);
-            body = body.replace(/DESCRIPTION/g, ticket.description);
-            body = body.replace(/STATUS/g, getStatusTranslate(ticket.status));
-            body = body.replace(/PORTAL_URL/g, this.URL);
-            await MailService.sendMail(this.SUBJECT, body, ticket.email);
-        } else {
-            console.log(`Not ticket creation sending mail to ticket ${ticket._id} due to: Notifications are off`);
-        }
+        let body = this.BODY.replace(/USERNAME/g, ticket.name);
+        body = body.replace(/TICKET_ID/g, ticket._id);
+        body = body.replace(/TITLE/g, ticket.title);
+        body = body.replace(/DESCRIPTION/g, ticket.description);
+        body = body.replace(/STATUS/g, getStatusTranslate(ticket.status));
+        body = body.replace(/PORTAL_URL/g, this.URL);
+        await MailService.sendMail(this.SUBJECT, body, ticket.email);
     }
 }
 
