@@ -27,10 +27,6 @@ class FaqService extends GenericService {
         let faq = req.body;
         const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
         faq.order = faqs.length > 0 ? faqs.length : 0;
-        const chatbotCategory = await categoryService.getChatbotCategory();
-        if(faq.category == chatbotCategory._id) {
-            faq.isActive = true;
-        }
         faq = await faqRepository.save(faq);
         res.status(HttpStatus.CREATED).json(faq);
         if(faq.isActive) {
@@ -93,10 +89,6 @@ class FaqService extends GenericService {
         console.log('update faqService');
         const id = req.params.id;
         let newFaq = req.body;
-        const chatbotCategory = await categoryService.getChatbotCategory();
-        if(newFaq.category == chatbotCategory._id) {
-            newFaq.isActive = true;
-        }
         const previousFaq = await this.findByIdAndValidate(id);
         if(id !== newFaq._id) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.ID_NOT_MATCH)
@@ -104,7 +96,9 @@ class FaqService extends GenericService {
         }
         newFaq = await this.updateObject(newFaq);
         res.status(HttpStatus.OK).json(newFaq);
-        this.updateNlpData();
+        if(newFaq.isActive) {
+            this.updateNlpData();
+        }
     }
 
     updateNlpData = async () => {
