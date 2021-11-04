@@ -93,7 +93,6 @@ class FaqService extends GenericService {
         console.log('update faqService');
         const id = req.params.id;
         let newFaq = req.body;
-
         const chatbotCategory = await categoryService.getChatbotCategory();
         if(newFaq.category === chatbotCategory._id) {
             newFaq.isActive = true;

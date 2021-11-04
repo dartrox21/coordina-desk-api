@@ -41,7 +41,7 @@ class CategoryService extends GenericService {
     }
 
     getChatbotCategory = async () => {
-        await categoryRepository.findByCategory({category: this.CHATBOT});
+        return await categoryRepository.findByCategory({category: this.CHATBOT});
     }
 
     /**
