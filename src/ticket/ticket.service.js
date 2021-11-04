@@ -26,7 +26,7 @@ class DashBoard {
     done = new Array();
 }
 
-const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'permuta', 'acoso', 'indevido', 'molestar'];
+const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'permuta', 'acoso', 'indevido', 'molestar', 'proyecto modular', 'reprob'];
 
 class TicketService extends GenericService {
 
@@ -55,8 +55,8 @@ class TicketService extends GenericService {
         console.log(`Evaluating ticket: ${ticket._id}`);
         const titleEvaluation = await nlpService.evaluateData(ticket.title);
         let score = titleEvaluation.sentiment.score + 
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.toLowerCase().includes(substring)) ? -0.5 : 0.15) +
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.toLowerCase().includes(substring)) ? -0.5 : 0.2);
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.toLowerCase().includes(substring)) ? -0.5 : 0.3) +
+            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.toLowerCase().includes(substring)) ? -0.5 : 0.3);
         let priority = PRIORITY.LOW;
         if(score < -0.3) {
             priority = PRIORITY.HIGH;
@@ -69,7 +69,11 @@ class TicketService extends GenericService {
         }
         ticket.priority = priority;
         const user = await userService.findUserByRoleWithLessTickets(role, userProjection);
-        await this.assignTicket(ticket, user, STATUS.ASIGNED);
+        if(user != null) {
+            await this.assignTicket(ticket, user, STATUS.ASIGNED);
+        } else {
+            await ticketRepository.update(ticket._id, ticket);
+        }
         await updateTicketMailService.sendMail(ticket);
     }
 
