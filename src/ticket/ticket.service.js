@@ -192,6 +192,8 @@ class TicketService extends GenericService {
         let ticket = await this.findByIdAndValidate(req.params.id);
         if(ticket.user) {
             await userService.removeTicket(ticket.user, ticket._id);
+        } else {
+            ticket.status = STATUS.ASIGNED;
         }
         const user = await userService.findByIdAndValidate(req.params.userId);
         user.tickets.push(ticket._id);
