@@ -13,7 +13,6 @@ const userProjection = require("../user/projections/user.projection");
 const nlpService = require("../nlp/nlp.service");
 const PRIORITY = require("./Priority.enum");
 const updateTicketMailService = require("../mail/updateTicket.mail.service");
-const tokenRepository = require("../auth/token/token.repository");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
 

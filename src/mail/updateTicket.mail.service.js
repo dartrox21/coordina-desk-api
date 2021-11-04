@@ -19,12 +19,16 @@ class UpdateTicketService {
 
      async sendMail(ticket) {
         console.log(`Sending update ticket mail to ticket ${ticket._id}`);
-        let body = this.BODY.replace(/USERNAME/g, ticket.name);
-        body = body.replace(/TICKET_ID/g, ticket._id);
-        body = body.replace(/TITLE/g, ticket.title);
-        body = body.replace(/TICKET_STATUS/g, getStatusTranslate(ticket.status));
-        body = body.replace(/PORTAL_URL/g, this.URL);
-        await MailService.sendMail(this.SUBJECT, body, ticket.email);
+        if(ticket.hasEmailUpdates) {
+            let body = this.BODY.replace(/USERNAME/g, ticket.name);
+            body = body.replace(/TICKET_ID/g, ticket._id);
+            body = body.replace(/TITLE/g, ticket.title);
+            body = body.replace(/TICKET_STATUS/g, getStatusTranslate(ticket.status));
+            body = body.replace(/PORTAL_URL/g, this.URL);
+            await MailService.sendMail(this.SUBJECT, body, ticket.email);
+        } else {
+            console.log('Not sending update because hasEmailUpdates=false');
+        }
     }
 }
 
