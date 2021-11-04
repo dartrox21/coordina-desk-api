@@ -5,7 +5,6 @@ const CustomValidateException = require("../exceptionHandler/CustomValidateExcep
 const GenericService = require("../generics/GenericService");
 const Category = require('./Category.model');
 const categoryRepository = require("./category.repository");
-const faqService = require("./faq/faq.service");
 const faqRepository = require('./faq/faq.repository');
 
 class CategoryService extends GenericService {
@@ -30,11 +29,19 @@ class CategoryService extends GenericService {
     }
 
     validateChatbotCategory = (category) => {
-        if(category.category === this.CHATBOT) {
+        if(this.isChatbotCategory(category)) {
             throw CustomValidateException.conflict()
                 .errorMessage(CustomErrorMessages.OPERATION_NOT_ALLOWED)
                 .setField(category.category).setValue(this.CHATBOT).build();
         }
+    }
+
+    isChatbotCategory = (category) => {
+        return category.category === this.CHATBOT;
+    }
+
+    getChatbotCategory = async () => {
+        await categoryRepository.findByCategory({category: this.CHATBOT});
     }
 
     /**

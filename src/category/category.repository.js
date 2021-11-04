@@ -7,6 +7,10 @@ class CategoryRepository extends GenericRepository {
         super(Category);
     }
 
+    findByCategory = async (category) => {
+        return await Category.findOne(category);
+    }
+
 }
 
 module.exports = new CategoryRepository();

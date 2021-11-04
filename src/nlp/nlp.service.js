@@ -3,7 +3,8 @@ const { NlpManager } = require('node-nlp');
 const fs = require('fs');
 const HttpStatus = require('http-status-codes');
 const configuration = require('../configuration/configuration.model');
-const faqProjection = require('../category/faq/projections/faq.projection');
+const categoryService = require('../category/category.service');
+
 
 
 class NlpService {
@@ -49,12 +50,15 @@ class NlpService {
 
     /**
      * Read the input data file
+     * It wont train inactive faqs
+     * faqs that are part of an inactive category
+     * It will train faqs that are part of the chatbot catregory
      * @param String question except. Do not add the question to the nlp 
      */
     readInputData = async () => {
         const faqs = await faqService.getAllObjects({isActive: true});
         faqs.forEach(faq => {
-            if(faq.isActive && faq.category.isActive) {
+            if(faq.category.isActive || categoryService.isChatbotCategory(faq.category)) {
                 this.nlp.addDocument('es', faq.question, faq._id);
                 this.nlp.addAnswer('es', faq._id, faq.answer);
             }
