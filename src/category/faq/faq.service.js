@@ -96,9 +96,7 @@ class FaqService extends GenericService {
         }
         newFaq = await this.updateObject(newFaq);
         res.status(HttpStatus.OK).json(newFaq);
-        if(newFaq.isActive) {
-            this.updateNlpData();
-        }
+        this.updateNlpData();
     }
 
     updateNlpData = async () => {
