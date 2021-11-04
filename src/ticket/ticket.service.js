@@ -190,7 +190,9 @@ class TicketService extends GenericService {
     reasign = async (req, res) => {
         console.log('reasign TicketService');
         let ticket = await this.findByIdAndValidate(req.params.id);
-        await userService.removeTicket(ticket.user, ticket._id);
+        if(ticket.user) {
+            await userService.removeTicket(ticket.user, ticket._id);
+        }
         const user = await userService.findByIdAndValidate(req.params.userId);
         user.tickets.push(ticket._id);
         await userService.updateUser(user, user._id);
