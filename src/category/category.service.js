@@ -18,7 +18,10 @@ class CategoryService extends GenericService {
 
     uniqueValidateException = async (category) => {
         console.log('CategoryService uniqueValidateException');
-        const categoriesByName = await this.getAllObjects({category: category.category});
+        let categoriesByName = await this.getAllObjects({category: category.category});
+        if(category._id) {
+            categoriesByName = categoriesByName.filter(c => c._id !== category._id);
+        }
         if(categoriesByName.length > 0) {
             throw CustomValidateException.conflict()
                 .errorMessage(CustomErrorMessages.MUST_BE_UNIQUE)
