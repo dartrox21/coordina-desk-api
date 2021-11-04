@@ -3,6 +3,7 @@ const { NlpManager } = require('node-nlp');
 const fs = require('fs');
 const HttpStatus = require('http-status-codes');
 const configuration = require('../configuration/configuration.model');
+const faqProjection = require('../category/faq/projections/faq.projection');
 
 
 class NlpService {
@@ -51,10 +52,12 @@ class NlpService {
      * @param String question except. Do not add the question to the nlp 
      */
     readInputData = async () => {
-        const faqs = await faqService.getAllObjects();
+        const faqs = await faqService.getAllObjects({isActive: true});
         faqs.forEach(faq => {
-            this.nlp.addDocument('es', faq.question, faq._id);
-            this.nlp.addAnswer('es', faq._id, faq.answer);
+            if(faq.isActive && faq.category.isActive) {
+                this.nlp.addDocument('es', faq.question, faq._id);
+                this.nlp.addAnswer('es', faq._id, faq.answer);
+            }
         });
     }
 

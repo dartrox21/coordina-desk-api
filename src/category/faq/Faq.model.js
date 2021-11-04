@@ -34,4 +34,11 @@ const Faq = new Schema({
     collection: 'faq'
 });
 
+const autoPopulateCategory = function(next) {
+    this.populate('category');
+    next();
+};
+
+Faq.pre('find', autoPopulateCategory)
+
 module.exports = mongoose.model('faq', Faq);

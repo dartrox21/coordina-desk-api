@@ -115,7 +115,6 @@ class ClassificationCategoryService extends GenericService {
     classifyOneAndUpdate = async (data) => {
         console.log('classifyOneAndUpdate ClassificationCategoryService');
         const classificationsToBeUpdated = await this.classifyOne(data);
-        console.log(classificationsToBeUpdated);
         await classificationsToBeUpdated.forEach(async c => await this.updateObject(c));
     }
 

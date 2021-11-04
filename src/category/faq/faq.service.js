@@ -8,7 +8,7 @@ const orderProjection = require("./projections/order.projections");
 const faqRepository = require("./faq.repository");
 const categoryService = require("../category.service");
 const nlpService = require('../../nlp/nlp.service');
-
+const faqProjection = require("./projections/faq.projection");
 
 class FaqService extends GenericService {
     constructor() {
@@ -25,11 +25,13 @@ class FaqService extends GenericService {
     create = async (req, res) => {
        console.log('Create FaqService');
        let faq = req.body;
-       const faqs = await this.getAllObjects({category: faq.category});
+       const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
        faq.order = faqs.length > 0 ? faqs.length : 0;
        faq = await faqRepository.save(faq);
        res.status(HttpStatus.CREATED).json(faq);
-       this.updateNlpData();
+       if(faq.isActive) {
+           this.updateNlpData();
+       }
     }
 
     /**
@@ -44,7 +46,7 @@ class FaqService extends GenericService {
         await categoryService.findByIdAndValidate(id);
         const filters = req.query.filters;
         filters.category = id;
-        const faqs = await this.getAllObjects(filters);
+        const faqs = await this.getAllObjects(filters, faqProjection);
         this.getListResponse(res, faqs);
     }
 
@@ -57,7 +59,7 @@ class FaqService extends GenericService {
     reorder = async (req, res) => {
         console.log('reorder FaqService');
         const faq = await this.findByIdAndValidate(req.params.id, orderProjection);
-        const faqs = await this.getAllObjects({category: faq.category});
+        const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
         if(req.params.position > faqs.length - 1) {
             throw CustomValidateException.conflict()
                 .setField('position').setValue(req.params.position).errorMessage(CustomErrorMessages.INVALID_POSITION).build();
