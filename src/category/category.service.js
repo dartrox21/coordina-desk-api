@@ -20,7 +20,7 @@ class CategoryService extends GenericService {
         console.log('CategoryService uniqueValidateException');
         let categoriesByName = await this.getAllObjects({category: category.category});
         if(category._id) {
-            categoriesByName = categoriesByName.filter(c => c._id !== category._id);
+            categoriesByName = categoriesByName.filter(c =>  c._id != category._id);
         }
         if(categoriesByName.length > 0) {
             throw CustomValidateException.conflict()
@@ -91,5 +91,3 @@ class CategoryService extends GenericService {
 }
 
 module.exports = new CategoryService();
-
-// requiring elements at the very botton to avoid circular dependency
