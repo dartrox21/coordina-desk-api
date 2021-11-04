@@ -28,7 +28,7 @@ class FaqService extends GenericService {
         const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
         faq.order = faqs.length > 0 ? faqs.length : 0;
         const chatbotCategory = await categoryService.getChatbotCategory();
-        if(faq.category === chatbotCategory._id) {
+        if(faq.category == chatbotCategory._id) {
             faq.isActive = true;
         }
         faq = await faqRepository.save(faq);
@@ -94,7 +94,7 @@ class FaqService extends GenericService {
         const id = req.params.id;
         let newFaq = req.body;
         const chatbotCategory = await categoryService.getChatbotCategory();
-        if(newFaq.category === chatbotCategory._id) {
+        if(newFaq.category == chatbotCategory._id) {
             newFaq.isActive = true;
         }
         const previousFaq = await this.findByIdAndValidate(id);
