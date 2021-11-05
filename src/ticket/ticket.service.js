@@ -99,7 +99,7 @@ class TicketService extends GenericService {
         let keywords = highPriorityClassifications.map(c => c.keyword);
         keywords = this.stemmer.tokenizeAndStem(keywords.join(' '), false);
         score += title.some(t => stringSimilarity.findBestMatch(t, keywords).bestMatch.rating > 0.8) ? -0.3 : 0.3;
-        score += description.some(d => stringSimilarity.findBestMatch(d, keywords).bestMatch.rating > 0.8) ? -0.4 : 0.4;
+        score += description.some(d => stringSimilarity.findBestMatch(d, keywords).bestMatch.rating > 0.8) ? -0.3 : 0.3;
         console.log(`GIVEN SCORE: ${score}`);
         let priority = PRIORITY.LOW;
         if(score < -0.3) {
