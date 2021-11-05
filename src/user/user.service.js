@@ -61,21 +61,21 @@ class UserSevice extends GenericService {
     }
 
     /**
-     * Serivce used to logically delete a user, setting its flag active to false
+     * Serivce used to logically deactivate a user, setting its flag active to false
      * @param req Request object
      * @param res Response object
      * @returns 404 NOT FOUND if the user is not found
-     * @returns 200 OK If the user is deleted successfully
+     * @returns 200 OK If the user is deactivated successfully
      */
-    delete = async (req, res) => {
-        console.log('delete UserSevice');
+     deactivate = async (req, res) => {
+        console.log('deactivate UserSevice');
         const user = await this.findByIdAndValidate(req.params.id);
         if(user.ticketsCount > 0) {
             throw CustomValidateException.conflict()
                 .errorMessage(CustomErrorMessages.DELETE_HAS_DEPENDENCIES)
                 .setField('ticketsCount').setValue(user.ticketsCount).build();
         }
-        await UserRepository.delete(req.params.id);
+        await UserRepository.deactivate(req.params.id);
         res.status(HttpStatus.OK).send();
     }
 
@@ -212,6 +212,22 @@ class UserSevice extends GenericService {
         const user = await this.findByIdAndValidate(userId);
         user.tickets = user.tickets.filter(t => t != ticketId);
         await this.updateUser(user, user._id);
+    }
+
+    /**
+     * @param {*} req 
+     * @param {*} res 
+     */
+    delete = async (req, res) => {
+        console.log('delete UserSevice');
+        const user = await this.findByIdAndValidate(req.params.id);
+        if(user.ticketsCount > 0) {
+            throw CustomValidateException.conflict()
+                .errorMessage(CustomErrorMessages.DELETE_HAS_DEPENDENCIES)
+                .setField('ticketsCount').setValue(user.ticketsCount).build();
+        }
+        await UserRepository.delete(req.params.id);
+        res.status(HttpStatus.OK).send();
     }
 }
 

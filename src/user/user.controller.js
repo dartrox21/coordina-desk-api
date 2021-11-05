@@ -33,7 +33,11 @@ router.get('/user/:id',
 
 router.delete('/user/:id',
     [preAuthorize(ROLE.COORDINATOR)],
-    asyncWrapper(UserService.delete));
+    asyncWrapper(UserService.deactivate));
+
+router.delete('/user/:id/delete',
+    [preAuthorize(ROLE.COORDINATOR),
+    asyncWrapper(UserService.delete)]);
 
 router.put('/user/:id',
     [preAuthorize(ROLE.COORDINATOR), cleanMiddleware],

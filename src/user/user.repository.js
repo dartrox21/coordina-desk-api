@@ -32,7 +32,7 @@ class UserRepository extends GenericRepository {
      * Logically deletes a user setting its flag active to false
      * @param id 
      */
-    async delete(id) {
+    async deactivate(id) {
         return User.findByIdAndUpdate(id, {isActive: false}, {new: true});
     }
 
