@@ -299,6 +299,23 @@ class TicketService extends GenericService {
         return false;
     }
 
+    /**
+     * Validate that the udgId and ticket id match
+     * @param Request req 
+     * @param Response res  
+     */
+    getByIdAndUdgId = async (req, res) => {
+        console.log('getByIdAndUdgId TicketService');
+        console.log(req.params);
+        const ticket = await this.findByIdAndValidate(req.params.id);
+        console.log(ticket);
+        if (!ticket || ticket.udgId != req.params.udgId) {
+            res.status(HttpStatus.NOT_FOUND).send();
+        } else {
+            res.status(HttpStatus.OK).json(ticket);
+        }
+    }
+
 }
 
 module.exports = new TicketService();

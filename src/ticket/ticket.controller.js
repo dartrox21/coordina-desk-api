@@ -20,7 +20,11 @@ router.get('/ticket/dashboard',
     [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT), setFilters(FILTERS)],
     asyncWrapper(TicketService.dashboard));
 
-router.get('/ticket/id/:id', asyncWrapper(TicketService.getById));
+router.get('/ticket/id/:id',
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
+    asyncWrapper(TicketService.getById));
+
+router.get('/ticket/id/:id/udgId/:udgId', asyncWrapper(TicketService.getByIdAndUdgId));
 
 router.post('/ticket/id/:id/student/answer',
     [cleanTicketContentMiddleware]

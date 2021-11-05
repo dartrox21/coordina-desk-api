@@ -6,7 +6,7 @@ const _ = require('underscore');
 
 
 
-const WHITE_LIST = ['/auth/login', '/chatbot/evaluate', '/ticket', '/ticket/id/*',
+const WHITE_LIST = ['/auth/login', '/chatbot/evaluate', '/ticket', '/ticket/id/*/udgId/*',
                     '/category/all', '/ticket/id/*/student/answer', '/faq/category/*',
                     '/ticket/id/*/email-updates'];
 
