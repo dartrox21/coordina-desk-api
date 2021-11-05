@@ -12,6 +12,8 @@
   "author": "Ruiz Acevedo Saul Francisco",
   "license": "ISC",
   "dependencies": {
+    "@nlpjs/lang-es": "^4.22.0",
+    "@nlpjs/similarity": "^4.21.1",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -30,6 +32,7 @@
     "node-nlp": "^4.22.1",
     "nodemailer": "^6.6.3",
     "nodemon": "^2.0.4",
+    "string-similarity": "^4.0.4",
     "underscore": "^1.13.1"
   }
 }

@@ -14,7 +14,11 @@ const nlpService = require("../nlp/nlp.service");
 const PRIORITY = require("./Priority.enum");
 const updateTicketMailService = require("../mail/updateTicket.mail.service");
 const CustomValidateException = require("../exceptionHandler/CustomValidateException");
+const { StemmerEs, StopwordsEs } = require('@nlpjs/lang-es');
+const stringSimilarity = require('string-similarity');
 const CustomErrorMessages = require("../exceptionHandler/CustomErrorMessages");
+const HighPriorityClassificationService = require("./highPriorityClassification/HighPriorityClassification.service");
+
 
 
 
@@ -25,13 +29,13 @@ class DashBoard {
     done = new Array();
 }
 
-const HIGH_CLASSIFICATIONS = ['modular', 'egresado', 'egresar', 'fail', 'baja', 'permuta', 'acoso', 'indevido', 'molestar', 'proyecto modular', 'reprobar',
-    'reportar', 'acosa', 'sufro', 'indevido', 'violencia', 'violento', 'agresivo', 'agresiva'];
-
 class TicketService extends GenericService {
+
+    stemmer = new StemmerEs();
 
     constructor() {
         super(Ticket);
+        this.stemmer.stopwords = new StopwordsEs();
     }
 
     uniqueValidateException = async () => {
@@ -53,21 +57,11 @@ class TicketService extends GenericService {
      */
     evaluate = async (ticket) => {
         console.log(`Evaluating ticket: ${ticket._id}`);
-        const titleEvaluation = await nlpService.evaluateData(ticket.title);
-        let score = titleEvaluation.sentiment.score + 
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.description.toLowerCase().includes(substring)) ? -0.5 : 0.3) +
-            (HIGH_CLASSIFICATIONS.some(substring=>ticket.title.toLowerCase().includes(substring)) ? -0.5 : 0.3);
-        let priority = PRIORITY.LOW;
-        if(score < -0.3) {
-            priority = PRIORITY.HIGH;
-        } else if(score < 0.3) {
-            priority = PRIORITY.MODERATE;
-        }
+        ticket.priority = await this.getPriority(ticket);
         let role = ROLE.ASSISTANT;
-        if(priority == PRIORITY.HIGH) {
+        if(ticket.priority == PRIORITY.HIGH) {
             role = ROLE.COORDINATOR;
         }
-        ticket.priority = priority;
         const user = await userService.findUserByRoleWithLessTickets(role, userProjection);
         if(user != null) {
             await this.assignTicket(ticket, user, STATUS.ASIGNED);
@@ -75,6 +69,45 @@ class TicketService extends GenericService {
             await ticketRepository.update(ticket._id, ticket);
         }
         await updateTicketMailService.sendMail(ticket);
+    }
+
+    /**
+     * Normalizing, Tokenizing and Stemming a sentence: 
+     *  - https://developer.aliyun.com/mirror/npm/package/@nlpjs/lang-es
+     *  - https://github.com/axa-group/nlp.js/blob/master/packages/lang-es/README.md#normalization
+     * 
+     * Find String Similarity
+     *      https://www.npmjs.com/package/string-similarity
+     *      Finds degree of similarity between two strings, based on Dice's Coefficient, which is mostly better than Levenshtein distance.
+     * 
+     * 
+     * 1.- Evaluates the ticket title with the nlp to get a sentiment score.
+     * 2.- tokenize, Stem and remove stopwords from the ticket title and description
+     * 3.- tokenize, Stem and remove stopwords from each HighPriorityClassification
+     * 4.- Finds the best match for the title and description compared against each HighPriorityClassification if the rating is
+     *      higher than 0.8 then it is going to be more probable to be a high classification
+     *      (A fraction from 0 to 1, both inclusive. Higher number indicates more similarity.)
+     * @param Ticket ticket 
+     * @returns PRIORITY
+     */
+    getPriority = async (ticket) => {
+        const titleEvaluation = await nlpService.evaluateData(ticket.title);
+        let score = titleEvaluation.sentiment.score;
+        const title = this.stemmer.tokenizeAndStem(ticket.title.toLowerCase(), false);
+        const description = this.stemmer.tokenizeAndStem(ticket.description.toLowerCase(), false);
+        const highPriorityClassifications = await HighPriorityClassificationService.getAllObjects();
+        let keywords = highPriorityClassifications.map(c => c.keyword);
+        keywords = this.stemmer.tokenizeAndStem(keywords.join(' '), false);
+        score += title.some(t => stringSimilarity.findBestMatch(t, keywords).bestMatch.rating > 0.8) ? -0.3 : 0.3;
+        score += description.some(d => stringSimilarity.findBestMatch(d, keywords).bestMatch.rating > 0.8) ? -0.4 : 0.4;
+        console.log(`GIVEN SCORE: ${score}`);
+        let priority = PRIORITY.LOW;
+        if(score < -0.3) {
+            priority = PRIORITY.HIGH;
+        } else if(score < 0.3) {
+            priority = PRIORITY.MODERATE;
+        }
+        return priority;
     }
 
     /**

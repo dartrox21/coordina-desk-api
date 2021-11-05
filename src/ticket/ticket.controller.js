@@ -5,6 +5,8 @@ const { cleanModel, setFilters } = require('../middlewares/util.middlewares');
 const Ticket = require('./Ticket.model');
 const TicketContent = require('./ticketContent/TicketContet.model');
 const ROLE = require('../role/Role.enum');
+const HighPriorityClassification = require('./highPriorityClassification/HighPriorityClassification.service');
+
 
 const cleanMiddleware = cleanModel(Ticket.schema.paths);
 const cleanTicketContentMiddleware = cleanModel(TicketContent.schema.paths);
@@ -56,5 +58,20 @@ router.patch('/ticket/id/:id/change-priority',
 
 router.patch('/ticket/id/:id/email-updates', asyncWrapper(TicketService.changeEmailNotifications));
 
+router.post('/ticket/high-priority-classification',
+    [preAuthorize(ROLE.COORDINATOR)],
+    asyncWrapper(HighPriorityClassification.create));
+
+router.put('/ticket/high-priority-classification/:id',
+    [preAuthorize(ROLE.COORDINATOR)],
+    asyncWrapper(HighPriorityClassification.update));
+
+router.get('/ticket/high-priority-classification',
+    [preAuthorize(ROLE.COORDINATOR)],
+    asyncWrapper(HighPriorityClassification.getAll));
+
+router.delete('/ticket/high-priority-classification/:id',
+    [preAuthorize(ROLE.COORDINATOR)],
+    asyncWrapper(HighPriorityClassification.delete));
 
 module.exports = router;

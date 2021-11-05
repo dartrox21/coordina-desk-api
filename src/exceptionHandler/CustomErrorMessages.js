@@ -23,6 +23,7 @@ module.exports = class CustomErrorMessages {
     static MUST_BE_UNIQUE = 'ERROR.COMMON.MUST_BE_UNIQUE';
     static ID_NOT_MATCH = 'ERROR.COMMON.ID_DOES_NOT_MATCH';
     static MAX_LENGTH = 'ERROR.COMMON.MAX_LENGTH_EXCEDED'
+    static MUST_HAVE_AT_LEAST_ONE = 'ERROR.COMMON.MUST_HAVE_AT_LEAST_ONE';
     
     // Auth
     static BAD_CREDENTIALS = 'ERROR.AUTH.BAD_CREDENTIALS';
@@ -43,6 +44,7 @@ module.exports = class CustomErrorMessages {
 
     // FAQ
     static INVALID_POSITION = 'ERROR.FAQ.INVALID_POSITION';
+
 
     CustomErrorMessages() {
         throw new Error('Utility class');

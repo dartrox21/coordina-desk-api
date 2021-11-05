@@ -77,8 +77,12 @@ class GenericService {
         const page = req.query.page;
         const filters = req.query.filters;
         const objectList =  await this.genericRepository.getAllPageable(limit, page, filters, projection);
-        const totalDocuments = await this.genericRepository.countDocuments();
+        const totalDocuments = await this.genericRepository.countDocuments(filters);
         this.getPageableResponse(res, objectList, page, limit, totalDocuments);
+    }
+
+    countDocuments = async (filters = {}) => {
+        return await this.genericRepository.countDocuments(filters);
     }
 
     delete = async (req, res) => {
@@ -87,6 +91,11 @@ class GenericService {
         await this.findByIdAndValidate(id);
         await this.genericRepository.delete(id);
         return res.status(HttpStatus.OK).send();
+    }
+
+    deleteObject = async (id) => {
+        console.log('deleteObject generic');
+        await this.genericRepository.delete(id);
     }
 
     update = async (req, res) => {
