@@ -38,7 +38,7 @@ generateBaseData = async () => {
         console.log('CREATING OTHERS CLASSIFICATION CATEGORY');
         await ClassificationCategory.create({category: 'OTHERS', keywords: 'others'});
     }
-    const countHighPriorityClassification = HighPriorityClassification.countDocuments();
+    const countHighPriorityClassification = await HighPriorityClassification.countDocuments();
     if(countHighPriorityClassification == 0 || countHighPriorityClassification == null) {
         console.log('CREATING STARTER DATA HighPriorityClassification');
         HighPriorityClassification.createObject({keyword: 'STARTER DATA: Create your own data and delete me'})
