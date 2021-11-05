@@ -40,10 +40,10 @@ let validateToken = (req, res, next) => {
     if (req.headers && req.headers.authorization) {
       const token = req.headers.authorization.split(' ')[1];
         jwt.verify(token, process.env.SECRET, (err, decoded) => { 
-          console.info('...::: REQUEST USER INFORMATION :::...');
-          console.info(`USER MAKIND REQUEST: ${decoded?.name}`);
-          console.info(`USER ID: ${decoded?.id}`);
-          console.info(`USER ROLE: ${decoded?.role}`);
+          console.log('...::: REQUEST USER INFORMATION :::...');
+          console.log(`USER MAKING REQUEST: ${decoded?.name}`);
+          console.log(`USER ID: ${decoded?.id}`);
+          console.log(`USER ROLE: ${decoded?.role}`);
           if(err) {
             throw CustomValidateException.unauthorized().build();
           } else {
