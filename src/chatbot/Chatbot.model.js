@@ -29,7 +29,8 @@ Chatbot.plugin(mongooseToCsv, {
     constraints: {
       'Input': 'input',
       'CreatedAt': 'createdAt'
-    }
+    },
+    delimiter: '\t'
   });
 
 module.exports = mongoose.model('chatbot', Chatbot);
