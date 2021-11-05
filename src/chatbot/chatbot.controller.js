@@ -14,7 +14,7 @@ router.get('/chatbot/files/all/pageable',
     asyncWrapper(ChatbotFileService.getAllFilesPageable));
 
 router.get('/chatbot/generate-current',
-    [preAuthorize(ROLE.COORDINATOR)],
+    [preAuthorize(ROLE.COORDINATOR, ROLE.ASSISTANT)],
     asyncWrapper(ChatbotService.generateCurrentDataFile));
 
 router.get('/chatbot/files/:id',
