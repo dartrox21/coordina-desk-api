@@ -40,17 +40,21 @@ let validateToken = (req, res, next) => {
     if (req.headers && req.headers.authorization) {
       const token = req.headers.authorization.split(' ')[1];
         jwt.verify(token, process.env.SECRET, (err, decoded) => { 
-            if(err) {
-              throw CustomValidateException.unauthorized().build();
-            } else {
-              TokenService.findOne(req, res, next).then(token => {
-                if(token == null) {
-                  req.headers.decodedUser = decoded;
-                  next();
-                } else {
-                    next(CustomValidateException.unauthorized().build());
-                  }
-                }).catch(() => next(CustomValidateException.status(500).build()));
+          console.info('...::: REQUEST USER INFORMATION :::...');
+          console.info(`USER MAKIND REQUEST: ${decoded?.name}`);
+          console.info(`USER ID: ${decoded?.id}`);
+          console.info(`USER ROLE: ${decoded?.role}`);
+          if(err) {
+            throw CustomValidateException.unauthorized().build();
+          } else {
+            TokenService.findOne(req, res, next).then(token => {
+              if(token == null) {
+                req.headers.decodedUser = decoded;
+                next();
+              } else {
+                  next(CustomValidateException.unauthorized().build());
+                }
+            }).catch(() => next(CustomValidateException.status(500).build()));
             }
         });
     } else {
