@@ -12,7 +12,7 @@ let TicketContent = new Schema({
     data: {
         type: String,
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY],
-        maxLength: 1000
+        maxLength: 50000
     },
     created_at: {
         type: Date, 
