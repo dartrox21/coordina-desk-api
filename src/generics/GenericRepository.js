@@ -102,6 +102,10 @@ class GenericRepository {
         }
         return filtersList.length > 0 ?  { $or: filtersList} : {};
     }
+
+    async deleteMany(filters) {
+        return this.Schema.deleteMany(filters);
+    }
 }
 
 

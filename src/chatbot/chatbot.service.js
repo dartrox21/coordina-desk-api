@@ -75,6 +75,12 @@ class ChatbotService extends GenericService  {
         chatbotFile.file = csv;
         await chatbotFileService.createObject(chatbotFile);
         await utilFunctions.deleteFileByStream(path); 
+        await this.deleteMany({});
+    }
+
+    deleteMany = async (filters) => {
+        console.log('delete many chatbor Service');
+        chatbotRepository.deleteMany(filters);
     }
 }
 
