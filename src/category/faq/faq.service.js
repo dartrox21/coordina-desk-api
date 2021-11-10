@@ -25,7 +25,6 @@ class FaqService extends GenericService {
     create = async (req, res) => {
         console.log('Create FaqService');
         let faq = req.body;
-        faq = await faqRepository.save(faq);
         if(faq.isActive) {
             const faqs = await this.getAllObjects({category: faq.category, isActive: true}, faqProjection);
             faq.order = faqs.length > 0 ? faqs.length : 0;
@@ -99,7 +98,7 @@ class FaqService extends GenericService {
         }
         if(newFaq.isActive) {
             const faqs = await this.getAllObjects({category: newFaq.category, isActive: true}, faqProjection);
-            newFaq.order = faqs.length > 0 ? faqs.length : 0;
+            newFaq.order = faqs.length > 0 ? faqs.length - 1: 0;
         } else {
             newFaq.order = null;
         }
