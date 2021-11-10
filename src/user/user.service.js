@@ -209,9 +209,13 @@ class UserSevice extends GenericService {
      * @param  ticketId 
      */
     removeTicket = async (userId, ticketId) => {
-        const user = await this.findByIdAndValidate(userId);
-        user.tickets = user.tickets.filter(t => t != ticketId);
-        await this.updateUser(user, user._id);
+        try {
+            const user = await this.findByIdAndValidate(userId);
+            user.tickets = user.tickets.filter(t => t != ticketId);
+            await this.updateUser(user, user._id);
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     /**
