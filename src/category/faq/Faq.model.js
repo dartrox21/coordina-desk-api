@@ -26,8 +26,7 @@ const Faq = new Schema({
         required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
     },
     order: {
-        type: Number,
-        required: [true, CustomErrorMessages.FIELD_MAY_NOT_BE_EMPTY]
+        type: Number
     }
 },
 {

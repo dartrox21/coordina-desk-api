@@ -25,13 +25,16 @@ class FaqService extends GenericService {
     create = async (req, res) => {
         console.log('Create FaqService');
         let faq = req.body;
-        const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
-        faq.order = faqs.length > 0 ? faqs.length : 0;
         faq = await faqRepository.save(faq);
-        res.status(HttpStatus.CREATED).json(faq);
         if(faq.isActive) {
-           this.updateNlpData();
+            const faqs = await this.getAllObjects({category: faq.category, isActive: true}, faqProjection);
+            faq.order = faqs.length > 0 ? faqs.length : 0;
+        } else {
+            faq.order = null;
         }
+        faq = await faqRepository.save(faq);
+        this.updateNlpData();
+        res.status(HttpStatus.CREATED).json(faq);
     }
 
     /**
@@ -59,7 +62,7 @@ class FaqService extends GenericService {
     reorder = async (req, res) => {
         console.log('reorder FaqService');
         const faq = await this.findByIdAndValidate(req.params.id, orderProjection);
-        const faqs = await this.getAllObjects({category: faq.category}, faqProjection);
+        const faqs = await this.getAllObjects({category: faq.category, isActive: true}, faqProjection);
         if(req.params.position > faqs.length - 1) {
             throw CustomValidateException.conflict()
                 .setField('position').setValue(req.params.position).errorMessage(CustomErrorMessages.INVALID_POSITION).build();
@@ -93,6 +96,12 @@ class FaqService extends GenericService {
         if(id !== newFaq._id) {
             throw CustomValidateException.conflict().errorMessage(CustomErrorMessages.ID_NOT_MATCH)
                 .setField('id').setValue(`${id} !== ${newFaq._id}`).build();
+        }
+        if(newFaq.isActive) {
+            const faqs = await this.getAllObjects({category: newFaq.category, isActive: true}, faqProjection);
+            newFaq.order = faqs.length > 0 ? faqs.length : 0;
+        } else {
+            newFaq.order = null;
         }
         newFaq = await this.updateObject(newFaq);
         res.status(HttpStatus.OK).json(newFaq);
