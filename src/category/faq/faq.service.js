@@ -12,7 +12,6 @@ const faqRepository = require("./faq.repository");
 const categoryService = require("../category.service");
 const nlpService = require('../../nlp/nlp.service');
 const faqProjection = require("./projections/faq.projection");
-const { unwatchFile } = require("fs");
 
 class FaqService extends GenericService {
     constructor() {
@@ -112,6 +111,7 @@ class FaqService extends GenericService {
 
     reorderActiveFaqs = async (category) => {
         const faqs = await this.getAllObjects({category: category, isActive: true}, faqProjection);
+        faqs.sort((a, b) => (a.order > b.order) ? 1 : -1);
         faqs.forEach(async (faq, idx) => {
             faq.order = idx;
             await this.updateObject(faq);
