@@ -97,8 +97,11 @@ class FaqService extends GenericService {
                 .setField('id').setValue(`${id} !== ${newFaq._id}`).build();
         }
         if(newFaq.isActive) {
+            console.log('ACTIVATING FAQ');
             const faqs = await this.getAllObjects({category: newFaq.category, isActive: true}, faqProjection);
+            console.log(faqs.length);
             newFaq.order = faqs.length > 0 ? faqs.length: 0;
+            console.log(newFaq.order);
         } else {
             newFaq.order = null;
         }
