@@ -1,3 +1,6 @@
+const { moveArrayItemToNewIndex } = require("../../utils/util.functions");
+
+
 module.exports = {};
 const GenericService = require("../../generics/GenericService");
 const Faq = require('./Faq.model');
@@ -9,6 +12,7 @@ const faqRepository = require("./faq.repository");
 const categoryService = require("../category.service");
 const nlpService = require('../../nlp/nlp.service');
 const faqProjection = require("./projections/faq.projection");
+const { unwatchFile } = require("fs");
 
 class FaqService extends GenericService {
     constructor() {
@@ -61,15 +65,13 @@ class FaqService extends GenericService {
     reorder = async (req, res) => {
         console.log('reorder FaqService');
         const faq = await this.findByIdAndValidate(req.params.id, orderProjection);
-        const faqs = await this.getAllObjects({category: faq.category, isActive: true}, faqProjection);
+        let faqs = await this.getAllObjects({category: faq.category, isActive: true}, faqProjection);
         if(req.params.position > faqs.length - 1) {
             throw CustomValidateException.conflict()
                 .setField('position').setValue(req.params.position).errorMessage(CustomErrorMessages.INVALID_POSITION).build();
         }
-
         faqs.sort((a, b) => (a.order > b.order) ? 1 : -1);
-        faqs.splice(req.params.position, 0, faq);
-        faqs.splice(faq.order+1, 1);
+        faqs = moveArrayItemToNewIndex(faqs, faq.order, req.params.position);
         faqs.forEach(async (faq, idx) => {
             faq.order = idx;
             await this.updateObject(faq);

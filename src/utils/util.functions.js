@@ -158,14 +158,16 @@ readFile = async (file) => {
     });
 }
 
-/**
- * Writes a file from a binary buffer
- */
-writeBinaryFile = async (binaryBuffer) => {
-    return new Promise((resolve, reject) => {
-
-    });
-}
+moveArrayItemToNewIndex = (arr, old_index, new_index) => {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length + 1;
+        while (k--) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; 
+};
 
 module.exports = {
     userHasAuthority,
@@ -176,5 +178,5 @@ module.exports = {
     preAuthorize,
     deleteFileByStream,
     readFile,
-    writeBinaryFile
+    moveArrayItemToNewIndex
 }
