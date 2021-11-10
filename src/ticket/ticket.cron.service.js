@@ -26,7 +26,7 @@ const closedTickets = cron.schedule('1 1 1 * * *', async () => {
     nDaysAgo.setDate(nDaysAgo.getDate() - 2);
     const tickets = await ticketService.getAllObjects({isActive:true, updatedAt: {$lte: nDaysAgo}});
     await ticketService.updateMany({updatedAt: {$lte: nDaysAgo}, $or:[{status: STATUS.RESOLVE}, {status: STATUS.FINAL_RESOLVE}]}, 
-        {isActive: false, status: STATUS.CLOSED_DUE_TO_INACTIVITY});
+        {isActive: false});
     await tickets.forEach(async ticket =>  {
         await userService.removeTicket(ticket.user, ticket._id);
     });
