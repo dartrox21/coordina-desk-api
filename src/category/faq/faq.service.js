@@ -97,17 +97,23 @@ class FaqService extends GenericService {
                 .setField('id').setValue(`${id} !== ${newFaq._id}`).build();
         }
         if(newFaq.isActive) {
-            console.log('ACTIVATING FAQ');
             const faqs = await this.getAllObjects({category: newFaq.category, isActive: true}, faqProjection);
-            console.log(faqs.length);
             newFaq.order = faqs.length > 0 ? faqs.length: 0;
-            console.log(newFaq.order);
         } else {
             newFaq.order = null;
         }
         newFaq = await this.updateObject(newFaq);
+        await this.reorderActiveFaqs(newFaq.category);
         res.status(HttpStatus.OK).json(newFaq);
         this.updateNlpData();
+    }
+
+    reorderActiveFaqs = async (category) => {
+        const faqs = await this.getAllObjects({category: category, isActive: true}, faqProjection);
+        faqs.forEach(async (faq, idx) => {
+            faq.order = idx;
+            await this.updateObject(faq);
+        });
     }
 
     updateNlpData = async () => {
